@@ -1,0 +1,24 @@
+#+SEQ_TODO: NEXT(n) TODO(t) WAITING(w) SOMEDAY(s) PROJ(p) | DONE(d)
+CANCELLED(d)
+
+* GTD related things
+** NEXT Weekly Review ...
+
+* Legal obligations
+** NEXT Prepare tax declaration...
+SCHEDULED: <2023-11-16 Thu> DEADLINE: <2023-11-25 Sat>
+ - Collect all documents for your tax lawyer
+** TODO Call the tax lawyer after the documents were sent...
+
+* Maintenance
+** NEXT Wash the car ...
+** PROJ Repair bicycle ...
+
+* Family business
+** NEXT Get a birthday gift for wife ...
+** NEXT Watch concert of your kid in school
+ - Don't miss that ,otherwise kid is disappointed
+
+* House stuff
+** SOMEDAY Build a bike port in the garden ...
+** 

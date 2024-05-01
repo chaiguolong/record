@@ -1,0 +1,8 @@
+expose:揭露,暴露.
+cluster:群,集群,聚集.
+pattern:模式
+recursion:美[rɪˈkɜːrʒn] 递归
+examine:美[ɪɡˈzæmɪn] 检查
+interactive: (通常的-i选项的全拼)相互影响的,相互作用的.
+journal:日志
+evaluation:评估

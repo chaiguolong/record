@@ -1,0 +1,41 @@
+1.centos8安装hugo:
+	1.1.wget二进制文件:
+		wget https://github.com/gohugoio/hugo/releases/download/v0.109.0/hugo_extended_0.109.0_Linux-64bit.tar.gz
+	1.2.解压二进制文件包
+		tar -zxvf hugo_extended_0.109.0_Linux-64bit.tar.gz
+	1.3.移动到/usr/bin
+		mv hugo /usr/bin/
+
+2.如何将hugo生产的静态网站部署到github上.
+	1.hugo版本尽量选hugo v0.100.1(我也不知道,可能别的也行)
+	2.新建博客站点
+		hugo new site blog
+	3.使用git来管理你的博客系统
+		cd blog 
+		git init 
+		git add .
+		git commit -m "first commit"
+	4.我们使用git submodule来安装hugo主题even
+		git submodule add https://github.com/olOwOlo/hugo-theme-even themes/even
+	5.测试站点
+		拷贝even主题中的examplesite里面的config.toml到blog根目录
+	6.在github上新建一个仓库(仓库名为:用户名/github.io)
+		例如:我的仓库名为:chaiguolong.github.io
+	7.添加remote并push到远程
+		git remote add origin https://github.com/chaiguolong/chaiguolong.github.io.git
+	8.修改分支为main(因为原来为mater)
+		git branch -M main
+	9.将代码推送到远程
+		git push -u origin main
+	10.将本地blog代码push到远程
+		git add *
+		git commit -m "second commit"
+		git pull
+		git push
+	10.添加github workflow
+		10.1).设置GitHub Actions
+			settings-->pages-->Github Actions
+		10.2).生成hugo.yml
+			在Github Actions下方配置Hugo,生成hugo.yml(无需更改,直接commit)
+		10.3).等待Actions的任务完成.
+		10.4).Actions任务完成后,在Settings-->pages-->就会显示博客的网址了.

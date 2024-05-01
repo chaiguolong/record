@@ -1,0 +1,20 @@
+1./etc/hosts文件.
+#255.255.255.255是一个广播地址,对同一子网下的所有设备广播
+255.255.255.255    broadcasthost
+#ipv4环回地址
+127.0.0.1
+#ipv6环回地址
+IPv6的回环地址是 0:0:0:0:0:0:0:1,表示为压缩格式为::1
+
+2.Fn+上下左右键对应于windows的 pageUp+pageDown+Home+End
+
+3.如果spotify无法侦测到国际网络,错误代码是4.可以添加DNS(8.8.8.8和114.114.114.114)
+
+4.idea激活的服务器地址(在小米路由器):http://10.10.10.200:1001
+5.du -sh * | sort -nr	#查看目录下每个文件夹占用多少磁盘空间.
+6.defaults write com.google.Keystone.Agent checkInterval 0修改chrome更新时间
+7.zsh向前删除一个单词快捷键c-w
+8.终端清屏:Command + k
+9.快速定位到词典:Spotlight 输入单词后按快捷键 Command + L 可以快速定位到字典那一项.
+10.books中阅读图书时,option+space是下一页;shift+space是上一页
+11.在命令行翻译单词(安装了软件,据说有chatgpt):fanyi word

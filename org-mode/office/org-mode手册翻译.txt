@@ -1,0 +1,189 @@
+2.1 标题
+	标题定义了大纲树的结构.org文件的标题开始于左边距的一颗或者多颗星号,后面跟一个空格.如下面所示:
+
+	* Top level headline
+	** Second level
+	*** Third level
+		some text
+	*** Third level
+		more text
+	* Another top level headline
+
+	org-footnote-section中定义的名字被软件所预留.不要使用它作为标题的名称.
+	
+	一些人发现太多星号会太混乱,所以更喜欢星号后面有一个空格跟着来作为标题的开始.
+	这就能达成使用一个Org缩进副模式.有关详细信息，请参阅更清晰的大纲视图.
+
+	子标题末尾后面的空行被视为子标题的一部分，并在子标题折叠时隐藏.
+	但是,如果您至少保留两行空行,则折叠子树后仍可见一行空行,以便构建折叠视图.
+	请参阅变量 org-cycle-separator-lines 来修改此行为.
+
+	标题没有编号。但是，您可能希望对其中的部分或全部进行动态编号。请参阅动态标题编号.
+
+2.2 循环可见
+	2.2.1 全局和局部循环
+	在缓冲区,概要让隐藏部分文字成为可能.org仅仅使用了两个命令.绑定在了TAB键和S-TAB键,来改变在缓冲区中的可能性.
+
+	TAB(org循环)
+		子标题循环:在下列状态之间循环当前子树(折叠->子子树->子树)
+			
+		,-> FOLDED -> CHILDREN -> SUBTREE --.
+		'-----------------------------------'
+	光标必须要在标题上,才能工作.
+
+	S-TAB(org全局循环)
+	C-u TAB
+		全局循环:在下列状态之间旋转整个缓冲区(概述->内容->全部显示)
+
+		,-> OVERVIEW -> CONTENTS -> SHOW ALL --.
+		'--------------------------------------'
+
+	当使用数字前缀参数N调用S-TAB时,仅查看最多N级标题的内容
+	请注意,在表内部(请参阅表),S-TAB会跳转到上一个字段
+	如果光标在缓冲区的开头,但并不在标题,并且org-cycle-global-at-bob的值不为nil时,你才能使用TAB键(并不是S-TAB)运行全局循环命令.
+
+
+	C-u C-u TAB (org-set-startup-visibility) 
+	切换回缓冲区的启动可见性
+
+	C-u C-u C-u TAB (org-show-all)
+	显示全部
+
+	C-c TAB( org-show-children)
+	暴露子树的所有直接子节点.使用数字前缀参数N,将所有子级暴露到级别N
+
+	C-c C-x b( org-tree-to-indirect-buffer ) 
+	显示间接缓冲区中的当前子树5.使用数字前缀参数N,上升到N层,然后获取该树。
+	如果N为负数，则上升那么多级别。
+	使用C-u前缀时，不要删除以前使用的间接缓冲区
+
+	C-c C-x b( org-tree-to-indirect-buffer ) 
+	显示间接缓冲区中的当前子树.
+	使用数字前缀参数N,上升到N层,然后获取该树.
+	如果N为负数,则上升那么多级别.
+	使用C-u前缀时,不要删除以前使用的间接缓冲区
+
+	C-c C-x v( org-copy-visible ) 
+	将区域中的可见文本复制到删除环中
+
+2.2.2初始可见性
+	当Emacs首次访问Org文件时,全局状态设置为showeverything,即所有文件内容都是可见的.
+	这可以通过变量org-startup-folded,或在每个文件添加缓冲区中任意位置的以下行
+	
+		#+STARTUP: overview
+		#+STARTUP: content
+		#+STARTUP: showall
+		#+STARTUP: show2levels
+		#+STARTUP: show3levels
+		#+STARTUP: show4levels
+		#+STARTUP: show5levels
+		#+STARTUP: showeverything
+
+	此外,任何带有可见性('VISIBILITY')属性的条目,根据其属性相应地调整他们的可见性.
+	允许的属性值为‘folded’, ‘children’, ‘content’, and ‘all’.
+
+	c-u C-u TAB (org-set-startup-visibility)
+	(恢复默认值)切换回缓冲区的启动可见性，即各个条目中的启动选项和 "VISIBILITY "属性所要求的可见性。
+
+2.2.3 捕捉隐形编辑
+	有时,您可能会无意中编辑缓冲区中不可见的部分,并对已编辑的内容和如何撤销错误感到困惑.
+	将 org-fold-catch-invisible-edits 设置为非零有助于避免这种情况
+	请参阅此选项的文档说明,了解Org应如何捕捉并处理不可见编辑
+2.2.3 捕获不可见的编辑
+	有时,您可能会无意中编辑缓冲区的不可见部分,并对已编辑的内容以及如何撤消错误感到困惑.
+	设置org-fold-catch-invisible-edits为 non-nil有助于防止这种情况.
+	请参阅此选项的文档字符串,了解 Org 应如何捕获不可见的编辑并处理它们。
+
+2.3 移动
+	以下命令跳转到缓冲区中的其他标题。
+
+	C-c C-n( org-next-visible-heading ) 
+	下一个标题
+
+	C-c C-p( org-previous-visible-heading ) 
+	上一个标题
+
+	C-c C-f( org-forward-heading-same-level ) 
+	下一个标题相同级别
+
+	C-c C-b( org-backward-heading-same-level ) 
+	上一个标题相同级别
+
+	C-c C-u( outline-up-heading ) 
+	向后至更高级别的标题
+
+	C-c C-j( org-goto ) 
+	(将当前文档锁住,不让更改)跳转到不同的位置而不改变当前轮廓的可见性。
+	显示临时缓冲区中的文档结构，您可以在其中使用以下键来查找目的地：
+
+	TAB    循环可见性。
+	DOWN/UP    下一个/上一个可见标题。
+	RET    选择这个位置。
+	/    进行稀疏树搜索
+
+	若是关闭了 org-goto-auto-isearch ，以下命令可用
+
+	n/p		下一个/上一个可见标题。
+	f/b		下一个/上一个标题同一级别。
+	u		上升一级。
+	0……9    数字参数
+	q		退出
+
+2.4 结构编辑
+	M-RET( org-meta-return ) 
+	插入新标题,项目或行
+	如果在行的开头使用该命令,并且该处有标题或普通列表项（请参阅普通列表）,则将在当前行之前创建新标题/项.
+	当在常规文本行的开头使用时，将该行变成标题
+	当在行的中间使用此命令时，该行将被拆分，该行的其余部分将成为新项目或标题.
+	使用C-u前缀调用该命令会无条件地在当前子树的末尾插入一个新标题,从而保留其内容.
+	使用双C-u C-u前缀时,新标题将在父子树的末尾创建
+
+	C-RET( org-insert-heading-respect-content ) 
+	在当前子树的末尾插入新标题
+
+	M-S-RET( org-insert-todo-heading ) 
+	插入与当前标题相同级别的新 TODO 条目.
+
+	C-S-RET( org-insert-todo-heading-respect-content ) 
+	插入与当前标题相同级别的新 TODO 条目(效果同M-RET与C-RET).
+
+	TAB( org-cycle ) 
+	在还没有文本的新条目中,第一个TAB条目会将条目降级为前一个条目的子条目.
+	下一个 TAB使其成为父级,依此类推,一直到顶层.再过一次TAB,你就回到了最初的水平.
+
+	M-LEFT( org-do-promote ) 
+	M-RIGHT( org-do-demote )
+	将当前标题提升或降低一级
+
+	M-S-LEFT( org-promote-subtree ) 
+	M-S-RIGHT( org-demote-subtree )
+	将当前子树提升/降低一级
+
+	M-UP(org-move-subtree-up) 
+	M-DOWN(org-move-subtree-down)
+	将子树向上/向下移动，即与前一个同级子树交换。
+
+
+
+2.5 稀疏树
+	一个很重要的特性就是org有能力为被选中的信息构造出稀疏树,使得被选中信息突出显示,无关信息折叠显示.
+	实践才是检测真理的唯一标准，试一试就知道具体是怎样优化你的工作了。
+
+	Org-mode包含了许多命令来创建这些稀疏树,所有这些命令都能通过调度器被访问.
+
+	C-c / (org-sparse-tree)
+	这会提示输入一个额外的按键,用来选择创建稀疏树的命令
+
+	C-c / r 或者 C-c / /(org-occur)
+	提示输入正则表达式(请参阅正则表达式)并显示包含所有匹配项的稀疏树.
+	如果匹配项位于标题中,则标题将可见.如果匹配项位于条目正文中,则标题和正文将可见.
+	为了提供最少的上下文,还显示了匹配到上方标题的完整层次结构以及匹配下方的标题.
+	每个匹配也会突出显示,当通过编辑命令或按C-c C-c更改缓冲区时,高亮显示消失.
+	当使用C-u前缀参数调用时,先前的突出显示将被保留,因此对此命令的多次调用可以堆叠
+
+	M-g n或者M-g M-n（next-error）
+	跳转到该缓冲区中的下一个稀疏树匹配。
+
+	M-g p或者M-g M-p（previous-error）
+	跳转到该缓冲区中的上一个稀疏树匹配
+

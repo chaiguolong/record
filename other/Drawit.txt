@@ -1,0 +1,6 @@
+1.leader + di---------------draw it.开始画图
+2.leader + ds---------------draw stop.结束画图
+3.ctrl+k/j/h/l--------------选中block范围.
+4.leader+b------------------画矩形(block)
+5.leader+a------------------画箭头(arrow)
+6.空格切换画图和擦除模式.

@@ -1,0 +1,23 @@
+class Person{
+	public Person(){
+		System.out.println("1.public Person()");
+	}
+	//此段diamante会首先被执行
+	static{
+		System.out.println("2.Person类的静态代码块被调用");
+	}
+}
+public class TestStaticDemo5 {
+	//运行本程序时,静态代码块会自动执行
+	static{
+		System.out.println("3.TestStaticDemo5类的静态代码块被调用! ");
+	}
+	public static void main(String[] args) {
+		
+		System.out.println("4.程序开始执行!");
+		//产生两个实例对象
+		new Person();
+		new Person();
+	}
+	
+}

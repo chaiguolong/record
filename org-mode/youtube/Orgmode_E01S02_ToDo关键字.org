@@ -1,0 +1,16 @@
+* 使用org-mode,让你的组织井井有条
+
+* 概念: ToDo 关键字
+
+* 默认的ToDo关键字是:TODO和DONE
+
+* 通过快捷键S-Right和S-Left来实现关键字TODO和关键字DONE
+
+* 更多的关键字能通过自定义行来实现,具体如下:
+** #+SEQ_TODO:
+Items left of | are ToDo items(red)
+Items right of | are Done item (green)
+
+* 激活上面的自定义行通过快捷键C-c C-c
+
+* 获取所有TODO关键字菜单的快捷键:C-c C-t

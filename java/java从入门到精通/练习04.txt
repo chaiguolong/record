@@ -1,0 +1,94 @@
+16.6 练一练
+一.填空题
+	1. 当将一个不兼容的对象加入一个类集中时,将产生(ClassCastException)异常.
+	2. (Collection)接口是构造类集框架的基础.
+	3. 调用(First())方法,可以获得集合中的第一个对象.
+	4. 需要获得集合尾部的一个子集合,可以使用(tailSet())方法. 
+二.简答题
+	简述ArrayList的构造方法.
+	答: 1).ArrayList():	构造一个空的动态数组.
+		2).ArrayList(Collect c): 构造一个由c初始化的动态数组.
+		3).ArrayList(int capacity):	构造一个由capacity指定容量的空的动态数组.
+16.7 跟我上机
+	编写一段程序,使用TreeSet类存储以下元素:3, 6, 9, 7, 18, 25,并输出其元素.
+
+      +-------------------------------------------------+
+      | import java.util.Iterator;                      |
+      |                                                 |
+      | import java.util.TreeSet;                       |
+      |                                                 |
+      | public class homework04_16_07 {                 |
+      |     public static void main(String[] args) {    |
+      |         TreeSet<Integer> ts = new TreeSet<>();  |
+      |         ts.add(3);                              |
+      |         ts.add(6);                              |
+      |         ts.add(9);                              |
+      |         ts.add(7);                              |
+      |         ts.add(18);                             |
+      |         ts.add(25);                             |
+      |         Iterator<Integer> it = ts.iterator();   |
+      |         while (it.hasNext()) {                  |
+      |             System.out.print(it.next() + " ");  |
+      |         }                                       |
+      |         System.out.println();                   |
+      |     }                                           |
+      |                                                 |
+      | }                                               |
+      +-------------------------------------------------
+
+19.8 练一练
+一.填空题
+	1. 多线程的优点为(能同时运行多个程序块).
+	2. 返回线程的优先级的方法为(getPriority()).
+	3. 死锁的形成原因为(两个线程分别持有对方的锁,且等待对方释放乙方持有的锁).
+二.简答题
+	1. 简述线程和进程的主要差别.
+	答: 1).线程是比进程更小的程序执行单元.创建新的进程比创建新的线程开销更大.
+		2).线程的内存空间和资源是共享的,而进程的内存空间是独有的.
+	2. 简述激活线程的方法.
+	答: 1).成为Thread的子类
+		2).将运行代码放入run()方法中.
+19.9 跟我上机
+	编写一个多线程处理程序,其他线程运行10秒后,使用main方法中断其他线程.
+     +-----------------------------------------------------------------------------+
+     |  class TestThread implements Runnable{                                      |
+     |      public void run(){                                                     |
+     |          try {                                                              |
+     |              Thread.sleep(20000);                                           |
+     |          } catch(InterruptedException e){                                   |
+     |              System.out.println("被中断了...");                             |
+     |          }                                                                  |
+     |          System.out.println(Thread.currentThread().getName()+"在运行...");  |
+     |      }                                                                      |
+     |  }                                                                          |
+     |  public class homework04_19_9 {                                             |
+     |      public static void main(String[] args) {                               |
+     |          TestThread tt = new TestThread();                                  |
+     |          Thread t = new Thread(tt);                                         |
+     |          t.start();                                                         |
+     |          try {                                                              |
+     |              Thread.sleep(10000);                                           |
+     |          } catch(Exception e){                                              |
+     |              e.printStackTrace();                                           |
+     |          }                                                                  |
+     |          t.interrupt();                                                     |
+     |      }                                                                      |
+     |                                                                             |
+     |  }                                                                          |
+     +-----------------------------------------------------------------------------+
+
+20.6 练一练
+一.填空题
+	1.在Java中要进行IO操作,需要导入(IO)包.
+	2.Java中的数据操作主要分为(字符)和(字节)两种.
+	3.生成File对象的构造方法为(new File(Path)).
+二.简答题
+	在操作文件流时,是按照怎样的方式进行的?
+	答: 1.通过路径创建File文件.
+		2.通过File文件创建文件流.
+		3.通过文件流对文件进行读写操作.
+		4.关闭文件流.
+20.7 跟我上机
+	编写一个程序,想文件中写入"Here is my file.",并从文件中读出字符串.
+	答:见:homework04_20_7.java
+

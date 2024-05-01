@@ -1,0 +1,110 @@
+1.快捷键:
+	1>.tab键折叠打开当前标题,shift+tab键折叠打开当前文档标题
+	2>.M-UP/DOWN调整标题在文档中的位置.连同子标题一起调整位置
+	3>.M-LEFT/RIGHT快速提升或降低标题级别.该标题下的相关正文同步调整缩进.
+	4>.C-c C-w将标题移动到指定标题之下.
+	5>.C-x 5 2 新建窗口
+    6>.S-LEFT/Right 将任务标记为TODO/DONE等状态
+
+* org-mode
+** 文档结构
+*** visibility cycling
+    + TAB 
+      - 折叠（显示1级headline）
+      - 显示儿子headline
+      - 全部显示
+    + S-TAB
+      类似TAB，对象是整个buffer，有参数n显示到第n级headline
+    + C-u TAB（整个buffer）
+      - 折叠
+      - 显示目录（headline）
+      - 显示全部内容
+    + C-u C-u TAB（整个buffer）
+      设置成初始状态，默认是最大折叠状态
+    + C-u C-u C-u TAB（整个buffer）
+      显示全部内容
+    + C-c C-r
+      显示光标附近的内容
+      祖先只显示headline
+    + C-c C-k
+      显示所有headline
+    + C-c TAB
+      显示儿子headline
+      带参数n，显示n级后代headline
+    + C-c C-x b
+      在其他窗口中打开当前树
+    + C-c C-x v
+      复制选中的区域
+*** 设置初始状态
+    + #+STARTUP: overview
+      最大折叠状态
+    + #+STARTUP: content
+      显示目录（headline）
+    + #+STARTUP: showall
+      显示大部分（抽屉之类不显示）
+    + #+STARTUP: showverything
+      显示所有内容
+*** 移动命令
+    + C-c C-n
+      下一个headline
+    + C-c C-p
+      上一个headline
+    + C-c C-f
+      同级下一个headline
+    + C-c C-b
+      同级上一个headline
+    + C-c C-u
+      返回上一级headline
+    + C-c C-j
+      - [ ] 比较复杂，还弄不清楚
+*** 结构编辑
+    + M-RET
+      插入一个对象，光标位置决定效果
+      开始行开始和末尾位置都是插入效果
+      中间则会打断内容，分成两个对象
+      - headline
+      - plain list
+    + C-u M-RET
+      在当前headline后插入同级的headline
+    + C-u C-u M-RET
+      在父级headline末尾插入同级的headline
+    + C-RET
+      效果同C-u M-RET
+    + M-S-RET
+      插入一个同级 TODO headline（类似M-RET）
+    + C-S-RET
+      在同级末尾添加 TODO headline （类是C-RET）
+    + M-LEFT
+      提升一级
+    + M-RIGHT
+      降低一级
+    + M-S-LEFT
+      提升一级当前树（包括后代）
+    + M-S-RIGHT
+      降低一级当前树（包括后代）
+    + M-UP
+      向上移动树（包括后代），相对于同级移动，不是单个headline
+    + M-DOWN
+      向下移动树（包括后代），相对于同级移动，不是单个headline
+    + C-c @
+      选中树（包括后代），重复命令，扩展选中该树后面的一颗同级树
+    + C-c C-x C-w
+      移除树（包括后代），待参数n则移除n颗树
+    + C-c C-x M-w
+      复制树（包括后代），待参数n则移除n颗树
+    + C-c C-x C-y
+      粘贴树（有的话），自动调整到合适的层级
+    + C-c C-x c 
+      根据输入的数字创建克隆树
+    + C-c C-w
+      将树转接到其他树（非祖先）
+    + C-c ^
+      有选中区域则排序选中区域，否则排序儿子树
+    + C-x n s
+      暂时不清楚
+    + C-x n w
+      暂时不清楚
+    + C-x n b
+      暂时不清楚
+    + C-c *
+      切换healine(plain list)/普通文本

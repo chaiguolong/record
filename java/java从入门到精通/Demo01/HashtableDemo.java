@@ -1,0 +1,15 @@
+import java.util.Hashtable;
+
+public class HashtableDemo {
+	public static void main(String[] args) {
+		Hashtable<String, Integer> numbers = new Hashtable<>();
+		numbers.put("one", 1);
+		numbers.put("two", 2);
+		numbers.put("three", 3);
+		Integer n = numbers.get("one");
+		if(n != null){
+			System.out.println("two = "+n);
+		}
+	}
+	
+}

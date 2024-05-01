@@ -1,0 +1,753 @@
+1.9	练一练:
+一.填空题
+	1.运行编译后的class文件,需要输入命令(java).
+	2.JVM是指(java虚拟机).
+	3.Java程序源文件扩展名为(java).
+二.简单题
+	1.简述Java语言的特点.
+		Java是一种简单的,面向对象的,分布式的,解释型的,健壮的,安全的.结构中立的,可移植的,性能很优异的,多线程的,动态的语言.
+	2.Java虚拟机的作用是什么?
+		Java虚拟机的作用是一次编译到处运行.
+
+1.10 跟我上机
+	编写一个Java程序,运行后在控制台输出"魔乐科技软件学院www.mldnjava.cn".
+
+	public class PrintDemo01 {
+		public static void main(String[] args) {
+			System.out.println("魔乐科技软件学院www.mldnjava.cn");
+		}
+		
+	}
+
+2.5 练一练
+一.填空题
+	1.Java程序是从(main方法)处开始运行的.
+	2.在Java中,多行注释的开始和结束标记分别为(/*)和(*/);
+	3.声明1个名称"count"的整型变量的语句为(int count;);
+	4.Java程序中的标识符可由(英文字母),(数字),(_)和($)组成,但不能以(数字)开头,不能包含(非法字符).
+二.简答题
+	1.简述设置变量的3中方法.
+	答:1).在声明变量时设置.
+	   2).在声明变量后再设置.
+	   3).在程序的任何位置声明并设置.
+	2.简述提高程序可读性的两种方法.
+	答:1).添加注释
+	   2).缩进
+2.6 跟我上机
+	分析下面程序代码的运行结果,并运行程序查看实际结果.
+		public class Xiti_2 {
+			public static void main(String args[]) {
+				int x = 10;
+				int y = 2;
+				System.out.println(x/y);
+			}
+		}
+	
+3.4 练一练
+一.填空题
+	1.Eclipse是(IBM)花巨资开发的IDE集成开发环境(Integrated Development Environment)
+	2.源代码菜单中所包含的命令都是和代码编写相关的,主要用于(辅助编程工作);
+	3.选择[文件]>([新建])>[项目...]命令,打开[新建项目]对话框.
+二.简答题
+	1.Eclipse提供了哪两种程序调试方式?
+	答:Java应用程序和调试.
+	2.取消Eclipse启动时出现的设置工作空间的对话框的具体方法是什么?
+	答:将工作空间设置为默认的工作空间.
+3.5 跟我上机
+	在Eclipse中创建一个项目并编写程序,实现在控制台输出"<<Java从入门到精通>>是学习Java的最佳宝典"
+
+4.3 练一练
+一.填空题
+	1.(变量)是利用声明的方式,将内存中的某个块保留下来以供程序使用.
+	2.(常量)就是固定不变的量,一旦被定义,它的值就不能再被改变.
+	3.当常量用于一个类的成员变量时,必须给常量(赋值),否则会出现编译错误.
+二.简答题
+	1.简述变量的命名规则.
+	答:1).只能由大小写字母,数字,下划线和$符组成.
+	   2).不能由数字开头
+	   3).不能是关键字.
+	2.按作用范围划分,变量是如何划分的?
+	答:变量分为成员变量和局部变量.
+4.4 跟我上机
+	编写一个定义局部变量的简单程序.
+
+5.7 练一练
+一.填空题
+	1.Java数据类型分为(基本)数据类型和(引用)数据类型两大类
+	2.int类型数据占据(4)个字节内存空间,取值范围为(2^8-1 ~ 2^8).
+二.简答题
+	简述在Java中,数据类型转换的规则
+	答:自动数据类型转换的转换规则是:
+		1).转换后的数据类型和转换前的数据类型要兼容.
+		2).转换后的数据类型的作用范围要大于转换前的数据类型.
+5.8 跟我上机
+	编写程序,运行后输出long类型数据的最小数值.
+	public class LongMinValue {
+		public static void main(String[] args) {
+			long long_min = Long.MIN_VALUE;
+			System.out.println(long_min);
+		}
+		
+	}
+
+6.4 练一练
+一.填空题
+	1.括号运算符用于处理表达式的(运算优先级).
+	2.算术表达式的结果是(数值).
+二.简答题
+	简述在Java中,表达式类型转换的规则.
+	答:1).占用字节较少的类型转换为占用字节较多的类型.
+	   2).字符类型会转换成int类型
+	   3).int类型会转换为float类型
+	   4).表达式中若某个操作数的类型为double,则另一个操作数也会转换为double.
+	   5).布尔类型不能转换成其他类型.
+
+7.5 练一练
+一.填空题
+	1.在Java中,3种基本的程序控制结构是(顺序结构),(选择结构),(循环结构).
+	2.if条件语句的3种形式(if语句),(if..else语句),(if..else if...else语句).
+二.简答题
+	简述在Java中跳离循环语句的两种方法.
+	答:break:跳出循环体,执行循环体外的第一条语句.
+	   continue:结束本次循环,执行下次循环.
+7.6 跟我上机
+	编写程序,使用循环控制语句计算"1+2+3+...+100"的值.
+  +----------------------------------------------------+
+  | public class calHundred {                          |
+  |     public static void main(String[] args) {       |
+  |         int sum = 0;                               |
+  |                                                    |
+  |         for (int i = 1; i <= 100; i++) {           |
+  |             sum += i;                              |
+  |         }                                          |
+  |                                                    |
+  |         System.out.println("1+2+3+...+100 = "+sum);|
+  |     }                                              |
+  | }                                                  |
+  +----------------------------------------------------+
+
+8.4 练一练
+一.填空题
+	1.使用Java数组的两个步骤为(声明数组)和(分配内存给该数组).
+	2.在Java中,数组元素下标从(0)开始.
+	3.声明整型数组number的语句为(int number[]).
+二.简答题
+	简述Java中使用数组的步骤.
+	答:1).声明数组2).分配内存给该数组.
+8.5 跟我上机
+	编写程序,对int a[] = {25, 24, 12, 76, 98, 101, 90, 28}数组进行排序.
+    +----------------------------------------------------------+
+    |   import java.util.Arrays;                               |
+    |                                                          |
+    |   /**                                                    |
+    |    * 对数组进行排序                                      |
+    |    */                                                    |
+    |   public class ArraySort {                               |
+    |       public static void main(String[] args) {           |
+    |           int a[] = {25, 24, 12, 76, 98, 101, 90, 28};   |
+    |           System.out.print("排序前的数组: ");            |
+    |           for (int i = 0; i < a.length; i++) {           |
+    |               System.out.print("a["+i+"] = "+a[i]+" ");  |
+    |           }                                              |
+    |           System.out.println();                          |
+    |                                                          |
+    |           Arrays.sort(a);                                |
+    |                                                          |
+    |           System.out.print("排序后的数组: ");            |
+    |           for (int i = 0; i < a.length; i++) {           |
+    |               System.out.print("a["+i+"] = "+a[i]+" ");  |
+    |           }                                              |
+    |       }                                                  |
+    |   }                                                      |
+    +----------------------------------------------------------+
+9.6 练一练
+一.填空题
+	1.面向对象的程序设计有3个主要特征:(封装),(多态),(继承).
+	2.在继承过程中,被继承的类称为(父类),经继承产生的类称为(子类).
+	3.在Java中,多态的两种形式为(方法的重载)和(成员的覆写).
+二.简答题
+	简述Java中两种形式的多态.
+	答:多态的两种形式为:方法的重载和成员的覆写.
+9.7 跟我上机
+	定义一个包含name,age和like属性的Person,实例化并给对象赋值,然后输出对象属性.
+     +---------------------------------------------------------------------------+
+     |  class Person{                                                            |
+     |      private String name;                                                 |
+     |      private int age;                                                     |
+     |      private String like;                                                 |
+     |                                                                           |
+     |      public Person(String name, int age, String like){                    |
+     |          this.name = name;                                                |
+     |          this.age = age;                                                  |
+     |          this.like = like;                                                |
+     |      }                                                                    |
+     |                                                                           |
+     |      public String getName(){                                             |
+     |          return name;                                                     |
+     |      }                                                                    |
+     |                                                                           |
+     |      public int getAge(){                                                 |
+     |          return age;                                                      |
+     |      }                                                                    |
+     |                                                                           |
+     |      public String getLike(){                                             |
+     |          return like;                                                     |
+     |      }                                                                    |
+     |                                                                           |
+     |      public void setName(){                                               |
+     |          this.name = name;                                                |
+     |      }                                                                    |
+     |                                                                           |
+     |      public void setAge(){                                                |
+     |          this.age = age;                                                  |
+     |      }                                                                    |
+     |                                                                           |
+     |      public void setLike(){                                               |
+     |          this.like = like;                                                |
+     |      }                                                                    |
+     |  }                                                                        |
+     |                                                                           |
+     |                                                                           |
+     |                                                                           |
+     |  public class opertionPerson {                                            |
+     |      public static void main(String[] args) {                             |
+     |          Person p = new Person("张三", 30, "摄影");                       |
+     |                                                                           |
+     |          System.out.println(p.getName()+","+p.getAge()+","+p.getLike());  |
+     |                                                                           |
+     |      }                                                                    |
+     |                                                                           |
+     |  }                                                                        |
+     +---------------------------------------------------------------------------+
+10.5 练一练
+一.填空题
+	1.(继承)是类的一个重要属性,可以从一个简单的类继承出相对复杂高级的类.
+	2.类的继承可以以既有的(父类)为基础,进而派生出新的(子类).
+	3.继承是(面向对象编程)的一个重要属性.
+二.简答题
+	1.什么是重载?
+	答:重载是在一个类中,方法名相同,而参数列表不同.调用相同的方法,而得到不同的结果.
+	2.向上转型和向下转型各自的特点是什么?
+	答:向上转型是自动完成的,会丢失精度.
+	   向下转型是强制完成的,必须有特定的条件才能转型成功.
+10.6 跟我上机
+	请编写一个既有重载又有重写的程序.
+     +-------------------------------------------------+
+     |  class Person{                                  |
+     |      String name;                               |
+     |      int age;                                   |
+     |                                                 |
+     |      public String talk(String name){           |
+     |          return name+"在说话...";               |
+     |      }                                          |
+     |                                                 |
+     |      public String talk(String name, int age){  |
+     |          return age+"岁的"+name+"在说话...";    |
+     |      }                                          |
+     |  }                                              |
+     |                                                 |
+     |  class Student extends Person{                  |
+     |      String school;                             |
+     |                                                 |
+     |      // public Student(String name, int age){   |
+     |      //  this.name = name;                      |
+     |      //  this.age = age;                        |
+     |      // }                                       |
+     |                                                 |
+     |      public String talk(String name){           |
+     |          return name+"在教室回答问题...";       |
+     |      }                                          |
+     |  }                                              |
+     |  public class OverLoadAndOverWrite {            |
+     |      public static void main(String[] args) {   |
+     |          Person p = new Student();              |
+     |          System.out.println(p.talk("张三",20)); |
+     |          System.out.println(p.talk("张三"));    |
+     |      }                                          |
+     |  }                                              |
+     +-------------------------------------------------+
+11.5 练一练
+一.填空题
+	1.(接口)与一般类一样,本身也是有数据成员与方法,但数据成员一定要赋初值,
+	且此值不能再更改,方法也必须是"抽象方法".
+	2.接口里的"抽象方法"只要做(声明)即可,而不用定义其处理的方式.
+	3.接口与一般类一样,均可通过(继承)技术来派生出新的接口.
+二.简答题
+	1.简述接口(interface)的概念.
+	答:接口是为了弥补抽象类不能多继承的问题.接口的属性必须是常量,且方法必须是抽象的.
+	2.抽象类定义规则是什么?
+	答:1).含有抽象方法的类必须被声明为抽象类,抽象类的子类必须覆写所有的抽象方法后才能够被实例化.
+	   2).抽象类不能实例化.
+	   3).抽象类和抽象方法必须有abstract修饰.
+	   4).抽象方法只需声明,而不需要实现.
+11.6 跟我上机
+	设计一个限制子类访问的抽象类实例,要求在控制台输出如下结果.
+	干部-->姓名: 李乐乐, 年龄: 20, 职业: 干部
+	工人-->姓名: 王小六, 年龄: 30, 职业: 工人
+     +----------------------------------------------------------------------------+
+     |  abstract class Person{                                                    |
+     |      private String name;                                                  |
+     |      private int age;                                                      |
+     |      private String occupation;                                            |
+     |                                                                            |
+     |      abstract String talk();                                               |
+     |                                                                            |
+     |      public String getName(){                                              |
+     |          return name;                                                      |
+     |      }                                                                     |
+     |                                                                            |
+     |      public int getAge(){                                                  |
+     |          return age;                                                       |
+     |      }                                                                     |
+     |                                                                            |
+     |      public String getOccupation(){                                        |
+     |          return occupation;                                                |
+     |      }                                                                     |
+     |                                                                            |
+     |      public void setName(String name){                                     |
+     |          this.name = name;                                                 |
+     |      }                                                                     |
+     |                                                                            |
+     |      public void setAge(int age){                                          |
+     |          this.age = age;                                                   |
+     |      }                                                                     |
+     |      public void setOccupation(String occupation){                         |
+     |          this.occupation = occupation;                                     |
+     |      }                                                                     |
+     |  }                                                                         |
+     |                                                                            |
+     |  class FactoryPerson extends Person{                                       |
+     |                                                                            |
+     |      public String talk(){                                                 |
+     |          return this.getOccupation() + "-->姓名: " + this.getName()+       |
+     |                  ", 年龄: "+this.getAge()+", 职业: "+this.getOccupation(); |
+     |      }                                                                     |
+     |  }                                                                         |
+     |                                                                            |
+     |  public class homework_11 {                                                |
+     |      public static void main(String[] args) {                              |
+     |          Person p = new FactoryPerson();                                   |
+     |          p.setName("李乐乐");                                              |
+     |          p.setAge(20);                                                     |
+     |          p.setOccupation("干部");                                          |
+     |          Person p1 = new FactoryPerson();                                  |
+     |          p1.setName("王小六");                                             |
+     |          p1.setAge(30);                                                    |
+     |          p1.setOccupation("工人");                                         |
+     |          System.out.println(p.talk());                                     |
+     |          System.out.println(p1.talk());                                    |
+     |      }                                                                     |
+     |  }                                                                         |
+     +----------------------------------------------------------------------------+
+12.13.练一练
+一.填空题
+	1.在Java中,所有的类都是由(Object)类衍生出来的.
+	2.方法的重载是指(在一个类中,相同的方法通过参数列表的不同,执行后产生不同的结果).
+	3.使用static关键字声明的变量称为(静态)变量.
+二.简答题
+	简述final关键字标记的特性.
+	答:1).被final关键字修饰的变量不能被更改,相当于常量
+	   2).被final关键字修饰的方法不能被重写
+	   3).被final关键字修饰的类不能被继承
+12.14 跟我上机
+	定义一个包含"name","age"和"sex"的对象,使用匿名对象输出对象实例.
+      +---------------------------------------------------------------------------+
+      | class Person{                                                             |
+      |     String name;                                                          |
+      |     int age;                                                              |
+      |     String sex;                                                           |
+      |                                                                           |
+      |     public Person(String name, int age, String sex){                      |
+      |         this.name = name;                                                 |
+      |         this.age = age;                                                   |
+      |         this.sex = sex;                                                   |
+      |     }                                                                     |
+      |                                                                           |
+      |     public String talk(){                                                 |
+      |         return "我是"+this.name+",今年"+this.age+"岁,我是一个"+this.sex;  |
+      |     }                                                                     |
+      | }                                                                         |
+      | public class homework_12 {                                                |
+      |     public static void main(String[] args) {                              |
+      |         System.out.println(new Person("张三", 20, "男生").talk());        |
+      |                                                                           |
+      |     }                                                                     |
+      |                                                                           |
+      | }                                                                         |
+      +---------------------------------------------------------------------------+
+13.9.练一练
+一.填空题
+	1.在Java中,用(Integer)类来包装整数.
+	2.System类中的所有成员都是(静态)的,引用这些变量和方法时,直接使用(System)类名作为前缀.
+	3.在Java中启动一个新的进程,即执行其他程序时使用(exec)方法.
+二.简答题
+	简述如何实现对象的克隆.
+	答:1).实现cloneable接口.
+	   2).改写Object类中的clone()方法,改写的方法的修饰符必须是public.
+		  这样才能够调用.
+13.10.跟我上机
+	编写一段程序,使程序运行后能自动打开计算机.
+     +--------------------------------------------------------+
+     |  public class openCal {                                |
+     |      public static void main(String[] args) {          |
+     |          Runtime run = Runtime.getRuntime();           |
+     |          try {                                         |
+     |              run.exec("/Applications/Calculator.app    |
+     |                          /Contents/MacOS/Calculator"); |
+     |          } catch(Exception e){                         |
+     |              e.printStackTrace();                      |
+     |          }                                             |
+     |      }                                                 |
+     |                                                        |
+     |  }                                                     |
+     +--------------------------------------------------------+
+14.5.练一练
+一.填空题
+	1.声明一个名称为"baohan"的包的语句是(package baohan)
+	2.在"javac -d . TestPackage1.java"中,参数"-d"的意义是(生成文件夹).
+	3.在声明一个类时,如果需要它被别的类访问,则需要将其声明为(public)类型.
+	4.在Java中,默认的访问控制符为(default).3.在声明一个类时,如果需要它被别的类访问,则需要将其声明为(public)类型.
+	4.在Java中,默认的访问控制符为(default).3.在声明一个类时,如果需要它被别的类访问,则需要将其声明为(public)类型.
+	4.在Java中,默认的访问控制符为(default).
+二.简答题
+	简述Java的命名习惯.
+	答:1).包名都用小写
+	   2).类名都用名词,首字母大写
+	   3).变量名和方法名都采用驼峰命名法.
+	   4).常量名每个字母一律大写.
+14.6.跟我上机
+	编写一段程序,声明一个包,在另一个包中使用import语句访问使用.
+15.5 练一练
+一.填空题
+	1.在Java中,所有的异常都是以(类的类型)存在.
+	2.异常处理是指(如果加上处理异常的代码,则可针对不同的异常做妥善的处理).
+	3.在程序中抛出异常,一定会使用到的关键字为(throw).
+二.简答题
+	1.在Java中,通常用哪两种方法来处理异常?
+	答:1).交由Java默认的异常处理机制
+	   2).自行编写的try-catch-finally块来不做异常
+	2.简述抛出异常的两种方式.
+	答:1).在方法中抛出异常
+	   2).指定方法抛出异常
+15.6.跟我上机
+	编写一个对0进行除操作的程序,使程序抛出此异常,并输出"被除数为0,程序出错".
+     +---------------------------------------------------------------+
+     |  class MyException extends Exception{                         |
+     |      public MyException(String msg){                          |
+     |          super(msg);                                          |
+     |      }                                                        |
+     |  }                                                            |
+     |                                                               |
+     |  public class homework_15 {                                   |
+     |      public static void main(String[] args) {                 |
+     |          int a = 15, b = 0;                                   |
+     |          try {                                                |
+     |              if (b == 0) {                                    |
+     |                  throw new MyException("被除数为0,程序出错!");|
+     |              }                                                |
+     |              int c = a / b;                                   |
+     |              System.out.println("a/b="+c);                    |
+     |          }catch(MyException e){                               |
+     |              System.out.println(e.getMessage());              |
+     |          }                                                    |
+     |      }                                                        |
+     |  }                                                            |
+     +---------------------------------------------------------------+
+16.6.练一练
+一.填空题
+	1.当将一个不兼容的对象加入一个类集中时,将产生(ClassCastException)异常.
+	2.(类集)接口是构造类集框架的基础.
+	3.调用(first)方法,可以获得集合中的第一个对象.
+	4.需要获得集合尾部的一个子集合,可以使用(subSet)方法.
+二.简答题
+	1.简述下ArrayList的构造方法.
+	答:1).ArrayList():建立一个空的数组列表.
+	   2).ArrayList(Collection c):建立一个数组列表,该数组列表由类c中的元素初始化.
+	   3).ArrayList(int Capacity):建立一个数组列表,该数组列表有指定的初始容量.
+16.7.跟我上机
+	编写一段程序,使用TreeSet类存储以下元素:3,6,9,7,18,25,并输出其元素.
+17.7.练一练
+一.填空题
+	1.在定义枚举的过程中,使用关键字(enum)进行定义.
+	2.在枚举类中,将全部内容设置到集合的方法是(allof()).
+二.简答题
+	1.简述什么是枚举?
+	答:将类似的相同类型的对象同时进行声明.
+	2.简述枚举类和枚举关键字的区别.
+	答:枚举关键字是定义枚举类型时必不可少的声明,而枚举类则是规定的枚举类型母类.
+17.8 跟我上机
+    下面代码,是在枚举中定义的抽象方法getDay().要求找出代码中的错误.
+     +---------------------------------------+
+     |  public enum Day {                    |
+     |      MONDAY{                          |
+     |          return "星期一";             |
+     |      },                               |
+     |      TUESDSY{                         |
+     |          public String getDay(){      |
+     |              return "星期二";         |
+     |          }                            |
+     |      },                               |
+     |      WEDNESDAY{                       |
+     |          return "星期三";             |
+     |      };                               |
+     |                                       |
+     |      public abstract String getDay(); |
+     |  }                                    |
+     +---------------------------------------+
+     答:在衣蛾枚举中可以定义一个或多个抽象方法.
+        需要注意的是:枚举中的每个对象都必须单独的实现此方法.
+     +--------------------------------------+
+     |  public enum Day {                   |
+     |      MONDAY{                         |
+     |          public String getDay(){     |
+     |              return "星期一";        |
+     |          }                           |
+     |      },                              |
+     |      TUESDSY{                        |
+     |          public String getDay(){     |
+     |              return "星期二";        |
+     |          }                           |
+     |      },                              |
+     |      WEDNESDAY{                      |
+     |          public String getDay(){     |
+     |          return "星期三";            |
+     |          }                           |
+     |      };                              |
+     |                                      |
+     |      public abstract String getDay();|
+     |  }                                   |
+     +--------------------------------------+
+18.7 练一练
+一.填空题:
+	1.在JDK1.5之后,系统中内建的3个Annotation分别为(@Override),(@Deprecated),(@SuppressWarnning).
+	2.定义一个名称为"firsttip"的Annotation的语句是(public @interface firsttip{});
+二.简答题.
+	简述在RetentionPolicy中规定的3个作用范围.
+	答:1).只在源码中起作用:public static final RetentionPolicy SOURCE.
+	   2).只在编译之后的class中起作用:public static final RententionPolicy CLASS.
+	   3).在运行的时候起作用:public static final RententionPolicy RUNTIME.
+19.8.练一练
+一.填空题
+	1.多线程的优点为(可以同时处理多个程序块,使程序效率更高).
+	2.返回线程的优先级的方法为(Thread.getPriority()).
+	3.死锁的形成原因为(一组线程中,都在等待一个只有其他线程才可以进行的操作).
+二.简答题
+	1.简述线程和进程的主要差别.
+	答:1).同样作为基本的执行单元,线程是划分得比进程更小的执行单元
+	   2).每个进程都有一段专用的内存区域.而线程却共享内存单元.通过共享的内存单元来实现数据交换,实时通信和必要的同步操作.
+	2.简述激活线程的方法.
+	答:1).实现Runnable接口.2).覆写run()方法.
+19.9.跟我上机
+	编写一个多线程处理的程序,其他线程运行10秒后,使用main方法终端其他线程.
+    +---------------------------------------------------------------------------------+
+    |   class TestThread implements Runnable{                                         |
+    |       public void run(){                                                        |
+    |           System.out.println(Thread.currentThread().getName()+"在运行......");  |
+    |       }                                                                         |
+    |   }                                                                             |
+    |   public class homework_19 {                                                    |
+    |       public static void main(String[] args) {                                  |
+    |           TestThread t = new TestThread();                                      |
+    |           Thread tt = new Thread(t);                                            |
+    |           tt.start();                                                           |
+    |           try {                                                                 |
+    |               Thread.sleep(10000);                                              |
+    |           } catch(InterruptedException e){                                      |
+    |               e.getMessage();                                                   |
+    |           }                                                                     |
+    |               Thread.interrupted();                                             |
+    |               System.out.println(Thread.currentThread().getName()+"在运行..."); |
+    |       }                                                                         |
+    |                                                                                 |
+    |   }                                                                             |
+    +---------------------------------------------------------------------------------+
+20.6.练一练
+一.填空题
+	1.在Java中要进行IO操作,需要导入(java.io)包.
+	2.Java中的数据操作主要分为(读)和(写)两个种类.
+	3.生成File对象的构造方法为(File(path));
+二.简答题
+	在操作文件流时,是按照怎样的方式进行的?
+	答:1).使用File类找到一个文件.
+	   2).通过File类的对象去实例化字节流或字符流的子类
+	   3).进行字节(字符)的读写操作.
+	   4).关闭文件流.
+20.7. 跟我上机
+	编写一个程序,向文件中写入"Here is my file",并从文件中读出字符串.
+     +---------------------------------------------------------------------------------------+
+     |  import java.io.*;                                                                    |
+     |  public class homework_20 {                                                           |
+     |      public static void main(String[] args) {                                         |
+     |          File f = new File("/Users/develop/Documents/Doc/Daily_record/test/Here.txt");|
+     |          writeFile(f);                                                                |
+     |          readFile(f);                                                                 |
+     |      }                                                                                |
+     |                                                                                       |
+     |      public static void readFile(File f){                                             |
+     |          FileInputStream in = null;                                                   |
+     |          try {                                                                        |
+     |              in = new FileInputStream(f);                                             |
+     |          } catch(FileNotFoundException e){                                            |
+     |              System.out.println(e.getMessage());                                      |
+     |          }                                                                            |
+     |          byte b[] = new byte[1024];                                                   |
+     |          int len = 0;                                                                 |
+     |          try {                                                                        |
+     |              len = in.read(b);                                                        |
+     |          } catch(IOException e){                                                      |
+     |              System.out.println(e.getMessage());                                      |
+     |          }                                                                            |
+     |          System.out.println(new String(b,0,len));                                     |
+     |                                                                                       |
+     |          try {                                                                        |
+     |              in.close();                                                              |
+     |          } catch(IOException e){                                                      |
+     |              e.printStackTrace();                                                     |
+     |          }                                                                            |
+     |      }                                                                                |
+     |                                                                                       |
+     |                                                                                       |
+     |                                                                                       |
+     |      public static void writeFile(File f){                                            |
+     |          FileOutputStream out = null;                                                 |
+     |          try {                                                                        |
+     |              out = new FileOutputStream(f);                                           |
+     |          } catch(FileNotFoundException e){                                            |
+     |              e.printStackTrace();                                                     |
+     |          }                                                                            |
+     |          try {                                                                        |
+     |              out.write("Here is my file".getBytes());                                 |
+     |          } catch(IOException e){                                                      |
+     |              System.out.println(e.getMessage());                                      |
+     |          }finally{                                                                    |
+     |              try {                                                                    |
+     |                  out.close();                                                         |
+     |              } catch(IOException e){                                                  |
+     |                  System.out.println(e.getMessage());                                  |
+     |              }                                                                        |
+     |          }                                                                            |
+     |      }                                                                                |
+     |  }                                                                                    |
+     +---------------------------------------------------------------------------------------+
+22.7.练一练
+一.填空题
+	1.在Java中,Socket对象的两个关键方法是(getInputStream())和(getOutputStream());
+	2.Socket的两种主要操作方式是(面向连接的)和(面向无连接的);
+	3.互联网常见的通讯协议有(TCP)和(UDP);
+	4.在Java中,所有的网络开发包保存在(net)包中.
+二.简答题
+	简述网络程序开发的两种架构.
+	答:C/S架构:有客户端和服务端,需要两套代码,而且都需要维护.较为繁琐.
+	   B/S架构:客户端为浏览器,只需要一套代码,而且也只需维护一套,较为简单.
+22.8. 跟我上机
+	编写一个服务器端/客户端程序,对客户端输入的字符串,服务器端以"客户端:"开头在返回.
+      +-------------------------------------------------------------------------------------------------+
+      | import java.io.*;                                                                               |
+      | import java.net.*;                                                                              |
+      | public class homework_Server22 {                                                                |
+      |     public static void main(String[] args) throws Exception {                                   |
+      |         //创建一个监听端口(9000)的服务端的socket                                                |
+      |         ServerSocket server = new ServerSocket(9999);                                           |
+      |         //声明一个客户端的socket                                                                |
+      |         Socket client;                                                                          |
+      |         //返回客户端的socket                                                                    |
+      |         System.out.println("服务端正在等待连接......");                                         |
+      |         client = server.accept();                                                               |
+      |         BufferedReader buf = new BufferedReader(new InputStreamReader(client.getInputStream()));|
+      |         PrintStream pout = new PrintStream(client.getOutputStream());                           |
+      |         boolean flag = true;                                                                    |
+      |         while (flag) {                                                                          |
+      |             String str = buf.readLine();                                                        |
+      |             if(str == null || "".equals(str)){                                                  |
+      |                 flag = false;                                                                   |
+      |                 break;                                                                          |
+      |             }                                                                                   |
+      |             if("bye".equalsIgnoreCase(str)){                                                    |
+      |                 flag = false;                                                                   |
+      |                 break;                                                                          |
+      |             }                                                                                   |
+      |                                                                                                 |
+      |             pout.println("客户端: " + str);                                                     |
+      |         }                                                                                       |
+      |                                                                                                 |
+      |         pout.close();                                                                           |
+      |         buf.close();                                                                            |
+      |         client.close();                                                                         |
+      |         server.close();                                                                         |
+      |     }                                                                                           |
+      |                                                                                                 |
+      | }                                                                                               |
+      +-------------------------------------------------------------------------------------------------+
+
+      +------------------------------------------------------------------------------------------------+
+      | import java.io.*;                                                                              |
+      | import java.net.*;                                                                             |
+      | public class homework_Client22 {                                                               |
+      |     public static void main(String[] args) throws Exception {                                  |
+      |         Socket client = new Socket("localhost", 9999);                                         |
+      |         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));           |
+      |         BufferedReader buf = null;                                                             |
+      |         buf = new BufferedReader(new InputStreamReader(client.getInputStream()));              |
+      |         PrintStream out = new PrintStream(client.getOutputStream());                           |
+      |         boolean flag = true;                                                                   |
+      |         while (flag) {                                                                         |
+      |             System.out.println("请输入要发送的内容: ");                                        |
+      |             //发送要请求的内容                                                                 |
+      |             String str = input.readLine();                                                     |
+      |             if(str == null || "".equals(str)){                                                 |
+      |                 flag = false;                                                                  |
+      |                 break;                                                                         |
+      |             }                                                                                  |
+      |             if("bye".equalsIgnoreCase(str)){                                                   |
+      |                 flag = false;                                                                  |
+      |                 break;                                                                         |
+      |             }                                                                                  |
+      |                                                                                                |
+      |             out.println(str);                                                                  |
+      |             //接收回应的内容                                                                   |
+      |             System.out.println(buf.readLine());                                                |
+      |         }                                                                                      |
+      |         client.close();                                                                        |
+      |     }                                                                                          |
+      |                                                                                                |
+      | }                                                                                              |
+      +------------------------------------------------------------------------------------------------+
+23.12.练一练
+一.填空题
+	1.Oracle数据库的端口号为(1521).
+	2.(prepareStatement())方法可以进行数据库的更新操作.
+	3.PreparedStatement类为(Statement)类的子类.
+	4.增加新数据的sql语句命令是(insert into person(name, age) values ("张三", 20);)
+二.简答题
+	1.简述Oracle的端口号及地址信息.
+	答:Oracle的端口号为:1521,地址信息为:jdbc:oracle:thin@localhost:1521:orcl,
+	其中地址头为:jdbc:oracle:thin@;localhost为ip地址;1521位端口;orcl为数据库;
+	2.在事务处理过程中,为什么要通过setAutocommit方法关闭自动更新?这样做有什么好处?
+	答:方便回滚操作.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

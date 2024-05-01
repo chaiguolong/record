@@ -1,0 +1,790 @@
+1.9.练一练
+一.填空题
+	1.运行编译后的class文件,需要输入命名(java)
+	2.JVM是指(java虚拟机)
+	3.Java程序源文件扩展名为(java).
+二.简答题
+	1.简述Java语言的特点.
+	答:1).简洁有效2).可移植性3).面向对象4).解释性5).适合分布计算.
+	2.Java虚拟机的作用是什么?
+	答:提供统一的运行平台.一次运行,到处执行.
+2.5.练一练
+一.填空题
+	1.Java程序是从(main()方法)处开始运行的.
+	2.在Java中,多行注释的开始和结束标记分别为(/*)和(*/)
+	3.声明1个名称"count"的整型变量的语句为(int count;)
+	4.Java程序中的标识符可由(英文字母),(数字),(下划线),(美元符)组成,但不能以(数字)开头,不能包含(非法字符);
+二.简答题
+	1.简述设置变量的3中方法.
+	答:1).声明变量是设置.2).声明变量后设置.3).在程序的任何位置声明并设置.
+	2.简述提高程序可读性的两种方法.
+	答:1).写注释.2).缩进.
+2.6.跟我上机
+      +-----------------------------------------------+
+      | public class Xiti_2 {                         |
+      |     public static void main(String[] args) {  |
+      |         int x = 10;                           |
+      |         int y = 2;                            |
+      |                                               |
+      |         System.out.println(x/y);              |
+      |     }                                         |
+      | }                                             |
+      +-----------------------------------------------+
+    答:5
+3.4.练一练
+一.填空题
+	1.Eclipse是(IBM)花费巨资开发的IDE继承开发环境.
+	2.源代码菜单中所包含的命令都是和代码编写相关的.主要用于(辅助编码)工作
+	3.选择文件->新建->项目命令,打开新建项目对话框.
+二.简答题
+	1.Eclipse提供了哪两种程序调试方式?
+	答:Java应用程序和调试
+	2.取消Eclipse启动时出现的设置工作空间的对话框的具体方法是什么?
+	答:选中将此值用作缺省值并且不再访问复选框.
+3.5.跟我上机
+	在eclipse中创建一个项目并编写程序,实现在控制台输出"<Java从入门到精通>是学习Java的最佳宝典".
+
+      +----------------------------------------------------------------------+
+      | public class homework_3 {                                            |
+      |     public static void main(String[] args) {                         |
+      |         System.out.println("<Java从入门到精通>是学习Java的最佳宝典");|
+      |     }                                                                |
+      |                                                                      |
+      | }                                                                    |
+      +----------------------------------------------------------------------+
+4.3 练一练
+一.填空题
+	1.(变量)是利用声明的方式,将内存中的某个块保留下来以供程序使用.
+	2.(常量)就是固定不变的量,一旦被定义,它的值就不能再被改变.
+	3.当常量用于一个类成员变量是,必须给常量(赋值),否则会出现编译错误.
+二.简答题
+	1.简述变量的命名规则.
+	答:1).变量必须以任意顺序的大小写字母,数字,下划线,美元符组成.
+	   2).变量不能以数字开头
+	   3).变量不能用Java保留的关键字.
+	2.按作用范围划分,变量是如何划分的?
+	答:按作用范围划分,变量分为:成员变量和局部变量.
+4.4 跟我上机
+	编写一个定义局部变量的简单程序.
+      +----------------------------------------------------------+
+      | public class homework01_04 {                             |
+      |     public static void main(String[] args) {             |
+      |         int sum = 0;                                     |
+      |         for (int i = 0; i < 10; i++) {                   |
+      |             sum = sum + i;                               |
+      |             System.out.println("i = "+i+", sum = "+sum); |
+      |         }                                                |
+      |     }                                                    |
+      | }                                                        |
+      +----------------------------------------------------------+
+5.7 练一练
+一.填空题
+	1.Java数据类型分为(基本数据类型)和(引用数据类型).
+	2.int类型数据占据(4)个字节内存空间,取值范围(-127~128).
+简答题
+	简述在Java中,数据类型转换的规则.
+	答:1).转换前的数据类型要和转换后的数据类型兼容
+	   2).转换后的数据类型的取值范围要大于转换前的取值范围
+5.8 跟我上机
+	编写程序,运行后输出long类型数据的最小数值.
+
+      +------------------------------------------------------------------+
+      | public class homework01_05 {                                     |
+      |     public static void main(String[] args) {                     |
+      |         long long_min = Long.MIN_VALUE;                          |
+      |         System.out.println("Long数据类型的最小值为: "+long_min); |
+      |     }                                                            |
+      |                                                                  |
+      | }                                                                |
+      +------------------------------------------------------------------+
+6.4 练一练
+一.填空题
+	1.括号运算符用于处理表达式的(优先级)
+	2.算术表达式的结果是(数值)
+二.简答题
+	简述Java中,表达式类型转换的规则.
+	答: 1).占用字节数少的类型转换为占用字节数多的类型.
+		2).字符类型转换为整型.
+		3).int类型会转换为float类型.
+		4).当表达式中有一个操作数为double类型,则转换为double类型.
+		5).boolean不能转换为其他类型.
+6.5 跟我上机
+	编写程序,计算表达式"((12345679*9) > (97654321*3)) ? true : false"的值.
+      +-------------------------------------------------------------------+
+      | public class homework01_06 {                                      |
+      |     public static void main(String[] args) {                      |
+      |         boolean b = ((12345679*9) > (97654321*3)) ? true : false; |
+      |         System.out.println("((12345679*9) > (97654321*3))         |
+      |             ? true : false的值为: "+b);                           |
+      |     }                                                             |
+      | }                                                                 |
+      +-------------------------------------------------------------------+
+7.5 练一练
+一.填空题
+    1.在Java中,3种基本的程序控制结构是顺序结构,(选择结构)和(循环结构);
+    2.if条件语句的3种形式为(if()...),(if()...else...),(if()...elseif()...);
+二.简答题
+    简述在Java中跳离循环语句的两种方法.
+    答:1).break:跳出循环;2).continue:跳出本次循环,进行下次循环.
+7.6 跟我上机
+    编写程序,使用循环控制语句计算"1+2+3+...+100"的值.
+      +-----------------------------------------------------------+
+      | public class homework01_07 {                              |
+      |     public static void main(String[] args) {              |
+      |         int sum = 0;                                      |
+      |                                                           |
+      |         for (int i = 1; i <= 100; i++) {                  |
+      |             sum = sum + i;                                |
+      |         }                                                 |
+      |                                                           |
+      |         System.out.println("1+2+3+...+100的值为: "+sum);  |
+      |     }                                                     |
+      |                                                           |
+      | }                                                         |
+      +-----------------------------------------------------------+
+8.4 练一练
+一.填空题
+	1. 使用Java数组的两个步骤为(声明数组)和(分配内存给该数组);
+	2. 在Java中,数组元素下标从(0)开始.
+	3.声明整型数组number的语句为(int number[];)
+二.简答题
+	简述Java中使用数组的步骤.
+	答:1).声明数组2).为声明的数组分配内存
+8.5 跟我上机
+	编写程序,对int a[] = {25, 24, 12, 76, 98, 101, 90, 28}数组进行排序.
+      +------------------------------------------------------+
+      | import java.util.*;                                  |
+      | public class homework01_08 {                         |
+      |     public static void main(String[] args) {         |
+      |         int a[] = {25, 24, 12, 76, 98, 101, 90, 28}; |
+      |         System.out.println("数组排序前: ");          |
+      |         for (int i = 0; i < a.length; i++) {         |
+      |             System.out.print(a[i] + "\t");           |
+      |         }                                            |
+      |         System.out.println();                        |
+      |                                                      |
+      |         Arrays.sort(a);                              |
+      |         System.out.println("数组排序后: ");          |
+      |         for (int i = 0; i < a.length; i++) {         |
+      |             System.out.print(a[i]+"\t");             |
+      |         }                                            |
+      |     }                                                |
+      |                                                      |
+      | }                                                    |
+      +------------------------------------------------------+
+9.6 练一练
+一.填空题
+	1.面向对象的程序设计有3个主要特征:(封装),(继承),(多态).
+	2.在继承过程中,被继承的类称为(父类),经继承产生的类称为(子类).
+	3.在Java中,多态的两种形式为(方法的重载)和(方法的重写).
+二.简答题
+	简述Java中两种形式的多态.
+	答: 方法的重载:在一个类中,允许多个方法使用同一个名字,但方法的参数不同,
+	完成的功能也不同.
+		成员覆写:子类与父类允许具有相同的变量名称,数据类型不同,允许具有相同
+	的方法名称,但完成的功能不同.
+9.7 跟我上机
+	定义一个包含name,age和like属性的Person类,实例化并给对象赋值,然后输出对象属性.
+10.5 练一练
+一.填空题
+	1.(继承)是类的一个重要属性,可以从一个简单的类继承出相对复杂高级的类.
+	2.类的继承可以以既有的(父类)为基础,进而派生出新的(子类).
+	3.继承是(类)的一个重要属性.
+二.简答题
+	1.什么是重载?
+	答:在一个类中,方法名相同,参数列表不同,调用相同的方法名,实现不同的功能,这个叫做重载.
+	2.向上转型和向下转型各自的特点是什么?
+	答:1).向上转型:可以自动转型,可能会丢失精度.2).向下转型:需要强制转换,不一定转型成功.
+10.6 跟我上机
+	请编写一个既有重载又有重写的程序.
+     +------------------------------------------------------------------------+
+     |  class Person{                                                         |
+     |      String name;                                                      |
+     |      int age;                                                          |
+     |      String like;                                                      |
+     |      public Person(){}                                                 |
+     |      public Person(String name, int age, String like){                 |
+     |          this.name = name;                                             |
+     |          this.age = age;                                               |
+     |          this.like = like;                                             |
+     |      }                                                                 |
+     |      public String talk(){                                             |
+     |          return "我是"+name+",今年"+age;                               |
+     |      }                                                                 |
+     |      public String talk(String like){                                  |
+     |          return "我的爱好是"+like;                                     |
+     |      }                                                                 |
+     |  }                                                                     |
+     |                                                                        |
+     |  class Student extends Person{                                         |
+     |      String school;                                                    |
+     |      public Student(String name, int age, String like, String school){ |
+     |          this.name = name;                                             |
+     |          this.age = age;                                               |
+     |          this.like = like;                                             |
+     |          this.school = school;                                         |
+     |      }                                                                 |
+     |      public String talk(){                                             |
+     |          return super.talk()+",我在"+school;                           |
+     |      }                                                                 |
+     |  }                                                                     |
+     |  public class homework01_10 {                                          |
+     |      public static void main(String[] args) {                          |
+     |          Person p1 = new Person("张三", 25, "足球");                   |
+     |          System.out.println(p1.talk());                                |
+     |          System.out.println(p1.talk("足球"));                          |
+     |          Person p2 = new Student("李四", 26, "篮球", "北京");          |
+     |          System.out.println(p2.talk());                                |
+     |      }                                                                 |
+     |                                                                        |
+     |  }                                                                     |
+     +------------------------------------------------------------------------+
+11.5. 练一练
+一.填空题
+	1.(接口)与一般类一样,本身也具有数据成员与方法,但数据成员一定要赋初值,且
+	此值不能再更改,方法也必须是"抽象方法".
+	2.接口里的"抽象方法"只要做(声明)即可,而不用定义器处理的方式.
+	3.接口与一般类一样,均可通过(继承)的技术来派生出新的接口.
+二.简答题
+	1.简述接口(interface)的概念.
+	答:1).接口中的数据成员必须赋予初值,且必须为常量.
+	   2).接口里的方法必须全部声明为abstract.
+	2.抽象类定义规则是什么?
+	答: 1).抽象类和抽象方法必须用abstract关键字来修饰
+		2).抽象类不能被直接实例化,也就是不能直接用new关键字去产生对象.
+		3).抽象方法只需声明,而不需实现.
+		4).含有抽象方法的类必须声明为抽象类,抽象类的子类必须覆写所有的抽象方法后才能被实例化,否则这个子类还是抽象类.
+11.6 跟我上机
+	设计一个限制子类的访问的抽象类实例,要求在控制台输出如下结果.
+	干部-->姓名: 李乐乐, 年龄: 20, 职业: 干部
+	工人-->姓名: 王小六, 年龄: 30, 职业: 工人
+
+       +---------------------------------------------------------------+
+       |    abstract class Person{                                     |
+       |        private String name;                                   |
+       |        private int age;                                       |
+       |        private String occupation;                             |
+       |                                                               |
+       |        public  abstract String getInfo();                     |
+       |                                                               |
+       |        public void setName(String name){                      |
+       |            this.name = name;                                  |
+       |        }                                                      |
+       |        public void setAge(int age){                           |
+       |            this.age = age;                                    |
+       |        }                                                      |
+       |        public void setOccupation(String occupation){          |
+       |            this.occupation = occupation;                      |
+       |        }                                                      |
+       |        public String getName(){                               |
+       |            return name;                                       |
+       |        }                                                      |
+       |        public int getAge(){                                   |
+       |            return age;                                        |
+       |        }                                                      |
+       |        public String getOccupation(){                         |
+       |            return occupation;                                 |
+       |        }                                                      |
+       |    }                                                          |
+       |                                                               |
+       |    class Worker extends Person{                               |
+       |        public String getInfo(){                               |
+       |            return this.getOccupation()+"-->姓名: "+           |
+       |                   this.getName()+", 年龄: "+this.getAge()+    |
+       |                    ", 职业: "+this.getOccupation();           |
+       |        }                                                      |
+       |    }                                                          |
+       |    public class homework01_1 {                                |
+       |        public static void main(String[] args) {               |
+       |            Worker w1 = new Worker();                          |
+       |            w1.setName("李乐乐");                              |
+       |            w1.setAge(20);                                     |
+       |            w1.setOccupation("干部");                          |
+       |            Worker w2 = new Worker();                          |
+       |            w2.setName("王小六");                              |
+       |            w2.setAge(30);                                     |
+       |            w2.setOccupation("工人");                          |
+       |            System.out.println(w1.getInfo());                  |
+       |            System.out.println(w2.getInfo());                  |
+       |        }                                                      |
+       |                                                               |
+       |    }                                                          |
+       +---------------------------------------------------------------+
+12.13. 练一练
+一.填空题 1.在Java中,所有的类都是由(Object)类衍生出来的.
+	2.方法的重载是指(在一个类中,相同的方法,通过参数列表的不同,运行后实现不同的工鞥呢).
+	3.使用static关键字声明的变量称为(静态)变量.
+二.简答题
+	简述final关键字标记的特性.
+	答:1).被final修饰的变量是相当于常量,只能赋值一次,不能被修改.
+	   2).被final修饰的方法不能被子类覆写.
+	   3).被final修饰的类不能被继承
+12.14 跟我上机
+	定义一个包含"name","age"和"sex"的对象,使用匿名对象输出对象实例.
+          +---------------------------------------------------------------------+
+          | class Person{                                                       |
+          |     String name = "张三";                                           |
+          |     int age = 20;                                                   |
+          |     String sex = "女生";                                            |
+          |                                                                     |
+          |     public String talk(){                                           |
+          |         return "我是"+this.name+", 今年"+this.age+", 我是"+this.sex;|
+          |     }                                                               |
+          | }                                                                   |
+          | public class homework01_12 {                                        |
+          |     public static void main(String[] args) {                        |
+          |         System.out.println(new Person().talk());                    |
+          |                                                                     |
+          |     }                                                               |
+          |                                                                     |
+          | }                                                                   |
+          +---------------------------------------------------------------------+
+13.9 练一练
+一.填空题
+	1.在Java中,用(Integer)类来包装整数.
+	2.System类中的所有成员都是(静态)的,引用这些变量和方法时,直接使用(System)类名作为前缀.
+	3.在Java中启动一个新的进程,即执行其他程序时使用(exec)方法.
+二.简答题
+	简述如何实现对象的克隆.
+	答:1).对象实现Cloneable接口.
+	   2).覆写clone()方法,包权限改为public.
+13.10. 跟我上机
+	编写一段程序,使程序运行后能自动打开计算器.
+     +-------------------------------------------------------+
+     |  public class homework01_13 {                         |
+     |      public static void main(String[] args) {         |
+     |          Runtime run = Runtime.getRuntime();          |
+     |          try {                                        |
+     |              run.exec("/Applications/Calculator.app   |
+     |                  /Contents/MacOS/Calculator");        |
+     |          } catch(Exception e){                        |
+     |              e.printStackTrace();                     |
+     |          }                                            |
+     |      }                                                |
+     |                                                       |
+     |  }                                                    |
+     +-------------------------------------------------------+
+14.5 练一练
+一.填空题
+	1.声明一个名称为"baohan"的包的语句(package baohan;).
+	2.在"javac -d . TestPackage1.java"中,参数"-d"的意义为(新建目录).
+	3.在声明一个类时,如果需要它被别的类访问,则需要将其声明为(public)类型.
+	4.在Java中,默认的访问控制符为(default);
+二.简答题
+	简述Java中的命名习惯.
+	答: 1).包名的命名全为小写.
+		2).类名,接口名的命名一般为名词,首字母大写,后面的按照驼峰法则.
+		3).变量名按照驼峰法则,首字母小写.
+		4).方法名按照驼峰法则,首字母小写.
+		5).常量名的每个字母一律大写.
+14.6 跟我上机
+	编写一段程序,声明一个包,在另一个包中使用import语句访问使用.
+         +----------------------------------------------------+
+         |  package demo.java.a;                              |
+         |                                                    |
+         |  public class Person03 {                           |
+         |      String name = "张三";                         |
+         |      int age = 20;                                 |
+         |                                                    |
+         |      public String talk(){                         |
+         |          return "我是"+this.name+",今年"+this.age; |
+         |      }                                             |
+         |                                                    |
+         |  }                                                 |
+         +----------------------------------------------------+
+
+         +---------------------------------------------------+
+         |  package demo.java.b;                             |
+         |  import demo.java.a.*;                            |
+         |                                                   |
+         |  public class homework01_14 {                     |
+         |      public static void main(String[] args) {     |
+         |          System.out.println(new Person03().talk())|
+         |      }                                            |
+         |                                                   |
+         |  }                                                |
+         +---------------------------------------------------+
+15.5. 练一练
+一.填空题
+	1.在Java中,所有的异常都是以(类的类型)存在.
+	2.异常处理是指(加上捕获异常的程序代码,针对不同的异常做妥善的处理).
+	3.在程序中抛出异常,一定会使用到的关键字为(throw).
+二.简答题
+	1.在Java中,通常用哪两种方法来处理异常?
+	答: 1).Java默认的异常处理机制
+		2).自行编写try-catch-finally块来捕捉异常.
+15.6 跟我上机
+	编写一个对0进行除操作的程序,使程序抛出此异常,并输出"被除数为0,程序出错!".
+
+       +-----------------------------------------------------------+
+       |    public class homework01_15 {                           |
+       |        public static void main(String[] args) {           |
+       |            int a = 5, b = 0;                              |
+       |            int c;                                         |
+       |                                                           |
+       |            try {                                          |
+       |                c = a/b;                                   |
+       |            } catch(Exception e){                          |
+       |                System.out.println("被除数为0,程序出错");  |
+       |            }                                              |
+       |        }                                                  |
+       |                                                           |
+       |    }                                                      |
+       +-----------------------------------------------------------+
+16.6 练一练
+一.填空题
+	1. 当将一个不兼容的对象加入类集中时,将产生(classCastErrorException)异常.
+	2. (Collection)接口是构造类集框架的基础
+	3. 调用(first())方法,可以获得集合中的第一个对象.
+	4. 需要获得集合尾部的一个子集合,可以使用(tailSet())方法
+二.简答题
+	简述ArrayList的构造方法.
+	答: 1). ArrayList(): 构造一个空的数组列表;
+		2). ArrayList(int capacity): 建立一个数组列表,该数组有指定的初始容量,容量是用于存储元素的基本数组大小.
+		3). ArrayList(Collect c): 建立一个数组列表,该数组列表由类c中的元素初始化.
+16.7 跟我上机
+	编写一段程序,使用TreeSet类存储以下元素:3, 6, 9, 7, 18, 25,并输出其元素.
+17.7 练一练
+一. 填空题
+	1. 在定义枚举的过程中,使用关键字(enum)进行定义.
+	2. 在枚举类中,将全部内容设置到集合的方法是(allof());
+二. 简答题
+	1. 简述什么是枚举?
+	答: 枚举是一个被命名的整型常数的集合.
+	2. 简述枚举类与枚举关键字的区别.
+	答: 枚举关键字是定义枚举类型时必不可少的声明,而枚举类则是规定的枚举类型的母类.
+17.8 跟我上机
+
+  +-------------------------------------+		
+  | public enum homework01_17 {         |
+  |     MONDAY{                         |
+  |         return "星期一";            |
+  |     },                              |
+  |     TUESDAY{                        |
+  |         public String getDay(){     |
+  |             return "星期二";        |
+  |         }                           |
+  |     },                              |
+  |     WEDNESDAY{                      |
+  |         return "星期三";            |
+  |     };                              |
+  |                                     |
+  |     public abstract String getDay();|
+  |                                     |
+  | }                                   |
+  +-------------------------------------+
+
+
+  +------------------------------------+
+  | public enum homework01_17 {        |
+  |     MONDAY{                        |
+  |         public String getDay(){    |
+  |             return "星期一";       |
+  |         }                          |
+  |     },                             |
+  |     TUESDAY{                       |
+  |         public String getDay(){    |
+  |             return "星期二";       |
+  |         }                          |
+  |     },                             |
+  |     WEDNESDAY{                     |
+  |         public String getDay(){    |
+  |             return "星期三";       |
+  |         }                          |
+  |     };                             |
+  |                                    |
+  |     public abstract String getDay()|
+  |                                    |
+  | }                                  |
+  +------------------------------------+
+18.7 练一练
+一. 填空题
+	1. 在JDK1.5之后哦,系统中内建的3个Annotation分别为(Override),(Deprecated),(Suppresswarnnings).
+	2. 定义一个名称为"firsttip"的Annotation的语句为(public @interface firsttip{};).
+二. 简答题
+	简述在RetentionPolicy中规定的3个作用范围.
+	答: 1).只在源代码起作用: public static final RetentionPolicy SOURCE.
+		2).只在编译之后的class起作用: public static final RetentionPolicy CLASS.
+		3).在运行时的时候起作用: public static final RetentionPolicy RUNTIME.
+19.8 练一练
+一.填空题
+	1. 多线程的优点为(可以同时运行多个程序块);
+	2. 返回线程的优先级的方法为(getPriority());
+	3. 死锁形成的原因为(多个线程或进程,要争用对多个锁的独占访问);
+二. 简答题
+	1. 简述线程和进程的主要差别.
+	答: 1).线程是的比进程更小的执行单元.
+		2).进程的内存是独立的,线程的内存是共享的.
+	2. 简述激活线程的方法.
+	答: 1).线程必须扩展自Thread类,使自己成为它的子类.
+		2).线程的处理必须编写在run方法内.
+19.9 跟我上机
+	编写一个多线程处理的程序,其他线程运行10秒后,使用main方法终端其他线程.
+      +-------------------------------------------------------------+
+      | class TestThread  implements Runnable{                      |
+      |     public void  run(){                                     |
+      |         System.out.println(Thread.currentThread().getName() |
+      |                 +"在运行...");                              |
+      |     }                                                       |
+      | }                                                           |
+      | public class homework01_19 {                                |
+      |     public static void main(String[] args) {                |
+      |         TestThread t = new TestThread();                    |
+      |         new Thread(t).start();                              |
+      |         try {                                               |
+      |             Thread.sleep(10000);                            |
+      |         } catch(Exception e){                               |
+      |             e.printStackTrace();                            |
+      |         }                                                   |
+      |         Thread.interrupted();                               |
+      |         System.out.println("main 在运行....");              |
+      |     }                                                       |
+      |                                                             |
+      | }                                                           |
+      +-------------------------------------------------------------+
+20.6 练一练
+一.填空题
+	1. 在Java中要进行IO操作,需要导入(IO)包.
+	2. Java中的数据操作主要分为(字节)和(字符)两种.
+	3.生成File对象的构造方法为(File(String path)).
+二.简答题
+	在操作文件流时,是按照怎样的方式进行的?
+	答: 1).使用File类找到一个文件.
+		2).通过File对象生成流对象.
+		3).用流对象对文件进行读写操作.
+		4).关闭流.
+20.7 跟我上机
+	编写一个程序,向文件中写入"Here is my file", 并从文件中读出字符串.
+      +---------------------------------------------------------------+
+      | import java.io.File;                                          |
+      | import java.io.FileInputStream;                               |
+      | import java.io.FileOutputStream;                              |
+      |                                                               |
+      | import java.io.FileNotFoundException;                         |
+      | import java.io.IOException;                                   |
+      |                                                               |
+      | public class homework01_20 {                                  |
+      |     public static void main(String[] args) {                  |
+      |         FileOutputStream fos = null;                          |
+      |         FileInputStream fis = null;                           |
+      |         File f = new File(                                    |
+      |                 "/Users/develop/Documents/Doc/Daily_record/"  |
+      |                 +"test/myfile.txt");                          |
+      |         try {                                                 |
+      |             fos = new FileOutputStream(f);                    |
+      |         } catch(FileNotFoundException e){                     |
+      |             System.out.println(e.getMessage());               |
+      |         }                                                     |
+      |         try {                                                 |
+      |             fos.write("Here is my file".getBytes());          |
+      |         } catch(IOException e){                               |
+      |             System.out.println(e.getMessage());               |
+      |         }                                                     |
+      |         try {                                                 |
+      |             fos.close();                                      |
+      |         } catch(IOException e){                               |
+      |             e.printStackTrace();                              |
+      |         }                                                     |
+      |                                                               |
+      |         int len = 0;                                          |
+      |         byte[] buff = new byte[1024];                         |
+      |         try {                                                 |
+      |             fis = new FileInputStream(f);                     |
+      |         } catch(FileNotFoundException e){                     |
+      |             e.printStackTrace();                              |
+      |         }                                                     |
+      |         try {                                                 |
+      |             len = fis.read(buff);                             |
+      |         } catch(IOException e){                               |
+      |             e.printStackTrace();                              |
+      |         }                                                     |
+      |                                                               |
+      |         System.out.println(new String(buff, 0, len));         |
+      |     }                                                         |
+      |                                                               |
+      | }                                                             |
+      +---------------------------------------------------------------+
+22.7 练一练
+一.填空题
+    1. 在Java中,Socket对象的两个关键方法是(getInputStream())和(getOutputStream());
+    2. Socket的两种主要的操作方式是(UDP)和(TCP);
+    3. 互联网常见的通信协议有(TCP)协议和(UDP)协议;
+    4. 在Java中,所有的网络开发包保存在(java.net)包中
+二. 简述网络程序开发的两种构架
+    答: 1.C/S构架: 客户端和服务端构架
+        2.B/S构架: 浏览器和服务端构架
+22.8 跟我上机
+    编写一个服务器端/客户端程序,对客户端输入字符串,服务器端以"客户端:"开头返回.
+
+    Server:
+      +---------------------------------------------------------------------+
+      | import java.io.BufferedReader;                                      |
+      | import java.io.InputStreamReader;                                   |
+      | import java.io.PrintWriter;                                         |
+      | import java.net.ServerSocket;                                       |
+      | import java.net.Socket;                                             |
+      |                                                                     |
+      | public class Server {                                               |
+      |     public static void main(String[] args) throws Exception {       |
+      |         ServerSocket server = new ServerSocket(9000);               |
+      |         Socket client = server.accept();                            |
+      |         BufferedReader buf = new BufferedReader(                    |
+      |                 new InputStreamReader(client.getInputStream()));    |
+      |         PrintWriter pw = new PrintWriter(client.getOutputStream()); |
+      |         boolean flag = true;                                        |
+      |         while (flag) {                                              |
+      |             String str = buf.readLine();                            |
+      |             if (str == null || "".equals(str)) {                    |
+      |                 flag = false;                                       |
+      |                 break;                                              |
+      |             }                                                       |
+      |             if(str.equalsIgnoreCase("BYE")){                        |
+      |                 flag = false;                                       |
+      |                 break;                                              |
+      |             }                                                       |
+      |             pw.println("客户端: "+str);                             |
+      |             pw.flush();                                             |
+      |         }                                                           |
+      |         buf.close();                                                |
+      |         pw.close();                                                 |
+      |     }                                                               |
+      | }                                                                   |
+      +---------------------------------------------------------------------+
+    Client:
+      +--------------------------------------------------------------------+
+      | import java.io.BufferedReader;                                     |
+      | import java.io.InputStreamReader;                                  |
+      | import java.io.PrintWriter;                                        |
+      | import java.net.Socket;                                            |
+      |                                                                    |
+      | public class Client {                                              |
+      |     public static void main(String[] args) throws Exception{       |
+      |         Socket client = new Socket("localhost", 9000);             |
+      |         BufferedReader buf = new BufferedReader(                   |
+      |                     new InputStreamReader(System.in));             |
+      |         PrintWriter pw = new PrintWriter(client.getOutputStream());|
+      |         BufferedReader buf_in = new BufferedReader(                |
+      |                 new InputStreamReader(client.getInputStream()));   |
+      |         boolean flag = true;                                       |
+      |         while (flag) {                                             |
+      |             String str = buf.readLine();                           |
+      |             if (str == null || "".equals(str)) {                   |
+      |                 flag = false;                                      |
+      |                 break;                                             |
+      |             }                                                      |
+      |             if(str.equalsIgnoreCase("BYE")){                       |
+      |                 flag = false;                                      |
+      |                 break;                                             |
+      |             }                                                      |
+      |             pw.println(str);                                       |
+      |             pw.flush();                                            |
+      |             System.out.println(buf_in.readLine());                 |
+      |         }                                                          |
+      |         buf.close();                                               |
+      |         pw.close();                                                |
+      |         buf_in.close();                                            |
+      |     }                                                              |
+      |                                                                    |
+      | }                                                                  |
+      +--------------------------------------------------------------------+
+
+23.12 练一练
+一. 填空题
+	1. Oracle数据库的端口号为(1521).
+	2. (executeUpdate())方法可以进行数据库的更新操作.
+	3. PreparedStatement类为(Statement)类的子类.
+	4. 增加新数据的SQL语句命令是(insert into(name, age, salary) values 
+											( ?,?,?););
+二.简答题
+	1. 简述Oracle的端口号及地址信息.
+	答: Oracle的端口号为1521;
+		地址信息为:JDBC:oracle:thin:@localhost:1521:orcl
+		地址头:JDBC:oracle:thin:@
+		主机IP地址:localhost
+		端口号:1521
+		数据库名:orcl
+	2. 在事务处理过程中,为什么要通过setAutocommit方法关闭自动更新?
+		这样做有什么好处?
+		答:方便回滚操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

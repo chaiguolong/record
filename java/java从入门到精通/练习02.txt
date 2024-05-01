@@ -1,0 +1,469 @@
+9.6 练一练
+一. 填空题
+	1. 面向对象的程序设计有3个主要特征:(封装性),(继承性)和(多态性).
+	2. 在继承过程中,被继承的类称为(父类),经继承产生的类称为(子类).
+	3. 在Java中,多态的两种形式为(方法的重载)和(子类对父类的重写);
+二.简答题
+	简述Java中两种形式的多态.
+	答: 1).方法的重载:	在一个类中,允许有多个方法重名,
+					只要参数列表不同,它们就可以实现不同的功能.
+		2).子类对父类的重写: 当一个子类继承父类时,允许属性或者方法
+					与父类相同,有不同的属性值或者实现不同的功能.
+9.7 跟我上机
+	定义一个包含name,age和like属性的Person类,实例化并给对象赋值,然后输出对象属性.
+		
+     +--------------------------------------------------------+
+     |  class Person{                                         |
+     |      String name;                                      |
+     |      int age;                                          |
+     |      String like;                                      |
+     |      public Person(String name, int age, String like){ |
+     |          this.name = name;                             |
+     |          this.age = age;                               |
+     |          this.like = like;                             |
+     |      }                                                 |
+     |  }                                                     |
+     |  public class homework02_9_7 {                         |
+     |      public static void main(String[] args) {          |
+     |          Person p = new Person("张三", 25, "购物");    |
+     |          System.out.println(p.name);                   |
+     |          System.out.println(p.age);                    |
+     |          System.out.println(p.like);                   |
+     |      }                                                 |
+     |                                                        |
+     |  }                                                     |
+     +--------------------------------------------------------+
+10.5 练一练
+一. 填空题
+	1. (继承)是类的一个重要属性,可以从一个简单的类继承出相对复杂高级的类.
+	2. 类的继承可以以既有的(父类)为基础,进而派生出新的(子类).
+	3. 继承是(面向对象编程)的一个重要属性.
+二. 简答题
+	1. 什么是重载?
+	答: 重载: 在一个类中,同一方法,不同的参数列表,可以实现不同的功能.
+	2. 向上转型和向下转型各自的特点是什么?
+	答: 向上转型是自动转型,可能会损失精度.
+		向下转型是强制转型,不一定会成功.
+10.6 跟我上机
+	请编写一个既有重载又有重写的程序.
+
+       +------------------------------------------------------+
+       |class Person{                                         |
+       |    String name = "张三";                             |
+       |    int age = 25;                                     |
+       |    public void talk(){                               |
+       |        System.out.println("hello world.");           |
+       |    }                                                 |
+       |}                                                     |
+       |class Student extends Person{                         |
+       |    public void talk(){                               |
+       |        System.out.println("hello teacher");          |
+       |    }                                                 |
+       |                                                      |
+       |    public void talk(String name){                    |
+       |        System.out.println(name+"说: hello teacher"); |
+       |    }                                                 |
+       |}                                                     |
+       |public class homework02_10_5 {                        |
+       |    public static void main(String[] args) {          |
+       |        Student p = new Student();                    |
+       |        p.talk();                                     |
+       |        p.talk(p.name);                               |
+       |    }                                                 |
+       |                                                      |
+       |}                                                     |
+       +------------------------------------------------------+
+11.5 练一练
+一.填空题
+	1. (接口)与一般类一样,本身也具有数据成员与方法,但数据成员一定要赋初值,且此值不能更改,方法必须是"抽象方法".
+	2. 接口里的"抽象方法"只要做(声明)即可,而不用定义其处理的方式.
+	3. 接口与一般类一样,均可通过(继承)的技术来派生出新的接口.
+二.简答题
+	1. 简述接口(interface)的概念.
+	答: 接口是Java所提供的另一种重要技术,它的结构和抽象类非常相似,
+		也具有数据成员与抽象方法,但它与抽象类又有以下两点不同:
+		1) 接口里的数据成员必须初始化,且数据成员均为常量
+		2) 接口里的方法必须全部声明为abstract,也就是说,接口不能
+		   抽象类一样保有一般的方法,必须全部都是"抽象方法"
+	2. 抽象类定义规则是什么?
+	答: 抽象类定义的规则如下:
+		1). 抽象类和抽象方法必须用abstract关键字来修饰
+		2). 抽象类不能被直接实例化,也就是不能直接用new关键字去产生对象
+		3). 抽象方法只需声明,而不需实现.
+		4). 含有抽象方法的类必须被声明为抽象类,抽象类的子类必须覆写所有
+			的抽象方法后才能被实例化,否则这个子类还是个抽象类.
+11.6 跟我上机
+	设计衣蛾限制子类的访问的抽象类实例,要求控制台输出如下结果.
+		干部-->姓名: 李乐乐, 年龄: 20, 职业: 干部
+		工人-->姓名: 王小六, 年龄: 30, 职业: 工人
+      +-----------------------------------------------------------------+
+      | abstract class Person{                                          |
+      |     private String name;                                        |
+      |     private int age;                                            |
+      |     private String occupation;                                  |
+      |                                                                 |
+      |     public Person(String name, int age, String occupation){     |
+      |         this.name = name;                                       |
+      |         this.age = age;                                         |
+      |         this.occupation = occupation;                           |
+      |     }                                                           |
+      |                                                                 |
+      |     public abstract void talk();                                |
+      |                                                                 |
+      |     public void setName(String name){                           |
+      |         this.name = name;                                       |
+      |     }                                                           |
+      |     public void setAge(int age){                                |
+      |         if(age > 0){                                            |
+      |             this.age = age;                                     |
+      |         }                                                       |
+      |     }                                                           |
+      |     public void setOccupation(String occupation){               |
+      |         this.occupation = occupation;                           |
+      |     }                                                           |
+      |     public String getName(){                                    |
+      |         return name;                                            |
+      |     }                                                           |
+      |     public int getAge(){                                        |
+      |         return age;                                             |
+      |     }                                                           |
+      |     public String getOccupation(){                              |
+      |         return occupation;                                      |
+      |     }                                                           |
+      | }                                                               |
+      | //Student继承Person                                             |
+      | class Student extends Person{                                   |
+      |     public Student(String name, int age, String occupation){    |
+      |         super(name,age,occupation);                             |
+      |     }                                                           |
+      |                                                                 |
+      |     public void talk(){                                         |
+      |         System.out.println(getOccupation()+"-->姓名:"+getName() |
+      |                 +",年龄:"+getAge()+",职业:"+getOccupation());   |
+      |     }                                                           |
+      | }                                                               |
+      | public class homework02_11_6 {                                  |
+      |     public static void main(String[] args) {                    |
+      |         new Student("李乐乐", 20, "干部").talk();               |
+      |         new Student("王小六", 30, "工人").talk();               |
+      |     }                                                           |
+      |                                                                 |
+      | }                                                               |
+      +-----------------------------------------------------------------+
+12.13 练一练
+一.填空题
+	1. 在Java中,所有的类都是由(Object)类衍生出来的.
+	2. 方法的重载是指(在一个类中,相同的方法,参数列表不同,实现不同的功能).
+	3. 使用static关键字声明的变量称为(静态)变量.
+二.简答题
+	简述final关键字标记的特性.
+	答: 1).被final修饰的变量不能更改,相当于常量.
+		2).被final修饰的方法不能被重写 3).被final修饰的类不能被继承.
+12.14 跟我上机
+	定义一个包含"name","age"和"sex"的对象,使用匿名对象输出对象实例.
+
+      +------------------------------------------------------+
+      | class Person{                                        |
+      |     String name;                                     |
+      |     int age;                                         |
+      |     String sex;                                      |
+      |     public Person(String name, int age, String sex){ |
+      |         this.name = name;                            |
+      |         this.age = age;                              |
+      |         this.sex = sex;                              |
+      |     }                                                |
+      |                                                      |
+      |     public void talk(){                              |
+      |         System.out.println("我是:"+this.name         |
+      |             +",今年:"+this.age+",性别是:"+this.sex); |
+      |     }                                                |
+      | }                                                    |
+      | public class homework02_12_13 {                      |
+      |     public static void main(String[] args) {         |
+      |         new Person("张三", 25, "男性").talk();       |
+      |     }                                                |
+      |                                                      |
+      | }                                                    |
+      +------------------------------------------------------+
+13.9 练一练
+一.填空题
+	1. 在Java中,用(Integer)类来包装整数.
+	2. System类中的所有成员都是(静态)的,引用这些变量和方法时,直接使用(System)类名作为前缀.
+	3. 在Java中启动一个新的进程,即执行其他程序时使用(exec())方法.
+二.简答题
+	简述如何实现对象克隆.
+	答: 1).实现Cloneable()接口.
+		2).重写clone()方法,权限改为public.
+13.10 跟我上机
+	编写一段程序,使程序运行后能自动打开计算器.
+      +--------------------------------------------------------------------------------+
+      | import java.io.IOException;                                                    |
+      |                                                                                |
+      | public class homework02_13_19 {                                                |
+      |     public static void main(String[] args) {                                   |
+      |         Runtime rt = Runtime.getRuntime();                                     |
+      |         try {                                                                  |
+      |             rt.exec("/Applications/Calculator.app/Contents/MacOS/Calculator"); |
+      |         } catch(IOException e){                                                |
+      |             e.printStackTrace();                                               |
+      |         }                                                                      |
+      |     }                                                                          |
+      |                                                                                |
+      | }                                                                              |
+      +--------------------------------------------------------------------------------+
+16.6 练一练
+一.填空题
+	1. 当将一个不兼容的对象加入一个类集中时,将产生(ClassCastException)异常.
+	2. (Colloect)接口是构造类集框架的基础.
+	3. 调用(first())方法,可以获得集合中的第1个对象.
+	4. 需要获得集合尾部的一个子集合,可以使用(tailSet())方法.
+二.简答题
+	简述ArrayList的构造方法.
+	答: 1). ArrayList(): 建立一个空的数组列表.
+		2). ArrayList(Collect c): 建立一个空的数组列表,该数组列表由类c中的元素初始化.
+		3). ArrayList(int Capacity): 建立一个数组列表,该数组列表由指定的初始容量,
+		容量是用于存储元素的基本数组大小.
+16.7 跟我上机
+	编写一段程序,使用TreeSet类存储一下元素: 3, 6, 9, 7, 18, 25,并输出.
+
+      +------------------------------------------------+
+      | import java.util.Iterator;                     |
+      | import java.util.TreeSet;                      |
+      |                                                |
+      | public class homework02_16_7 {                 |
+      |     public static void main(String[] args) {   |
+      |         TreeSet<Integer> ts = new TreeSet<>(); |
+      |         ts.add(3);                             |
+      |         ts.add(6);                             |
+      |         ts.add(9);                             |
+      |         ts.add(7);                             |
+      |         ts.add(18);                            |
+      |         ts.add(25);                            |
+      |         Iterator<Integer> it = ts.iterator();  |
+      |         while (it.hasNext()) {                 |
+      |             System.out.print(it.next() + "  ");|
+      |         }                                      |
+      |         System.out.println();                  |
+      |     }                                          |
+      |                                                |
+      | }                                              |
+      +------------------------------------------------+
+19.8 练一练
+一.填空题
+	1.多线程的优点为(可以同时执行多个程序块).
+	2.返回线程的优先级的方法为(getPriority()).
+	3.死锁的形成原因为(线程彼此需要获得对方的锁).
+二.简答题
+	1. 简述线程和进程的主要差别.
+	答: 1. 线程是比进程更小的执行单元.
+		2. 线程的资源是共享的,而进程的资源是独立的.
+	2. 简述激活线程的方法.
+	答: 1). 继承Thread,称为其子类,或者实现Runnbale接口.
+		2). 要运行的方法放在run()中.
+19.9 跟我上机
+	编写一个多线程处理的程序,其他线程运行10秒后,使用main方法终端其他线程.
+
+      +-------------------------------------------------------------+
+      | class TestThread implements Runnable{                       |
+      |     public void  run(){                                     |
+      |         System.out.println("线程先睡眠10s钟...");           |
+      |         try {                                               |
+      |             Thread.sleep(10000);                            |
+      |             System.out.println("线程还在运行......");       |
+      |         } catch(InterruptedException e){                    |
+      |             System.out.println("线程被中断...");            |
+      |             return;                                         |
+      |         }                                                   |
+      |     }                                                       |
+      | }                                                           |
+      | public class homework02_19_9 {                              |
+      |     public static void main(String[] args) {                |
+      |         TestThread tt = new TestThread();                   |
+      |         Thread t = new Thread(tt);                          |
+      |         t.start();                                          |
+      |         try {                                               |
+      |             Thread.sleep(5000);                             |
+      |         } catch(InterruptedException e){}                   |
+      |                                                             |
+      |         t.interrupt();                                      |
+      |         System.out.println(t.isInterrupted());              |
+      |         System.out.println("在main方法中 -- 中断其他线程"); |
+      |     }                                                       |
+      | }                                                           |
+      +-------------------------------------------------------------+
+20.6.练一练
+一.填空题
+	1. 在Java中要进行IO操作,需要导入(java.io)包
+	2. Java中的数据操作主要分为(字节操作)和(字符操作);
+	3. 生成File对象的构造方法为(File(String filepath));
+二.简答题
+	在操作文件流时,是按照怎样的方式进行的.
+	答: 1).生成文件对象File.
+		2).通过文件对象实例化文件的输入和输出流.
+		3).通过输入/输出流对象对文件进行读写操作.
+		4).关闭文件输入输出流.
+20.7. 跟我上机
+	编写一个程序,向文件中写入"Here is my file",并从文件中读出字符串.
+
+      +-----------------------------------------------------------+
+      | import java.io.File;                                      |
+      |                                                           |
+      | import java.io.FileReader;                                |
+      | import java.io.FileWriter;                                |
+      |                                                           |
+      | public class homework02_20_6 {                            |
+      |     public static void main(String[] args) {              |
+      |         File f = new File("/Users/develop/Documents/Doc"  |
+      |                 +"/Daily_record/test/myfile.txt");        |
+      |         FileWriter fw = null;                             |
+      |         FileReader fr = null;                             |
+      |         try {                                             |
+      |             fw = new FileWriter(f);                       |
+      |             fw.write("Here is my file");                  |
+      |             fw.close();                                   |
+      |         } catch(Exception e){                             |
+      |             System.out.println(e.getMessage());           |
+      |         }                                                 |
+      |         char[] buf = new char[1024];                      |
+      |         int len = 0;                                      |
+      |         String str = null;                                |
+      |         try {                                             |
+      |             fr = new FileReader(f);                       |
+      |             len = fr.read(buf);                           |
+      |             str = new String(buf, 0, len);                |
+      |         } catch(Exception e){                             |
+      |             e.printStackTrace();                          |
+      |         }                                                 |
+      |         System.out.println("文件中的数据为: "+str);       |
+      |     }                                                     |
+      |                                                           |
+      | }                                                         |
+      +-----------------------------------------------------------+
+22.7. 练一练
+一.填空题
+	1. 在Java中,Socket对象的两个关键方法是(getInputStream())和(getOutputStream()).
+	2. Socket的两种主要的操作方式是(无连接)和(有连接).
+	3. 互联网常见的通讯协议有(TCP)协议和(UDP)协议.
+	4. 在Java中,所有的网络开发包保存在(net)包中.
+二.简答题
+	简述网络程序开发的两种构架.
+	答: 1).C/S:客户端/服务端构架:需要维护两套代码.
+		2).B/S:浏览器/服务端构架:只需要维护一套代码.
+22.8 跟我上机
+	编写一个服务器端/客户端程序,对客户端输入的字符串,服务端以"客户端:"开否返回.
+
+		client
+      +--------------------------------------------------------------------------+
+      | import java.io.BufferedReader;                                           |
+      | import java.io.IOException;                                              |
+      | import java.io.InputStreamReader;                                        |
+      | import java.io.PrintWriter;                                              |
+      | import java.net.Socket;                                                  |
+      | import java.net.UnknownHostException;                                    |
+      |                                                                          |
+      | public class homework02_22_8_client {                                    |
+      |     public static void main(String[] args) {                             |
+      |         Socket client = null;                                            |
+      |         BufferedReader bu = null;                                        |
+      |         BufferedReader buf = null;                                       |
+      |         PrintWriter pw = null;                                           |
+      |                                                                          |
+      |         try {                                                            |
+      |             client = new Socket("localhost", 9001);                      |
+      |             bu = new BufferedReader(new InputStreamReader(System.in));   |
+      |             buf = new BufferedReader(                                    |
+      |                     new InputStreamReader(client.getInputStream()));     |
+      |             pw = new PrintWriter(client.getOutputStream(), true);        |
+      |         } catch(UnknownHostException e){                                 |
+      |             e.printStackTrace();                                         |
+      |         } catch(IOException e) {                                         |
+      |             e.printStackTrace();                                         |
+      |         }                                                                |
+      |                                                                          |
+      |         String str = null;                                               |
+      |         int len = 0;                                                     |
+      |         boolean flag = true;                                             |
+      |                                                                          |
+      |         try {                                                            |
+      |             while (flag) {                                               |
+      |                 str = bu.readLine();                                     |
+      |                 if(str == null || "".equals(str)){                       |
+      |                     flag = false;                                        |
+      |                     break;                                               |
+      |                 }                                                        |
+      |                                                                          |
+      |                 if("bye".equalsIgnoreCase(str)){                         |
+      |                     flag = false;                                        |
+      |                     break;                                               |
+      |                 }                                                        |
+      |                 pw.println(str);                                         |
+      |                 pw.flush();                                              |
+      |                 System.out.println(buf.readLine());                      |
+      |             }                                                            |
+      |             bu.close();                                                  |
+      |             buf.close();                                                 |
+      |             pw.close();                                                  |
+      |             client.close();                                              |
+      |         } catch(IOException e){                                          |
+      |             e.printStackTrace();                                         |
+      |         }                                                                |
+      |     }                                                                    |
+      |                                                                          |
+      | }                                                                        |
+      +--------------------------------------------------------------------------+
+
+        server
+
+      +-------------------------------------------------------------------------+
+      | import java.io.BufferedReader;                                          |
+      | import java.io.IOException;                                             |
+      | import java.io.InputStreamReader;                                       |
+      | import java.io.PrintWriter;                                             |
+      | import java.net.ServerSocket;                                           |
+      | import java.net.Socket;                                                 |
+      |                                                                         |
+      | public class homework02_22_8_server {                                   |
+      |     public static void main(String[] args) {                            |
+      |         ServerSocket server = null;                                     |
+      |         Socket client = null;                                           |
+      |         BufferedReader buf = null;                                      |
+      |         PrintWriter pw = null;                                          |
+      |                                                                         |
+      |         try {                                                           |
+      |             server = new ServerSocket(9001);                            |
+      |             client = server.accept();                                   |
+      |             buf = new BufferedReader(                                   |
+      |                     new InputStreamReader(client.getInputStream()));    |
+      |             pw = new PrintWriter(client.getOutputStream(), true);       |
+      |             boolean flag = true;                                        |
+      |             String str = null;                                          |
+      |             System.out.println("++++++++++");                           |
+      |             while (flag) {                                              |
+      |                 str = buf.readLine();                                   |
+      |                 System.out.println(str);                                |
+      |                 if (str == null || "".equals(str)) {                    |
+      |                     flag = false;                                       |
+      |                     break;                                              |
+      |                 }                                                       |
+      |                 if("bye".equals(str)){                                  |
+      |                     flag = false;                                       |
+      |                     break;                                              |
+      |                 }                                                       |
+      |                 pw.println("客户端: "+ str);                            |
+      |                 pw.flush();                                             |
+      |             }                                                           |
+      |             buf.close();                                                |
+      |             pw.close();                                                 |
+      |             client.close();                                             |
+      |         } catch(IOException e){                                         |
+      |             e.printStackTrace();                                        |
+      |         }                                                               |
+      |     }                                                                   |
+      |                                                                         |
+      | }                                                                       |
+      +-------------------------------------------------------------------------+
+
+
+
+
+

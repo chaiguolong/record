@@ -1,0 +1,20 @@
+* 使用org-mode,让你的组织井井有
+
+* 概念: 时间表_截止时间_议事日程预览
+
+* 现在我们有一个没有时间表的清单.
+
+* Scheduling is done with Ctrl-c Ctrl-s
+** 使用 Ctrl-c Ctrl-s 完成调度
+
+* Deadlines as defined with Ctrl-c Ctrl-D
+** 使用 Ctrl-c Ctrl-D 定义的截止日期
+
+* Switch to agenda view with Ctrl-a a
+** 使用 Ctrl-a a 切换到议程视图
+
+* Follow mode with Shift-f
+** 跟随模式与Shift-f
+
+* Move forward with F or backward with B
+* 按 F 向前移动或按 B 向后移动

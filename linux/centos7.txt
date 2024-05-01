@@ -1,0 +1,46 @@
+1.centos7设置服务常用命令:
+	启动nginx服务
+	systemctl start nginx.service
+
+	设置开机自启动
+	systemctl enable nginx.service
+
+	停止开机自启动
+	systemctl disable nginx.service
+
+	查看服务当前状态
+	systemctl status nginx.service
+
+	重新启动服务
+	systemctl restart nginx.service
+2.linux ss命令详解:
+	ss 是 Socket Statistics(Socket 统计) 的缩写.
+	ss 命令可以用来获取 socket 统计信息
+
+	常用选项:
+	-V(–version)	显示版本号
+	-t(–tcp)		显示TCP 协议的sockets
+	-u(–udp)		显示UDP 协议的sockets
+	-x(–unix)		显示unix domain sockets,与-f选项相同
+	-n(–numeric)	不解析服务的名称,如“22”端口不会显示成“ssh”
+	-l(–listening)	只显示处于监听状态的端口
+	-p(–processes)	显示监听端口的进程(Ubuntu上需要sudo)
+	-a(–all)		对TCP协议来说,既包含监听的端口,也包含建立的连接
+	-r(–resolve)	把IP解释为域名,把端口号解释为协议名称
+
+	1).如果不添加选项ss命令默认输出所有建立的连接(不包含监听的端口),包括 tcp, udp, and unix socket 三种类型的连接
+		查看所有连接的头5行.
+		ss | head -n 5
+	
+	2).查看主机监听的端口
+		ss -tnl
+
+	3).通过-r选项解析IP和端口号
+		ss -tlr
+	
+	4).使用-p选项查看监听端口的程序名称
+		sudo ss -tlp
+	
+	5).查看建立的TCP连接
+		ss -tna
+		

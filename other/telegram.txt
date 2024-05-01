@@ -1,0 +1,3 @@
+telegram终端代理设置(v2ray版):
+    1.查看v2ray的Local Socket5 Port的端口: 当前为1081.
+    2.在telegram中选中custom proxy并设置:服务器为127.0.0.1,端口为:1081,也就是上面的端口.

@@ -1,0 +1,139 @@
+1.一个Hello world例子
+	(message "Hello world")
+	在行尾右括号后,按C-j.
+
+	1.1 C-j:在当前buffer,打印值,可以执行一个S表达式.
+	1.2 lisp-interaction-mode: 输入和运算Lisp语言的主要模式.
+	1.3 elisp 里的一个完整表达式,除了简单数据类型(如数字,向量),都是用括号括起来,称为一个S-表达式.
+	1.4 执行一个S表达式的两种方法:
+		1.4.1 C-j
+		1.4.2 C-x C-e(全局按键绑定,哪里都可以使用,
+			运行的函数是:eval-last-sexp)
+	1.5 返回值和作用是两个概念:
+		比如前面的message函数的作用是在minibuffer里显示一个字符串,但它的返回值是"hello world"字符串.
+
+	1.6 什么是向量?
+2.基础知识
+	2.1 函数和变量
+		2.1.1:函数定义:
+			(defun function-name (arguments-list)
+			  "document string"
+			  body)
+			
+			例子:
+			(defun hello-world (name)
+				"Say hello to user whose name is NAME."
+				(message "Hello, %s" name)
+			)
+			
+			技巧: 当光标处于一个函数名上是,可以用C-h f查看这个函数的文档.
+		2.1.2:函数的调用:
+			(function-name arguments-list)
+		
+		2.1.3:函数的返回值: 一般是函数定义里的最后一个表达式的值.
+		
+		2.2.1: 使用setq对变量进行赋值
+			(setq foo "I'm foo")
+			(message foo)
+		
+			技巧:可以使用C-h v查看变量的文档
+
+		2.2.2: 使用defvar声明一个变量
+			(defvar variable-name value
+				"document string")
+
+		2.2.3: setq与defvar的区别:
+			defvar: 
+				1. defvar声明的变量值不会改变原先已有的变量的值.
+				2. defvar可以为变量提供文档字符串,便于C-h v查看.
+		
+			技巧: 因为elisp中函数是全局的,变量也很容易成为全局变量,
+				所以在定义新变量和函数时,用C-h f和C-h v查看函数名和
+				变量名有没有已经被使用过.
+
+	2.2 局部作用域的变量
+		2.2.1. elisp使用let和let*进行局部变量的绑定.
+			2.2.1.1 let定义局部变量:
+				(let (bingdings)
+					body)
+
+				bingdings的两种形式:
+					1.对var赋初值: (var value)
+					2.用var声明一个初始值为nil的变量: (var)
+
+				例子:
+				(defun circle-area (radix)
+					(let ((pi 3.1415926)
+						area)
+					(setq area (* pi radix radix))
+					(message "直径为 %.2f" radix area)))
+				调用函数:
+				(circle-area 3)
+			2.2.1.2 let*的使用形式和let完全相同,唯一区别是在let*
+			声明就能使用前面声明的变量
+				例子:
+				(defun circle-area (radix)
+					(let* ((pi 3.1415926)
+							(area (* pi radix radix)))
+					(message "直径为 %.2f 的圆面积是 %.2f" radix area)))	
+	2.3 lambda表达式: lambda表达式相当于匿名函数
+		2.3.1 lambda定义:
+			(lambda (arguments-list)
+				"documentation string"
+			body)
+		2.3.2 调用lambda:
+			方法一:
+			(funcall (lambda(name)
+				(message "Hello, %s!" name)) "Emacser")
+
+			方法二: 将lambda表达式复制给一个变量,然后用funcall调用
+			(setq foo (lambda(name)
+				(message "Hello, %s!" name)))
+			(funcall foo "Emacser")
+	
+	2.4 控制结构
+		2.4.1 顺序执行:
+			一般来说程序都是按表达式顺序执行的.
+			这在defun等特殊环境中是自动进行的.但是一般情况下都
+			不是这样的.比如你无法用eval-last-sexp(C-x C-e)同时
+			执行两个表达式,在if表达式中的条件为真时执行的部分也
+			只能运行一个表达式.这是就需要用progn这个特殊的表达式了.
+			其定义如下:
+			(progn A B C)
+			它的作用就是让表达式A,B,C顺序执行.
+			
+			例子:
+			(progn
+				(setq foo 3)
+				(message "Square of %d is %d" foo (* foo foo))
+			)
+
+		2.4.2 条件判断: elisp有两个最基本的条件判断表达式if和cond
+			2.4.2.1. if判断表达式:
+				(if condition
+					then
+				else)
+
+			例子:
+			(defun my-max(a b)
+				(if (> a b)
+					a b)
+			)
+
+			(my-max 3 4)
+ 
+			2.4.2.2. cond判断表达式:
+			(cond	(case1 do-when-case1)
+					(case2 do-when-case2)
+					...
+					(t do-when-none-meet)
+			)
+
+			例子:
+			(defun fib (n)
+				(cond ((= n 0) 0)
+					  ((= n 1) 1)
+					  (t (+ (fib (- n 1))
+								(fib (- n 2))))))
+			(fib 10)
+

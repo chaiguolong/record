@@ -1,0 +1,12 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.10.10.195		client
+10.10.10.217		homeassistant
+10.10.10.200		XiaoQiang
+10.10.10.11			Git
+10.10.10.19			docker-registry
+10.10.10.20			ftp
+10.10.10.21			web01
+10.10.10.22			minikube
+199.232.69.194      github.global.ssl.fastly.net
+140.82.112.3        github.com

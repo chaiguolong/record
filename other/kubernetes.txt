@@ -1,0 +1,20 @@
+1. kubeadm init遇到以下错误
+
+	错误1:ERROR FileContent--proc-sys-net-bridge-bridge-nf-call-iptables
+	一些 RHEL/CentOS 7 的用户曾经遇到过问题：由于 iptables 被绕过而导致流量无法正确路由的问题。您应该确保 在 sysctl 配置中的 net.bridge.bridge-nf-call-iptables 被设置为 1
+
+   +---------------------------------------+
+   |cat <<EOF >  /etc/sysctl.d/k8s.conf    |
+   |net.bridge.bridge-nf-call-ip6tables = 1|
+   |net.bridge.bridge-nf-call-iptables = 1 |
+   |EOF                                    |
+   |sysctl --system                        |
+   +---------------------------------------+
+
+	echo "1">/proc/sys/net/bridge/bridge-nf-call-iptables
+	echo "1">/proc/sys/net/bridge/bridge-nf-call-ip6tables
+
+	错误2:
+        [WARNING Hostname]: hostname "master" could not be reached
+        [WARNING Hostname]: hostname "master": lookup master on 10.10.10.200:53: no such host
+	配置本机的hosts映射:vim /etc/hosts,添加<ip> 主机名

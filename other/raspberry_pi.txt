@@ -1,0 +1,145 @@
+一:centos8 on raspberry pi.
+1.centos8换源,提高下载速度.
+	1).做好备份(将CentOS-AppStream.repo重命名,并且禁用)
+		cd /etc/yum.repos.d/
+		mv /etc/yum.repos.d/CentOS-AppStream.repo /etc/yum.repos.d/CentOS-AppStream.repo.bak
+		mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+		mv /etc/yum.repos.d/CentOS-centosplus.repo /etc/yum.repos.d/CentOS-centosplus.repo.bak
+		mv /etc/yum.repos.d/CentOS-Extras.repo /etc/yum.repos.d/CentOS-Extras.repo.bak
+		mv /etc/yum.repos.d/CentOS-PowerTools.repo /etc/yum.repos.d/CentOS-PowerTools.repo.bak
+	2).下载阿里源文件
+		curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo
+	3).生成缓存.
+		yum makecache
+
+2.创建拥有超级管理员的用户.
+	1).创建用户:
+		adduser dream
+	2).更改密码:
+		passwd dream
+	3).赋予超级管理员权限.
+	修改 /etc/sudoers 文件,找到下面一行,在root下面添加一行,如下所示:
+
+	## Allow root to run any commands anywhere
+	root    ALL=(ALL)     ALL
+	dream   ALL=(ALL)     ALL	
+
+3.在Centos上安装build essentials(先换阿里源)
+	yum groupinstall "Development Tools"
+
+4.在CentOS 8下编译安装遇到:You need to install a terminal library; for example ncurses问题.
+	yum install ncurses ncurses-devel
+
+5.安装lua-devel(在OKey repository仓库)
+	dnf --enablerepo=PowerTools install lua-devel
+
+6.安装luajit(在epel仓库)
+	下载rpm包:wget https://download-ib01.fedoraproject.org/pub/epel/8/Everything/aarch64/Packages/e/epel-release-8-9.el8.noarch.rpm
+	安装rpm -Uvh epel-release*rpm
+	安装dnf install luajit
+
+7.安装perl-ExtUtils-Install(在OKey repository仓库)
+	dnf install perl-ExtUtils-Install
+
+8.配置epel源
+	0).备份(如有其它epel源)
+	mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
+	mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup
+
+	1).安装epel配置包
+	yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+	2).将repo 配置中的地址替换为阿里云镜像站地址
+	sed -i 's|^#baseurl=https://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel*
+	sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
+
+9.手动编译安装vim8.2
+	0).安装依赖包
+		yum install ncurses ncurses-devel
+
+	1).安装一些依赖项(perl-ExtUtils-XSpp在centos 8中没有找到,因为对perl没有需求,可以不需要安装,ruby-devel是ruby的依赖包,在安装ruby过程中已经安装,lua-devel安装见条目5,相关ExtUtils包都是perl的依赖包,安装完perl后都已安装完)(备注:luajit和luajit-devel安装失败)
+		sudo dnf --enablerepo=PowerTools install lua-devel
+		sudo yum install -y ruby ruby-devel lua lua-devel luajit \
+		luajit-devel ctags git python36 python36-devel \
+		tcl-devel \
+		perl perl-devel perl-ExtUtils-ParseXS \
+		perl-ExtUtils-XSpp perl-ExtUtils-CBuilder \
+		perl-ExtUtils-Embed
+
+
+	2).从/usr/bin将符号链接xsubpp(perl)到perl目录
+		sudo ln -s /usr/bin/xsubpp /usr/share/perl5/ExtUtils/xsubpp
+
+	3).如果已经安装过vim,请删除vim相关包.
+
+	3).正式开始安装vim8.2
+		cd ~
+		git clone https://github.com/vim/vim.git
+		cd vim
+		./configure --with-features=huge --enable-multibyte --enable-python3interp=yes --with-python3-config-dir=/usr/lib64/python3.6/config-3.6m-aarch64-linux-gnu  --prefix=/usr/local
+
+	4).make
+		make VIMRUNTIMEDIR=/usr/local/share/vim/vim82
+
+	5).make install
+		sudo make install
+
+	8).添加到PATH路径上.
+		echo "export PATH=/usr/local/bin/:\${PATH}" >> ~/.bashrc
+		source ~/.bashrc
+
+
+10.安装Youcomplete.vim(最低版本要求Vim v8.1.2269)
+	1).安装开发工具
+		sudo dnf install cmake gcc-c++ make python3-devel
+		sudo yum install go nodejs
+	2).编译YCM与各语言的语义支持,根据自己的需求,选用一种即可.
+		cd ~/.vim/bundle/YouCompleteMe
+		0.C#语言的语义支持,需要安装Mono(但是我并没有找到安装包,不过也没有这个需求)
+		sudo python3 install.py --cs-completer
+		1.C系语言的语义支持.
+		sudo python3 install.py --clangd-completer
+		2.go语言的语义支持,需要安装Go
+		sudo python3 install.py --go-completer
+		3.JavaScript和TypeScript语言的语义支持,需要安装node.js和npm.
+		sudo python3 install.py --ts-completer
+		4.rust语言的语义支持.
+		sudo python3 install.py --rust-completer
+		5.java语言的语义支持,需要JDK8.0
+		sudo python3 install.py --java-completer
+		6.所有语言的语义支持.
+		sudo python3 install.py --all
+
+	备注:
+		error:
+			The ycmd server SHUT DOWN (restart with ':YcmRestartServer'). Unexpected exit code 1. Type ':YcmToggleLogs ycmd_52695_stderr_umi6zj7c.log' to check the logs.
+		查看log:OSError: 
+			libtinfo.so.5: cannot open shared object file: No such file or directory
+
+		sudo yum install ncurses-compat-libs
+
+11.树莓派安装centos8.
+	1).前期准备:
+		1.Raspberry Pi 3B+板子 +  SD卡
+		2.网线一根，用于连接到路由器。
+		3.下载Centos 8 for Raspberry Pi镜像文件
+		4.下载烧录软件etcher	
+	
+	2).安装Centos8
+		1.将CentOS-Userland-8-stream-aarch64-RaspberryPI-Minimal-4-sda.raw，然后使用etcher将镜像烧录到SD卡。烧录完成后
+		2.将SD卡插入RaspberryPi 3B，并同时用网线连接到路由器。登录路由器后台查看RaspberryPi 3B+的Ip
+		3.然后使用ssh登录到Raspberry Pi 3B+（账号root，密码centos）	
+		4.扩展SD卡.用root用户执行命令(rootfs-expand)
+		5.配置无线WIFI,并设置静态获取IP
+			1).配置WIFI用户名和密码
+			nmcli dev wifi con "Xiaomi_70EE" password "Chaiguolong1414"
+			2).设置静态ip
+			nmcli con mod SSID ipv4.addresses 10.10.10.10/24
+			3).设置网关
+			nmcli con mod SSID ipv4.gateway 10.10.10.200
+			4).设置获取ip方法为手动
+			nmcli con mod SSID ipv4.method manual
+			5).设置dns
+			nmcli con mod SSID ipv4.dns "10.10.10.200"
+			6.保存上述设置并重启网卡
+			nmcli con up SSID
+

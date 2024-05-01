@@ -1,0 +1,223 @@
+一.Zabbix监控系统部署
+	1.实验准备
+		1.1.运行centos_init.sh初始化脚本.进行新系统的初始化.安装必备的软件及阿里云镜像源的替换.
+
+		1.2.centos7.6系统服务器3台,一台作为监控服务器,两台作为被监控节点,配置好yum源,防火墙关闭,
+	各节点时钟服务同步,各节点之间可以通过主机名相互通信.
+		设置各主机的主机名,并在/etc/hosts中进行解析,例如(zabbix为zabbix服务器主机名;
+		fw为node1主机名;docker1为node2主机名;该配置在三台服务器都要配置):
+		192.168.0.202   zabbix
+		192.168.0.203   fw
+		192.168.0.204   docker1
+
+
+	1.1.所有机器关闭防火墙和selinux
+		关闭selinux:
+			setenforce 0
+			sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+		
+		关闭防火墙:
+			systemctl stop firewalld.service
+
+	1.2.实验服务器配置
+	
+		机器名称			IP配置				服务角色		备注
+		server			192.168.0.202		  zabbix-server		开启
+		node1			192.168.0.203		  zabbix-agent		开启
+		node2			192.168.0.204		  zabbix-agent		开启
+	
+	2.Zabbix的安装(3台服务器都要安装)
+
+		1)更新yum仓库
+
+		1.1.下载yum仓库(下载zabbix(4.4.1)rpm包,系统版本为cento7).
+		命令:
+			yum -y install wget
+			wget https://mirrors.aliyun.com/zabbix/zabbix/4.4/rhel/7/x86_64/zabbix-release-4.4-1.el7.noarch.rpm
+
+			在阿里镜像https://developer.aliyun.com/mirror/zabbix/中的
+			下载地址https://mirrors.aliyun.com/zabbix/中找到对应的rpm包
+			(网址为:https://mirrors.aliyun.com/zabbix/zabbix/4.4/rhel/7/x86_64/?spm=a2c6h.25603864.0.0.26967be43QWQSR
+			链接地址为:https://mirrors.aliyun.com/zabbix/zabbix/4.4/rhel/7/x86_64/zabbix-release-4.4-1.el7.noarch.rpm).
+		
+		1.2.安装yum仓库
+			rpm -ivh zabbix-release-4.4-1.el7.noarch.rpm
+
+		1.3.将源更改为aliyun.
+			sed -i 's/repo.zabbix.com/mirrors.aliyun.com\/zabbix/g' /etc/yum.repos.d/zabbix.repo
+		
+		1.4.更新yum仓库
+			yum repolist
+
+		1.5.安装Zabbix
+		
+			yum -y install epel-release.noarch
+			yum -y install zabbix-agent zabbix-get zabbix-sender zabbix-server-mysql zabbix-web zabbix-web-mysql php-mysql
+		
+		2)安装设置数据库
+		
+		1.1.创建mariadb.repo
+			vim /etc/yum.repos.d/mariadb.repo
+			写入以下内容:
+
+			[mariadb]
+			name = MariaDB
+			# rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+			# baseurl = https://rpm.mariadb.org/10.4/centos/$releasever/$basearch
+			baseurl = https://mirrors.aliyun.com/mariadb/yum/10.4/centos/$releasever/$basearch
+			module_hotfixes = 1
+			# gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+			gpgkey = https://mirrors.aliyun.com/mariadb/yum/RPM-GPG-KEY-MariaDB
+			gpgcheck = 1
+
+		1.2.yum安装最新版本mariadb
+			yum install -y MariaDB-server MariaDB-client
+	
+		1.3.修改配置文件
+			vim /etc/my.cnf.d/server.cnf
+
+			[mysqld]
+			skip_name_resolve = ON
+			innodb_file_per_table = ON
+			innodb_buffer_pool_size = 256M
+			max_connections = 2000
+			log-bin = master-log
+		
+		1.4.重启数据库服务
+			#重启mariadb
+			systemctl restart mariadb
+			#初始化mariadb
+			mysql_secure_installation
+			
+			1.Enter current password for root (enter for none):enter
+			2.Switch to unix_socket authentication [Y/n] y
+			3.Change the root password? [Y/n] n
+			4.Remove anonymous users? [Y/n] Y
+			5.Disallow root login remotely? [Y/n] n
+			6.Remove test database and access to it? [Y/n] Y
+			7.Reload privilege tables now? [Y/n] Y
+
+		1.5.创建数据库并授权账号
+			1.打开数据库
+				mysql
+			2.创建数据库zabbix,这只字符集和排序规则.
+				create database zabbix character set utf8 collate utf8_bin;
+			3.授权账号(由于数据库和zabbix服务器在同一服务器上,所以还要授权localhost,
+				下列语句中dream是数据库的账号;192.168.0.%是数据库所在的网段,chaiguolong为数据库密码):
+				grant all on zabbix.* to 'dream'@'192.168.0.%' identified by 'chaiguolong';
+	
+				grant all on zabbix.* to 'dream'@'localhost' identified by 'chaiguolong';
+			4.刷新授权
+				flush privileges;
+		
+		1.6.导入Zabbix服务表
+			1.查看zabbix-server-mysql这个包提供什么
+				rpm -ql zabbix-server-mysql
+				找到/usr/share/doc/zabbix-server-mysql-4.4.10/create.sql.gz文件
+
+			2.使用create.sql.gz生成所需要的表
+				1.解压/usr/share/doc/zabbix-server-mysql-4.4.10/create.sql.gz
+				gzip -d /usr/share/doc/zabbix-server-mysql-4.4.10/create.sql.gz
+
+				2.cd到create.sql目录
+				cd /usr/share/doc/zabbix-server-mysql-4.4.10/
+				
+				3.查看表头,发现没有使用zabbix数据库语句(use zabbix;)
+				head create.sql
+				
+				4.编辑create.sql(vim create.sql),在开头添加下列语句.
+				use zabbix;
+				
+				5.把create.sql导入zabbix数据库(dream为数据库账号;192.168.0.205为数据库所在的主机;chaiguolong为密码).
+				mysql -udream -h192.168.0.205 -pchaiguolong < create.sql
+				
+				6.查看数据是否导入
+					1.输入密码,进入数据库.
+					mysql -udream -h192.168.0.205 -p
+
+					2.查看所有数据库,使用zabbix数据库.
+					show databases;
+					use zabbix;
+					
+					3.查看所有的表(看是否有数据,如果有149张表,就说明数据已经导入);
+					show tables;
+
+	3.配置server端
+		1).修改server端的配置文件
+			1.进入配置文件目录
+			cd /etc/zabbix
+
+			2.备份配置文件
+			cp zabbix_server.conf{,.bak}
+
+			3.编辑配置文件vim zabbix_server.conf
+				3.1).默认监听端口
+				ListenPort=10051
+
+				3.2).发采样数据请求的IP(server服务器)
+				SourceIP=192.168.0.205
+				
+				3.3).数据库主机(mariadb服务器)
+				DBHost=192.168.0.205
+				
+				3.4).数据库名称
+				DBName=zabbix
+				
+				3.5).数据库用户名
+				DBUser=dream
+				
+				3.6).数据库密码
+				DBPassword=chaiguolong
+
+				3.7).数据库端口
+				DBPort=3306
+		
+		2).启动服务
+			systemctl start zabbix-server.service
+		
+		3).确认服务端口开启
+			ss -tulnp | grep 10051
+
+	4.配置Web GUI
+	
+		1).查找web GUI的配置文件(找到/etc/httpd/conf.d/zabbix.conf)
+			rpm -ql zabbix-web | less
+
+		2).编辑配置文件(时区设置为上海的)
+			1.修改zabbix前端配置文件:
+			vim /etc/httpd/conf.d/zabbix.conf
+			
+			#此处修改时区只对zabbix服务有效
+			php_value date.timezone Asia/Shanghai
+
+			2.修改php的配置文件:
+			vim /etc/php.ini
+			
+			#此处修改对整个PHP有效
+			date.timezone = Asia/Shangha
+		
+		3).启动httpd服务
+			systemctl enable httpd
+			systemctl start httpd
+
+	5.浏览器访问并进行初始化:
+		浏览器访问http://192.168.0.205/zabbix,并进行初始化(因为前面已经在创建数据库时有所更新,
+		所以下面的报错不会发生).
+		
+		报错:Unsupported charset or collation for tables;
+		原因:是创建数据库时,编码错误,应设置为utf8_bin.
+		解决办法:
+			1).删除原有的数据库.
+			drop database zabbix;
+	
+			2).创建新的zabbix数据库:
+			create database zabbix character set utf8 collate utf8_bin;
+
+			3).重新导入数据.
+			mysql -udream -h192.168.0.205 -pchaiguolong < create.sql
+
+				
+
+				
+			
+

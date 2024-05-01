@@ -1,0 +1,221 @@
+1.如何创建新的git仓库,创建新的Git仓库可以通过以下步骤进行：
+	0).设置用户信息:
+
+		0.1).配置用户名和邮箱
+			安装完 Git 之后，要做的第一件事就是设置你的用户名和邮件地址。 
+			git config --global user.name "chaiguolong"
+			git config --global user.email 584238433@qq.com
+
+			git config --list 查看config配置
+	
+		0.2).生成SSH key
+			进入.ssh文件夹:
+			cd ~/.ssh/
+
+			生成秘钥:
+			ssh-keygen -t rsa -C "chaiguolong1@gmail.com"
+
+			获取SSH Key:
+			根据命令行提示,获取以ssh-rsa的字符串(包括ssh-rsa)
+			按键"回车键" 生成了SSH Key(密钥)
+
+		0.3).SSH key生成的路径一般为~/.ssh/下,打开id_rsa.pub,进行全选复制内容.
+
+		0.4).登录github账号添加SSH Key(将第三部的内容粘贴上去):
+			settings-->SSH and GPG keys-->new SSH key
+	
+		0.5).检测是否添加成功(本地终端输入下列内容,然后输入yes就好了)
+			ssh -T git@github.com
+
+	1).在你想创建仓库的目录中打开终端。
+
+		1.1.初始化本地仓库：
+
+			git init
+			添加文件到仓库中：
+
+			git add .
+			提交你的更改到本地仓库：
+
+			git commit -m "first commit"
+			如果你还没有远程仓库，需要在远程（例如GitHub或GitLab）上创建一个仓库。
+
+		1.2.将本地仓库关联到远程仓库的URL：
+
+			在github上新建仓库,并获取仓库地址:https://github.com/chaiguolong/git_test.git
+			
+			在github上获取token,代替密码(是用经典的token,不是细粒度token),具体见下面获取token教程.
+
+		1.3.本地仓库操作:
+
+			将默认分支替换为main(因为在2020年将默认分支由master切换为main)
+			git branch -M main
+
+			将本地仓库的更改推送到远程仓库:
+			git remote add origin https://github.com/chaiguolong/git_test.git
+
+			git push -u origin main
+
+2. 本地仓库的基本操作:
+	1>.新增操作:
+		1.1>.新建新文件:
+			touch filename
+		1.2>.添加新文件到暂存区:
+			git add filename		#可以使用add... 继续添加任务文件。
+		1.3>.提交到本地仓库:
+			git commit -m "Add filename"
+	2>.修改操作:
+		2.1>.修改文件:
+			vim filename
+		2.2>.添加修改后的文件到暂存区:
+			git add filename
+		2.3>.提交修改后的文件到本地仓库:
+			git commit -m "modify filename"
+	3>.删除操作:
+		3.1>.删除工作目录中的文件:
+			rm filename
+		3.2>.将文件从git删除:
+			1_: 将文件从工作区和暂存区删除
+				git rm filename
+			2_: 强行从暂存区和工作区中删除(删除之前修改过并且已经放到暂存区域)
+				git rm -f filename
+			3_: 只删除暂存区文件
+				git rm --cached filename
+		3.3>.提交删除操作:
+			git commit -m "delete filename"
+
+	4).将本地仓库上传到远程仓库:
+			git push https://github.com/chaiguolong/git_test.git
+
+	5).取回更新:
+		git pull
+
+	6).分支与合并
+
+		6.1>.创建一个新的分支，我们使用branch命令
+			git branch test
+
+		6.2>.使用checkout命令来更改分支
+		git checkout test
+		
+		6.3>.创建并切换分支
+			git checkout -b test
+
+		6.4>.第一个分支，或主分支，被称为"master",下列命令切换到主分支
+			git checkout master
+
+		6.5>.合并分支(对其他分支的更改不会反映在主分支上,如果想将更改提交到主分支，则需切换回master分支，然后使用合并)
+
+			6.5.1>.切换回主分支:
+				git checkout master
+
+			6.5.2>.将test分支与主分支合并
+				git merge test
+
+		6.6>.如果您想删除分支，我们使用-d标识。
+		git branch -d test
+	
+	7).将本地分支(test)上传至远端服务器
+		git push origin test
+
+	8).删除远程服务器的分支(test):
+		git push origin :test
+
+	9).将本地分支(test)上传至远端服务器,分支改名为(test01):
+		git push origin test:test01
+
+	10).看日志和一行显示日志,以及取前面几条日志
+		git log
+		git log --oneline
+
+		(只取前面3条日志)
+		git log --oneline -3
+		
+	11).通过id(id:e7bfbc2,通过查看日志获得)查看提交信息
+		git show e7bfbc2
+
+	12).回退到之前的状态(^:代表着上一次,回退2次就写两个^^)
+		12.1>.相对的方法回到之前的版本:
+			git reset master^
+			git reset master~5(回退到5次之前的状态)
+		12.2>.通过id(id:e240044,通过查询日志获得,看你想回到哪个版本),绝对的方法回到之前的版本:
+			git reset e240044
+
+			git reset的几个模式
+				(--mixed): 这个模式会把暂存区的文件丢弃,但不会动到工作目录的文件.
+				(--soft):  这个模式下的reset,工作目录跟暂存区的文件都不会被丢弃.
+				(--hard):  在这个模式下,不管是工作目录以及暂存区的文件都会丢弃.
+						
+	13).git revert撤销某次操作
+		此次操作之前和之后的commit和history都会保留,并且把这次撤销作为一次最新的提交
+
+	14).以下列出了远程仓库、添加远程仓库、重命名远程仓库、删除远程仓库、修改远程仓库 URL 和查看远程仓库信息的用法：
+
+		14.1).列出远程仓库
+			git remote
+			git remote -v
+		14.2).添加远程仓库
+			git remote add origin https://github.com/user/repo.git
+		14.3).重命名远程仓库
+			git remote rename origin new-origin
+		14.4).删除远程仓库
+			git remote remove new-origin
+		14.5).修改远程仓库
+			git remote set-url origin https://github.com/user/new-repo.git
+		14.6).查看远程仓库信息
+			git remote show origin
+	
+
+3.Fugitive.vim的使用流程.
+	1).:Gstatus窗口,通过"-",添加/删除文件
+		命令				作用
+		-					添加/删除文件
+		\					向下分割一个窗口打开当前文件
+		P					为当前文件运行 “git add -patch”
+		cc					调用 :Gcommit
+	2).Gcommit命令,写注释提交文件
+	3).Gpull拉取文件,保持一致性
+	4).Gpush推送文件到服务器
+
+4.git每次push都要输入账号密码(貌似是因为没有配置ssh key,具体参考开头的教程)
+	git config --global credential.helper store
+	git pull /git push (这里需要输入用户名和密码，以后就不用啦)
+
+5.获取token教程
+	
+	因为git终止了密码验证,采用了个人令牌(是用经典的token,
+	不是细粒度token)进行验证,过期时间是30天(我设置了没有期限).
+
+	因此可能需要重新生成令牌,令牌的生成在账号-->设置-->开发者设置
+	-->个人令牌-->Tokens(经典)-->重新生成令牌(经典)-->期限选择无期限-->现在第一项权限,
+	注意复制令牌到文本文件中,因为刷新,页面后就无法显示了.
+	然后在各客户端重新git push 下,密码用刚才的个人令牌.
+
+6.git 删除远程仓库文件
+	1).预览将要删除的文件
+		git rm -r -n --cached 文件/文件夹名称 
+		加上 -n 这个参数，执行命令时，是不会删除任何文件，而是展示此命令要删除的文件列表预览。
+
+	2).确定无误后删除文件
+		git rm -r --cached 文件/文件夹名称
+
+	3).提交到本地并推送到远程服务器
+		git commit -m "提交说明"
+		git push
+
+7.当提交了错的代码,进行回滚,并强行提交到远程仓库.
+	7.1).回滚到之前版本的三种方法.
+		git reset --hard HEAD^ 回退到上个版本.
+		git reset --hard HEAD~n 回退到前n次提交之前，若n=3，则可以回退到3次提交之前.
+		git reset --hard commit_sha 回滚到指定commit的sha码，推荐使用这种方式.
+	7.2).强行提交到远程仓库.
+		git push origin HEAD --force
+
+8.git add . 和git add * 区别
+	git add . 会把本地所有untrack的文件都加入暂存区,
+	并且会根据.gitignore做过滤,但是git add * 会忽略.gitignore把任何文件都加入
+
+9.如果您想要用 Git 远程覆盖本地某个文件，可以使用以下命令：
+	git fetch --all
+	git checkout --force origin/master -- path/to/file
+	其中 origin/master 是远程分支的名称，path/to/file 是您要覆盖的本地文件的路径。

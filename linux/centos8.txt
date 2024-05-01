@@ -1,0 +1,198 @@
+1.centos8安装git服务器:
+	server:
+	1).首先安装git
+		yum install git
+	2).新建一个linux用户和用户组，起名为git
+		adduser git
+		groupadd git
+	3).给git设定密码:
+		passwd git
+	4).在git用户目录中新建目录.ssh
+	cd /home/git/
+		mkdir .ssh
+	5).在/home/git/.ssh/目录中新建authorized_keys文件，
+	并将客户端提供的公钥(id_rsa.pub)黏贴到该文件中.(查看客户端的操作)
+		touch authorized_keys		#备注:将客户端的公钥复制到该文件.
+
+	6).在项目目录创建一个git裸仓库，假如当前项目目录为/home/git/project.git
+		git init --bare project.git
+	
+	7).将项目目录和git用户目录下的.ssh目录的所有者和所属组都设置成git
+		chown -R git:git project.git
+		chown -R git:git /home/git/.ssh/
+
+	8).为了安全考虑，禁用git用户的shell登录(我们先从服务器克隆一个库并上传:git pull git@10.10.10.11:/home/git/project.git)
+		vi /etc/passwd
+		注释 ##git:x:500:500::/home/git:/bin/bash 
+		改为 git:x:500:500::/home/git:/usr/bin/git-shell
+
+	9).git服务器打开RSA认证
+		vi /etc/ssh/sshd_config
+		下面3个打开
+		1.RSAAuthentication yes     
+		2.PubkeyAuthentication yes     
+		3.AuthorizedKeysFile  .ssh/authorized_keys
+
+	client:
+	1).生成公钥,并复制到剪切板
+		ssh-keygen -t rsa
+		pbcopy < ~/.ssh/id_rsa.pub		#注释:此步骤可以直接复制粘贴(粘贴至server步骤5)
+	2).在本地新建git仓库
+		git init
+
+	3).新建一个文件并推送到服务器
+
+		touch readme.txt
+		git add readme.txt
+		git commit -m "readme"
+		git remote add origin git@xxx.xxx.xxx.xxx:/home/git/project.git
+		git push origin master
+
+2.centos7分区的时候怎么查看/dev/sda中的硬盘有没有用完.
+	在下面的输出中:共有13926400个扇面(sectors),而在输出最后一行的的end列中为13924351个扇面,相差无几,所以几乎用完了.
+	在下面的Disk label type:dos就是mbr
+
+	=============================================================
+	[root@client ~]#fdisk -l /dev/sda
+	Disk /dev/sda: 6.7 GiB, 7130316800 bytes, 13926400 sectors
+						......
+	Disk label type: dos
+	Disk identifier: B8F25446-10EF-4626-A960-6C183356DBF6
+
+	Device       Start      End  Sectors  Size Type
+	/dev/sda1     2048  1230847  1228800  600M EFI System
+	/dev/sda2  1230848  3327999  2097152    1G Linux filesystem
+	/dev/sda3  3328000 13924351 10596352  5.1G Linux LVM
+	=============================================================
+
+	[root@client ~]#echo $[13926400/2/1024/1024]		#$[]是shell脚本计算的一种方法,/2为1kb(因为一个扇面有512字节),/1024为1Mb,/1024为1GB
+	6
+
+3.exsi虚拟机中CentOS 7的硬盘空间扩容教程(基于lvm).
+    1).df -h查看挂载点信息
+        [root@DNS ~]#df -hT
+        ----------------------------------------------------------------
+        Filesystem          Type      Size  Used Avail Use% Mounted on
+        devtmpfs            devtmpfs  2.0G     0  2.0G   0% /dev
+        tmpfs               tmpfs     2.0G     0  2.0G   0% /dev/shm
+        tmpfs               tmpfs     2.0G  8.9M  2.0G   1% /run
+        tmpfs               tmpfs     2.0G     0  2.0G   0% /sys/fs/cgroup
+        /dev/mapper/cl-root xfs        14G  2.0G   12G  15% /
+        /dev/sda1           xfs      1014M  153M  862M  15% /boot
+        tmpfs               tmpfs     396M     0  396M   0% /run/user/0
+        ----------------------------------------------------------------
+
+    2).扩展VMWare-centos7硬盘空间(关闭centos7系统，才能设置需要增加到的磁盘大小)
+        如果扩容这个选项是灰色的，说明此虚拟机建有快照，把快照全部删除再试试!
+    
+    3).对新增加的硬盘进行分区、格式化
+        1>.查看新增硬盘在/dev/sda下(磁盘扇面为52428800,而/dev/sda2的end列为33554431,
+        说明还有剩余的空间)
+        
+        ----------------------------------------------------------------
+        [root@DNS ~]#fdisk -l
+
+        Disk /dev/sda: 26.8 GB, 26843545600 bytes, 52428800 sectors
+        Units = sectors of 1 * 512 = 512 bytes
+        Sector size (logical/physical): 512 bytes / 512 bytes
+        I/O size (minimum/optimal): 512 bytes / 512 bytes
+        Disk label type: dos
+        Disk identifier: 0x000ae4ef
+
+           Device Boot      Start         End      Blocks   Id  System
+        /dev/sda1   *        2048     2099199     1048576   83  Linux
+        /dev/sda2         2099200    33554431    15727616   8e  Linux LVM
+                                ......
+        ----------------------------------------------------------------
+
+        2>.对/dev/sda进行格式化.
+
+        ----------------------------------------------------------------
+        [root@localhost]# fdisk /dev/sda　　　　 
+        p　　　　　　　查看已分区数量（我看到有两个 /dev/sda1 /dev/sda2） 
+        n　　　　　　　新增加一个分区
+        p　　　　　　　分区类型我们选择为主分区 
+                       分区号输入3（因为1,2已经用过了,sda1是分区1,sda2是分区2,sda3分区3） 
+        回车　　　　　 默认（起始扇区） 
+        回车　　　　　 默认（结束扇区） 
+        t　　　　　　　修改分区类型 
+        　　　　　　   选分区3 
+        8e　　　　　 　修改为LVM（8e就是LVM）
+        w　　　　　  　写分区表 
+        q　　　　　  　完成，退出fdisk命令
+        ----------------------------------------------------------------
+
+        3>.使用partprobe,重读分区表,使分区生效.
+            [root@DNS ~]#partprobe
+
+        4>.格式化分区3命令:
+
+        ----------------------------------------------------------------
+        [root@DNS ~]#mkfs.xfs /dev/sda3            #通过df    -hT查看原来的文件系统的类型
+        Discarding blocks...Done.
+        meta-data=/dev/sda3              isize=512    agcount=4, agsize=589824 blks
+                 =                       sectsz=512   attr=2, projid32bit=1
+                 =                       crc=1        finobt=0, sparse=0
+        data     =                       bsize=4096   blocks=2359296, imaxpct=25
+                 =                       sunit=0      swidth=0 blks
+        naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+        log      =internal log           bsize=4096   blocks=2560, version=2
+                 =                       sectsz=512   sunit=0 blks, lazy-count=1
+        realtime =none                   extsz=4096   blocks=0, rtextents=0
+        ----------------------------------------------------------------
+
+    4).添加新LVM到已有的LVM组，实现扩容
+        lvm　　　　　　　　　　　　                   进入lvm管理
+
+        lvm>pvcreate /dev/sda3　　                   这是初始化刚才的分区3
+    
+        lvm>vgextend cl /dev/sda3                 将初始化过的分区加入到虚拟卷组cl(卷和卷组的命令可以通过 vgdisplay )
+
+        lvm>vgdisplay                                查看free PE /Site
+
+        lvm>lvextend -l+6143 /dev/mapper/cl-root　　扩展已有卷的容量（6143 是通过vgdisplay查看free PE /Site的大小）
+
+        lvm>pvdisplay                                 查看卷容量，这时你会看到一个很大的卷了
+
+        lvm>quit 　退出
+
+    5).在线扩容所挂载目录的内容.
+        [root@DNS ~]#xfs_growfs /dev/mapper/cl-root
+4.卸载源码安装的软件
+	解压并进入你的源码所在目录：
+	./configure
+	sudo make uninstall
+5.rpm包的安装及一些命令:
+	常用命令组合
+		－ivh：安装显示安装进度--install--verbose--hash(在软件包安装时打上哈希标记)
+		－e：删除包
+
+	#查询程序是否安装
+	rpm -q samba 
+	#按路径安装并显示进度
+	rpm -ivh /media/cdrom/RedHat/RPMS/samba-3.0.10-1.4E.i386.rpm 
+	＃[删除一个rpm包]
+	rpm -e file.rpm --erase
+
+6.yum repolist	查看yum仓库列表中有哪些仓库.
+
+7.centos 8 安装emacs29.1
+	CentOS 8 默认的软件包仓库中不包括 Emacs 29.1，因此你需要从源代码编译安装。以下是安装 Emacs 29.1 的步骤：
+
+	1).安装必要的依赖项：
+		sudo dnf install -y gcc gcc-c++ libXpm-devel libjpeg-turbo-devel giflib-devel libtiff-devel ncurses-devel
+
+	2).下载 Emacs 29.1 的源代码：
+		wget https://ftp.gnu.org/gnu/emacs/emacs-29.1.tar.gz
+
+	3).解压源代码：
+		tar -zxvf emacs-29.1.tar.gz
+	4).进入目录：
+		cd emacs-29.1
+	5).配置构建系统：
+		./configure --prefix=/usr/local
+	6).编译和安装：
+		make
+		sudo make install
+	7).(可选)创建快捷方式：
+		sudo ln -s /usr/local/bin/emacs /usr/bin/emacs

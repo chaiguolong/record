@@ -1,0 +1,92 @@
+0. 碎知识点:
+	0.1).如果想要定义能调用的func,需要定义成(interactive)
+	0.2).C-x C-h:查看C-x上绑定的所有快捷键(C-x:所要查看的快捷键;C-h:帮助的快捷键)
+		 C-c C-h:查看C-c上绑定的所有快捷键(C-c:所要查看的快捷键;C-h:帮助的快捷键)
+	0.3).C-x: 系统保留的快捷键
+		 C-c: 是用户绑定的快捷键
+
+1.	emacs基础快捷键: 
+	1.1).C-x C-s: 保存当前缓冲区到文件
+	1.2).C-x C-c: 退出emacs并停止该程序
+	1.3).C-/: 撤销命令.
+	1.4).C-x C-f: 组合命令键将新文件加载到缓冲区(也可用于新建文件).
+	1.5).C-x o(other的意思): 切换到缓冲区列表窗口
+	1.6).C-x b: 输入你要切换到的缓冲区域的名字
+	1.7).C-x 2: 将窗口水平拆分成两个窗口
+	1.8).C-x 3: 将窗口竖向拆分成两个窗口
+	1.9).C-x o: 从一个窗口切换到另一个窗口.
+	1.10).C-x 0(数字0): 关闭当前窗口.
+	1.11).C-x 1(数字1): 关闭除当前窗口外的所有窗口.
+	1.12).Dired(需要用m键mark相应的文件):
+				+: to create directory
+				C-x C-f: to create file
+				g: to refresh dired buffer
+				C: copy file
+				R: rename file
+				d: delete file(标记要删除的文件)
+				x: 执行所选的文档(是否删除)
+				D: delete after confirm
+				u: 取消标记
+				g: 在Dired模式中强制刷新.
+	1.13).C-x k: kill当前buffer
+	1.14).c-z: evil模式和Emacs模式切换.
+	1.15).执行当前缓冲区的所有LIsp命令:M-x eval-buffer
+	1.16).C-l: 重新绘制屏幕,将光标所在行移动至屏幕中间;
+		  再按一次,将光标所在的行移动至屏幕顶部;
+		  再按一次,将光标所在的行移动至屏幕底部.
+	1.17).C-c C-e 运行激活区域或者整个缓存区.
+	1.18).C-c p f 在项目中(有.git目录)查找某个文件.
+	1.19).C-x C-e 运行光标之前的符号表达式,并将结果显示在回显区.
+
+2.绑定的快捷键
+	2.1).系统带的快捷键
+		C-h f 显示函数的功能
+		C-h v 显示变量的含义和值
+		C-h k 显示快捷键绑定的命令和它的作用
+
+	2.2).绑定的快捷键
+		C-h C-f 寻找定义的函数所在位置
+		C-h C-v 寻找定义的变量所在位置
+		C-h C-k	寻找绑定的快捷键所在位置
+
+2.	org-mode快捷键: 
+	2.1).C-c C-t: 将当前栏目切换为TODO/DONE
+	2.2).C-c C-s: 将agenda设置开始日期
+	2.3).C-c C-d: 将agenda设置结束日期
+
+2.复制粘贴:
+    1).把光标移动到区域的首字符
+    2).键入C-@（即ctrl+shift+2）,以设置标记
+    3).把光标移动到区域的最后一个字符
+	4).C-x C-x检查选中标记的区域,以免选错.
+    5).键入M-w，拷贝这个选定区域到粘贴板（剪切是C-w）
+    6).用光标定位将要粘贴内容的地方，然后键入C-y ，拷贝成功。
+	备注: M-h: 标记整个段落;C-x h:标记整个buff; C-x C-p标记整个页面
+
+3.emacs内置的中文教程:打开emacs,输入快捷键c-u c-h t,然后选择Chinese-GB18030
+
+4. 在半马人的emacs配置中添加插件evil.
+	1).在init.el文件添加文本(require 'init-evil)
+	2).新建文件lisp/init-evil.el,内容如下:
+		(use-package evil
+			:ensure t
+			:hook (after-init . evil-mode))
+		(provide 'init-evil)
+	3).重启emacs
+
+5. 通过org-mode和ox-hugo来创建博客的流程.
+	1.在emacs中,通过快捷键C-c r来调用org-capture-templates.
+	2.敲入h键,选择hugo post模板.
+	3.书写博客的标题.
+	4.在org-mode模式下书写博客内容,完成敲入C-c C-c
+	5.通过快捷键C-x C-f,找到/Users/develop/blog内的all-blog.org,按快捷键C-c C-t将todo改为done;
+	然后保存文件并自动转为md格式
+	6.通过git,将文件上传至github.
+
+6.通过内置包管理器去安装包:
+	1).查看包的列表
+		M-x list-package
+	2).查找所需要的包(这里用company举例)
+		C-s company
+	3).按I,然后按x执行安装.
+	

@@ -1,0 +1,4 @@
+1.运行终端访问系统剪切板设置
+	iterm2的偏好设置--->Selection--->Applications in terminal may access clipboard.
+2.iterm2下运行emacs时,Meta键无效.
+	iterm2的偏好设置--->profile--->keys--->leftOptionKey--->Esc+.

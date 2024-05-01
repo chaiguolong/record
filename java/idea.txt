@@ -1,0 +1,12 @@
+1.idea快捷键:
+	1).导入包,自动修复代码: option + enter
+	2).将选中的代码提取为方法: Command + Option + M
+	3).快速生成注释文档: Option + shift + j
+	4).格式化代码: Command + shift + l
+	5).上次运行的结果: Command + 4
+	6).删除光标所在行: Command + Y
+	7).复制光标所在行的内容,插入光标位置下面: Command + D
+	8).自动生成代码,toString,get,set等方法: Ctrl + enter
+	9).打开最近的文件: Command + e
+	10).隐藏工具窗口: Command + H
+	11).更改所有变量: 选中变量,Shift + F6

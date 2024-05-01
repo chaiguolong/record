@@ -1,0 +1,255 @@
+1.cento8 安装minikube教程.
+	0.前提:
+     +-----------------------------------------------------------+
+     |  2个或更多CPU                                             |
+     |  2GB的可用内存(因为有背的程序的原因,我直接设置成4G)       |
+     |  20GB的可用磁盘空间(因为有别的程序的原因,我设置成25G)     |
+     |  网络连接                                                 |
+     |  容器或虚拟机管理器，例如：Docker(就是系统要安装Docker)   |
+     +-----------------------------------------------------------+
+
+	1.以非root用户,但拥有root权限的用户安装docker.
+      +----------------------------+
+      | sudo yum -y install docker |
+      +----------------------------+
+
+	2.docker服务设置开机启动和开启docker服务
+      +------------------------------+
+      | sudo systemctl enable docker |
+      | sudo systemctl start docker  |
+      +------------------------------+
+
+	3.安装Minikube
+      +------------------------------------------------------------------------------------------------+
+      | curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 |
+      | && chmod +x minikube                                                                           |
+      +------------------------------------------------------------------------------------------------+
+
+	4.将Minikube可执行文件添加到环境目录PATH.
+      +---------------------------------------+
+      | sudo mkdir -p /usr/local/bin/         |
+      | sudo install minikube /usr/local/bin/ |
+      +---------------------------------------+
+
+	5.使用docker驱动程序启动集群：
+		minikube start --driver=docker
+
+		如何失败安装提示进行操作,可以看它提示的操作文档.
+		一般操作如下:
+		1).创建docker组
+		sudo groupadd docker
+
+		2).将您的用户添加到该docker组
+		sudo usermod -aG docker $USER
+
+		3).在Linux上，您还可以运行以下命令来激活对组的更改
+		newgrp docker
+
+		4).重新使用docker驱动启动集群.
+		minikube start --driver=docker
+
+2.小技巧:
+	1).kubectl get pods命令后发现status为Pending(挂起)状态,没有运行的原因是:该pod被分配到的工作节点正在下载容器镜像,完成后才可以运行.如果pod一直停留在挂起状态,那么可能是kubernetes无法从镜像中心拉去镜像,如果你正在使用自己的镜像,确保它在Docker Hub上是公开的.
+
+	2).replicationcontroller的缩写rc,pods缩写po,service缩写svc,namespace缩写为ns,replicaset缩写为rs
+
+	3).rc和deployment的大致功能:
+      +------------------+
+      | 1>.确保pod的数量 |
+      | 2>.确保pod的健康 |
+      | 3>.弹性伸缩      |
+      | 4>.滚动升级      |
+      +------------------+
+	4).replicationcontroller已经过时了,在新版本中用deployment代替.
+
+	5).命名空间说白了(namespace)就是提供一个作用域.
+
+	6).ReplicationController管理与标签选择器匹配额的pod.
+
+3.minikube和docker的常用命令:
+	1).docker run <image>:<tag>
+
+	2).kubectl get pods				#获取集群离得pods(这里的pods可以改为rc,)
+
+	3).kubectl get po kubia-zxzij -o yaml		#-o yaml选项来获取pod的整个YAML定义.
+
+	4).kubectl create -f kubia-manual.yaml		#使用kubectl create命令从YAML文件创建pod.
+    +------------------------------------------------------------------------------------------+
+    |   apiVersion: v1                          <--------描述文件遵循v1版本的kubernetes API    |
+    |   kind: Pod                               <--------我们在描述一个Pod(注意大写的P)        |
+    |   metadata:                                                                              |
+    |     name: kubia-manual                    <--------pod的名称                             |
+    |   spec:                                                                                  |
+    |     containers:                                                                          |
+    |     - image: chaiguolong1/kubia           <--------创建容器所用的镜像                    |
+    |       name: kubia                         <--------容器的名称                            |
+    |       ports:                                                                             |
+    |       - containerPort: 8080               <--------应用监听端口                          |
+    |         protocol: TCP                                                                    |
+    +------------------------------------------------------------------------------------------+
+
+	5).kubectl port-forward kubia-manual 8888->8080		<-------将机器本地端口8888转发到kubia-manual pod的端口8080.
+
+	6).kubectl get po --show-labels			            <--------用--show-labels选项查看标签
+
+	7).kubectl get po -L creation_method,env			<-------用-L选项指定自己感兴趣的标签(creation-method,env为标签)
+
+	8).kubectl get po -l creation_method=manual			<-------使用标签选择器列出pod(用-l选项)
+
+	9).kubectl get ns						            <--------列出集群中所有的命名空间(ns=namespace)
+
+	10).kubectl get po --namespace kube-system			<-------列出属于kube-system命名空间的pod.(--namespace可以用-n来代替)
+
+	11).kubectl create -f custom-namespace.yaml			<-------使用YAML文件创建命名空间.
+    +-------------------------------+                      
+    |   apiversion: v1              |
+    |   kind: namespace             |
+    |   metadata:                   |
+    |     name: custom-namespace    |
+    +-------------------------------+               
+
+	12).kubectl create namespace custom-namespace		<-------使用命令创建命名空间
+
+	13).如果想要在刚创建的命名空间中创建资源,可以选择在metadata字段中添加一个namespace: custom-namespancee属性,也可以在使用kubectl create命令创建资源时指定命名空间.
+
+	kubectl create -f kubia-manual.yaml -n custom-namespace
+
+	14).kubectl delete po kubia-gpu			            <--------按名称删除pod
+
+	15).kubectl delete po -l creation_method=manual		<-------使用标签选择器删除pod.
+
+	16).kubectl delete all --all				        <--------删除命名空间中的所有资源(第一个all指定正在删除资源的类型,而--all选项指定将删除所有资源实例)
+
+	17).kubectl label pod kubia-dmdck app=foo --overwrite		
+
+		更改已托管的pod的标签,--overwrite参数是必要的,否则kubectl将只打印出警告,并不会更改标签.这样是为了防止你想要添加新标签时无意中更改现有标签的值.(app=foo是标签,kubia-dmdck是pod)
+
+	18).kubectl edit rc kubia							<-----修改pod模板
+
+	19).kubectl scale rc kubia --replicas=10			<-------水平缩放pod
+
+		kubectl edit rc kubia修改spec.replicas值为10页可以做到水平缩放.
+
+	20).当使用kubectl delete删除ReplicationController时,可以通过给命令增加--cascade=false选项保持pod的运行.
+
+	21).kubectl api-versions查看api版本.
+
+	22).如何查看pod的日志.
+
+    +------------------------------------------------------+
+    |                                                      |
+    |   Wed Dec  2 14:56:39 UTC 2020 Batch job starting    |
+    +------------------------------------------------------+
+
+	23).定义Job资源,下面的镜像会调用一个运行120s的进程,然后退出,
+    为了在pod在120s后正常退出,可以配置pod的属性:restartPolicy完成,
+    默认为Always.需要更改为OnFailure或Never.completions: 5属性为顺序运行该pod5次,
+    parallelism: 2为可以同时运行2个pod.
+	
+    +----------------------------------------------------------------------------+
+    |   kind: Job                                                                |
+    |   metadata:                                                                |
+    |       name: batch-job                                                      |
+    |   spec:                                                                    |
+    |       completions: 5                                                       |
+    |       parallelism: 2                                                       |
+    |       template:                                                            |
+    |           metadata:                                                        |
+    |               labels:                                                      |
+    |                   app: batch-job                                           |
+    |           spec:                                                            |
+    |               restartPolicy: OnFailure                                     |
+    |               containers:                                                  |
+    |               - name: main                                                 |
+    +----------------------------------------------------------------------------+
+
+	24).创建一个CronJob.
+    +----------------------------------------------------------------------------+
+    |    kind: CronJob                                                           |
+    |    metadata:                                                               |
+    |        name: batch-job-every-fifteen-minutes                               |
+    |    spec:                                             |这项工作应该每天在   |
+    |        schedule: "0,15,30,45 * * * *"         <------|小时0,15,30和45分    |
+    |        jobTemplate:                                  |钟运行               |
+    |            spec:                                                           |
+    |                template:                                                   |
+    |                    metadata:                                               |
+    |                        labels:                                             |
+    |                            app: periodic-batch-job                         |
+    |                    spec:                                                   |
+    |                        restartPolicy: OnFailure                            |
+    |                        containers:                                         |
+    |                        - name: main                                        |
+    +----------------------------------------------------------------------------+
+
+	25).在运行的容器中远程执行命令
+	kubectl exec kubia-7nogl -- curl -s http://10.111.249.153
+	--代表着kubectl命令项的结束,如果需要执行的命令并没有以横杠开始的参数,双横杠也不是必须的.
+	如下情况,如果这里不使用横杠号,-s选项会被解析成kubectl exec选项,会导致结果异常和歧义错误.
+	(-s选项用来告诉kubectl 需要连接一个不同的API服务器而不是默认的)
+
+	$kubectl exec kubia-7nogl  curl -s http://10.111.249.153
+
+	26).在无需知道pod的名字的情况下就能删除所有的pod.
+	kubectl delete po --all
+
+	27).再次回顾前端-后端的例子，前端pod可以通过打开以下FQDN的连接来访问后端数据库服务 :
+	backend-database.default.svc.cluster.local
+	backend-database 对应于服务名称， default 表示服务在其中定义的名称空间,而svc.cluster.local
+	是在所有集群本地服务名称中使用的可配置集群域后缀
+
+	28).使用Minikube时,可以运行minikube service <service-name> [-n <namespace> ]命令,通过浏览器轻松访问NodePort服务
+	[dream@minikube ~]$minikube service kubia-nodeport
+	❗  Executing "docker container inspect minikube --format={{.State.Status}}" took an unusually long time: 3.294152304s
+	💡  Restarting the docker service may improve performance.
+	|-----------|----------------|-------------|---------------------------|
+	| NAMESPACE |      NAME      | TARGET PORT |            URL            |
+	|-----------|----------------|-------------|---------------------------|
+	| default   | kubia-nodeport |          80 | http://192.168.49.2:30123 |
+	|-----------|----------------|-------------|---------------------------|
+	🎉  正通过默认浏览器打开服务 default/kubia-nodeport...
+	👉  http://192.168.49.2:30123
+	[dream@minikube ~]$curl http://192.168.49.2:30123
+	You've hit kubia-xffg6
+
+
+4.创建一个简单的Node.js应用.
+	1).应用包含一个名为app.js的文件.详见下面清单.
+    +--------------------------------------------------------------------------------+
+    |   const http = require('http');                                                |
+    |   const os = require('os');                                                    |
+    |                                                                                |
+    |   console.log("Kubia server starting...");                                     |
+    |                                                                                |
+    |   var handler = function(request, response) {                                  |
+    |       console.log("Received request from " + request.connection.remoteAddress);|
+    |       response.writeHead(200);                                                 |
+    |       response.end("You've hit " + os.hostname() + "\n");                      |
+    |   };                                                                           |
+    |                                                                                |
+    |   var www = http.createServer(handler);                                        |
+    |   www.listen(8080);                                                            |
+    +--------------------------------------------------------------------------------+
+
+	2).为镜像创建Dockerfile.
+	为了把应用打包成镜像，首先需要创建一个叫Dockerfile的文件.
+	Dockerfile文件需要和app.js文件在同一目录,并包含下面代码清单中的命令.
+    +-----------------------------------+
+    |   FROM node:7                     |
+    |   ADD app.js  /app.js             |
+    |   ENTRYPOINT  ["node", "app.js"]  |
+    +-----------------------------------+
+
+	3).构建容器镜像(要在当前目录,也就是包含Dockerfile和app.js文件的目录)
+	docker build -t kubia .
+
+	4).创建并运行容器.
+	docker run --name kubia-container -p 8080:8080 -d kubia #(-d:--放入后台)(-p 8080:8080 本机的8080端口会被映射到容器内的8080端口)
+
+	5).访问应用:通过http://localhost:8080访问应用(localhost必须映射为本机<127.0.0.1>)
+
+	6).使用附加标签标注镜像
+	docker tag kubia luksa/kubia
+
+	7).向Docker Hub推送镜像(在向Docker Hub推送镜像之前,现需要使用docker login命令和自己的用户ID登录<如果出现:"denied: requested access to the resource is denied"的错误,登录一下就好了.>)
+	docker push luksa/kubia

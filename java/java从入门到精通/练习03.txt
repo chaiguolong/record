@@ -1,0 +1,139 @@
+16.6 练一练
+一. 填空题
+1. 当将一个不兼容的对象加入一个类集中时,将产生(ClassCastException)异常
+2. (Collection)接口是构造类集框架的基础.
+3. 调用(first())方法,可以获得集合中的第一个对象.
+4. 需要获得集合尾部的一个子集合, 可以使用(tailSet(Object start))方法.
+二.简答题
+	简述ArrayList的构造方法.
+	答: 1)ArrayList(): 构建一个空的数组列表.
+		2)ArrayList(int capacity): 构建一个空的数组列表, 其初始容量由capacity指定.
+		3)ArrayList(Collection c): 构建一个数组列表,其元素由c来初始化.
+16.7 跟我上机
+	编写一段程序,使用TreeSet类储存以下元素:3, 6, 9, 7, 18, 25,并输出其元素.
+
+      +-------------------------------------------------------+
+      | import java.util.Iterator;                            |
+      | import java.util.TreeSet;                             |
+      |                                                       |
+      | public class homework03_16_7 {                        |
+      |     public static void main(String[] args) {          |
+      |         TreeSet<Integer> tm = new TreeSet<Integer>(); |
+      |         tm.add(3);                                    |
+      |         tm.add(6);                                    |
+      |         tm.add(9);                                    |
+      |         tm.add(7);                                    |
+      |         tm.add(18);                                   |
+      |         tm.add(25);                                   |
+      |         Iterator<Integer> it = tm.iterator();         |
+      |         while (it.hasNext()) {                        |
+      |             System.out.print(it.next() + " ");        |
+      |         }                                             |
+      |         System.out.println();                         |
+      |     }                                                 |
+      |                                                       |
+      | }                                                     |
+      |                                                       |
+      +-------------------------------------------------------+
+
+19.8 练一练
+一.填空题
+	1.多线程的优点为(能同时执行多个程序块).
+	2.返回线程的优先级的方法为(getPriority()).
+	3.死锁形成的原因为(都是要取得对方所拥有的锁).
+二.简答题
+	1. 简述线程和进程的主要差别.
+	答: 1).线程是比进程更小的执行单元,线程的开销比进程的开销小很多
+		2).线程内部的内存资源是共享的,而进程是独有的内存资源.
+	2. 简述激活线程的方法.
+	答: 1). 称为Thread类的子类.
+		2). 将要执行的方法放在run()方法中.
+19.9 跟我上机
+	编写一个多线程处理的程序,其他线程运行10s后,使用main方法中断其他线程.
+
+      +---------------------------------------------------------------------------+
+      | class TestThread implements Runnable{                                     |
+      |     public void run(){                                                    |
+      |         System.out.println(Thread.currentThread().getName()+"在运行..."); |
+      |     }                                                                     |
+      | }                                                                         |
+      | public class homework03_19_9 {                                            |
+      |     public static void main(String[] args) {                              |
+      |         TestThread tt = new TestThread();                                 |
+      |         Thread t = new Thread(tt);                                        |
+      |         t.start();                                                        |
+      |         try {                                                             |
+      |             Thread.sleep(10000);                                          |
+      |         } catch(InterruptedException e){                                  |
+      |             e.printStackTrace();                                          |
+      |         }                                                                 |
+      |         t.interrupt();                                                    |
+      |         System.out.println("main方法退出...");                            |
+      |     }                                                                     |
+      |                                                                           |
+      | }                                                                         |
+      |                                                                           |
+      +---------------------------------------------------------------------------+
+20.6 练一练
+一.填空题
+	1. 在Java中要进行IO操作,需要导入(IO)包.
+	2. Java中的数据操作主要分为(字符)和(字节)两种.
+	3. 生成File对象的构造方法(File(String pathname)).
+二.简答题
+	在操作文件流时, 是按照怎样的方式进行的?
+	答: 1).通过File类生成一个File对象
+		2).通过File对象实例化一个输入或者输出流.
+		3).通过输入输出流对文件进行读写操作.
+		4).关闭文件的输入输出流.
+20.7 跟我上机
+	编写一个程序,想文件中写入"Here is my file", 并从文件中读出字符串.
+	
+      +------------------------------------------------------------+
+      | import java.io.File;                                       |
+      | import java.io.FileInputStream;                            |
+      | import java.io.FileOutputStream;                           |
+      |                                                            |
+      | import java.io.FileNotFoundException;                      |
+      | import java.io.IOException;                                |
+      |                                                            |
+      | public class homework03_20_7 {                             |
+      |     public static void main(String[] args) {               |
+      |         File f = new File("/Users/develop/Documents/Doc/"  |
+      |                 +"Daily_record/test/Here.txt");            |
+      |         FileOutputStream out = null;                       |
+      |         FileInputStream in = null;                         |
+      |         try {                                              |
+      |              out = new FileOutputStream(f);                |
+      |         } catch(FileNotFoundException e){                  |
+      |             e.printStackTrace();                           |
+      |         }                                                  |
+      |         try {                                              |
+      |             out.write("Here is my file".getBytes());       |
+      |         } catch(IOException e){                            |
+      |             e.printStackTrace();                           |
+      |         }                                                  |
+      |         try {                                              |
+      |             out.close();                                   |
+      |         } catch(IOException e){                            |
+      |             e.printStackTrace();                           |
+      |         }                                                  |
+      |         byte[] buf = new byte[1024];                       |
+      |         int len = 0;                                       |
+      |         try {                                              |
+      |             in = new FileInputStream(f);                   |
+      |             len = in.read(buf);                            |
+      |         } catch(FileNotFoundException e){                  |
+      |             e.printStackTrace();                           |
+      |         } catch(IOException e) {                           |
+      |             System.out.println(e.getMessage());            |
+      |         }                                                  |
+      |                                                            |
+      |         System.out.println(new String(buf, 0, len));       |
+      |     }                                                      |
+      |                                                            |
+      | }                                                          |
+      +------------------------------------------------------------+
+
+
+
+
