@@ -165,6 +165,14 @@
 		14.6).查看远程仓库信息
 			git remote show origin
 	
+	15).如果需要撤销之前的修改(也就是将暂存区的数据覆盖本地工作区),
+		可以使用checkout命令来撤销.
+		例如,如果需要撤销文件file.txt的修改,可以使用一下命令:
+		git checkout --file.txt
+
+		这将撤销对该文件的修改并将其还原为最后一次提交状态.
+		注意:使用git checkout命令将会丢失对文件的修改,所以在使用前摇谨慎.
+	
 
 3.Fugitive.vim的使用流程.
 	1).:Gstatus窗口,通过"-",添加/删除文件
@@ -219,3 +227,56 @@
 	git fetch --all
 	git checkout --force origin/master -- path/to/file
 	其中 origin/master 是远程分支的名称，path/to/file 是您要覆盖的本地文件的路径。
+
+10.生成新的 SSH 密钥并将其添加到 ssh-agent
+	1).生成新的 SSH 密钥(使用的电子邮件替换为您的 GitHub 电子邮件地址),之后一直回车
+	ssh-keygen -t ed25519 -C "your_email@example.com"
+
+	2).将 SSH 密钥添加到 ssh-agent
+		2.1).在后台启动 ssh-agent
+		eval "$(ssh-agent -s)"
+
+		2.2).打开~/.ssh/config文件,然后修改该文件以包含以下行
+
+		(注意:linux这步省略)
+		Host github.com
+		AddKeysToAgent yes
+		UseKeychain yes
+		IdentityFile ~/.ssh/id_ed25519
+
+		2.3).将您的SSH 私钥添加到ssh-agent并将您的密码存储在钥匙串中
+		#Linux
+		ssh-add ~/.ssh/id_ed25519
+
+		#Monterey (12.0)之前的macOS版本中
+		ssh-add -K ~/.ssh/id_ed25519
+
+		#Monterey (12.0)之后的macOS版本中
+		ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+
+11.SSH Git代理设置方法
+	1).打开终端
+	输入以下命令进入SSH配置目录
+	cd ~/.ssh
+
+	2).创建或编辑config文件
+	touch config
+
+	3.vim config
+
+	4).在config文件中添加如下内容(假设代理地址为127.0.0.1:1081)
+
+	Host github.com
+	AddKeysToAgent yes
+	UseKeychain yes
+	IdentityFile ~/.ssh/id_ed25519
+	#走HTTP 代理
+	ProxyCommand nc -x 127.0.0.1:1081 %h %p
+
+12.在git中可以用git rm命令删除文件（删除远程仓库文件）
+	git clone 仓库地址
+	git add .
+	step1: git rm 文件 //本地中该文件会被删除
+	step2: git rm -r 文件夹 //删除文件夹
+	step3: git commit -m '删除某个文件'
+	step4: git push （origin master）

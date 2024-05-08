@@ -176,11 +176,11 @@
 
 6.yum repolist	查看yum仓库列表中有哪些仓库.
 
-7.centos 8 安装emacs29.1
+7.centos 8 安装支持libxml2(能用eww)的emacs29.1
 	CentOS 8 默认的软件包仓库中不包括 Emacs 29.1，因此你需要从源代码编译安装。以下是安装 Emacs 29.1 的步骤：
 
 	1).安装必要的依赖项：
-		sudo dnf install -y gcc gcc-c++ libXpm-devel libjpeg-turbo-devel giflib-devel libtiff-devel ncurses-devel
+		sudo dnf install -y gcc gcc-c++ intltool libXpm-devel libpng-devel giflib-devel libtiff-devel libjpeg-turbo-devel ncurses-devel gtk3-devel libxml2-devel gnutls-devel
 
 	2).下载 Emacs 29.1 的源代码：
 		wget https://ftp.gnu.org/gnu/emacs/emacs-29.1.tar.gz
@@ -190,7 +190,7 @@
 	4).进入目录：
 		cd emacs-29.1
 	5).配置构建系统：
-		./configure --prefix=/usr/local
+		./configure --prefix=/usr --sysconfdir=/etc --enable-locallisppath=/usr/share/emacs/29.1/lisp
 	6).编译和安装：
 		make
 		sudo make install

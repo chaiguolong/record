@@ -1,4 +1,3 @@
-[root@centos8 ~]# cat init_v1.sh
 #!/bin/bash
 #
 #**************************************************
@@ -269,11 +268,11 @@ EOF
 install_package () {
    
     if [[ $OS == CentOS-Linux-7* ]];then
-        yum install bash-completion vim-enhanced tree psmisc wget bc iotop gcc make gcc-c++ glibc glibc-devel pcre pcre-devel openssl openssl-devel zip unzip zlib-devel net-tools lrzsz ntpdate telnet lsof tcpdump libevent libevent-devel openssh-server openssh-clients postfix -y
+        yum install bash-completion vim-enhanced tree psmisc wget bc iotop gcc make gcc-c++ glibc glibc-devel pcre pcre-devel openssl openssl-devel zip unzip zlib-devel net-tools lrzsz ntpdate telnet lsof tcpdump libevent libevent-devel openssh-server openssh-clients postfix git -y
     elif [[ $OS == CentOS-Linux-8* ]];then
-        dnf install bash-completion vim-enhanced tree psmisc wget bc iotop gcc make gcc-c++ glibc glibc-devel pcre pcre-devel openssl openssl-devel zip unzip zlib-devel net-tools lrzsz chrony telnet lsof tcpdump libevent libevent-devel openssh-server openssh-clients postfix -y
+        dnf install bash-completion vim-enhanced tree psmisc wget bc iotop gcc make gcc-c++ glibc glibc-devel pcre pcre-devel openssl openssl-devel zip unzip zlib-devel net-tools lrzsz chrony telnet lsof tcpdump libevent libevent-devel openssh-server openssh-clients postfix git -y
     elif [[ $OS == Ubuntu-18.04* ]];then
-        apt install make gcc iproute2 ntpdate tcpdump telnet traceroute nfs-kernel-server nfs-common lrzsz tree zip unzip openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev iotop libreadline-dev libsystemd-dev -y
+        apt install make gcc iproute2 ntpdate tcpdump telnet traceroute nfs-kernel-server nfs-common lrzsz tree zip unzip openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev iotop libreadline-dev libsystemd-dev git -y
     fi
     echo -e "\e[32;1mCommon Package already install\e[0m"
 }

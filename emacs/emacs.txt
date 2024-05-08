@@ -37,6 +37,8 @@
 	1.17).C-c C-e 运行激活区域或者整个缓存区.
 	1.18).C-c p f 在项目中(有.git目录)查找某个文件.
 	1.19).C-x C-e 运行光标之前的符号表达式,并将结果显示在回显区.
+	1.20).C-x u 运行undo-tree
+	1.21).C-c t 将光标下的英文翻译为中文
 
 2.绑定的快捷键
 	2.1).系统带的快捷键
@@ -49,10 +51,10 @@
 		C-h C-v 寻找定义的变量所在位置
 		C-h C-k	寻找绑定的快捷键所在位置
 
-2.	org-mode快捷键: 
-	2.1).C-c C-t: 将当前栏目切换为TODO/DONE
-	2.2).C-c C-s: 将agenda设置开始日期
-	2.3).C-c C-d: 将agenda设置结束日期
+	2.3).org-mode快捷键: 
+		C-c C-t: 将当前栏目切换为TODO/DONE
+		C-c C-s: 将agenda设置开始日期
+		C-c C-d: 将agenda设置结束日期
 
 2.复制粘贴:
     1).把光标移动到区域的首字符
@@ -90,3 +92,19 @@
 		C-s company
 	3).按I,然后按x执行安装.
 	
+7.在centos8中安装vterm package遇到的问题
+	0.安装libvterm(在搬瓦工上遇到的问题,可能是因为没有配置阿里云的问题)
+		0.1). 下载安装包:
+		wget https://www.leonerd.org.uk/code/libvterm/libvterm-0.3.3.tar.gz
+		0.2). 解压安装包:
+		tar -xvf libvterm-0.3.3.tar.gz
+		0.3). 进入安装包目录,并且安装
+		cd libvterm-0.3.3 && make
+		0.4). 完成安装
+		sudo make install
+	1.报错: libvterm not found
+		sudo yum install libvterm-devel
+	2.安装vterm需要的依赖(cmake和libarchive)
+		sudo yum install -y cmake libarchive
+	3.在emacs中安装编译.
+
