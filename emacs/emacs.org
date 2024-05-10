@@ -1,0 +1,139 @@
+#+startup: overview
+
+
+
+* emacs资料整理
+** 快捷键整理
+*** 1.emacs基础快捷键:
+    - C-x C-s: 保存当前缓冲区到文件
+    - C-x C-c: 退出emacs并停止该程序
+    - C-/: 撤销命令.
+    - C-x C-f: 组合命令键将新文件加载到缓冲区(也可用于新建文件).
+    - C-x o(other的意思): 切换到缓冲区列表窗口
+    - C-x b: 输入你要切换到的缓冲区域的名字
+    - C-x 2: 将窗口水平拆分成两个窗口
+    - C-x 3: 将窗口竖向拆分成两个窗口
+    - C-x o: 从一个窗口切换到另一个窗口.
+    - C-x 0(数字0): 关闭当前窗口.
+    - C-x 1(数字1): 关闭除当前窗口外的所有窗口.
+    - C-x k: kill当前buffer
+    - c-z: evil模式和Emacs模式切换.
+    - C-l: 重新绘制屏幕,将光标所在行移动至屏幕中间(重复C-l,则分别移动至顶部,中间,底部);
+    - C-c C-e 运行激活区域或者整个缓存区.
+    - C-c p f 在项目中(有.git目录)查找某个文件.
+    - C-x C-e 运行光标之前的符号表达式,并将结果显示在回显区.
+    - C-h f 显示函数的功能
+    - C-h v 显示变量的含义和值
+    - C-h k 显示快捷键绑定的命令和它的作用
+    - C-h C-f 寻找定义的函数所在位置
+    - C-h C-v 寻找定义的变量所在位置
+    - C-h C-k 寻找绑定的快捷键所在位置
+*** 2.Dired(需要用m键mark相应的文件):
+    - +: to create directory
+    - C-x C-f: to create file
+    - g: to refresh dired buffer
+    - C: copy file
+    - R: rename file
+    - d: delete file(标记要删除的文件)
+    - x: 执行所选的文档(是否删除)
+    - D: delete after confirm
+    - u: 取消标记
+    - g: 在Dired模式中强制刷新.
+*** 3.插件快捷键
+    - C-x u 运行undo-tree
+    - C-c t 将光标下的英文翻译为中文
+*** 4.org-mode快捷键:
+    1) 日程管理
+        - C-c C-t: 将当前栏目切换为TODO/DONE
+        - C-c C-s: 将agenda设置开始日期
+        - C-c C-d: 将agenda设置结束日期
+    2) 基本操作
+        - Tab: 放到当前标题,折叠(切换)当前树及子树
+    3) 其他:
+    4) org文件开头设置
+	#+begin_src 
+	#+STARTUP: overview
+	#+STARTUP: content
+	#+STARTUP: showall
+	#+STARTUP: showeverything
+	#+end_src
+    5) 插入模板:<s TAB: 可以插入代码块(更好的方法是C-c C-,):
+           #+BEGIN_SRC
+           #+END_SRC
+
+
+** 其他资料整理:
+*** 1).在半马人的emacs配置中添加插件evil.
+	1) 在init.el文件添加文本(require 'init-evil)
+	2) 新建文件lisp/init-evil.el,内容如下:
+            #+BEGIN_SRC
+            (use-package evil
+                  :ensure t
+                  :hook (after-init . evil-mode))
+            (provide 'init-evil)
+            #+END_SRC
+	3) 重启emacs
+*** 2).如果想要定义能调用的func,需要定义成(interactive)
+*** 3).查看快捷键
+        + C-x C-h:查看C-x上绑定的所有快捷键(C-x:所要查看的快捷键;C-h:帮助的快捷键)
+        + C-c C-h:查看C-c上绑定的所有快捷键(C-c:所要查看的快捷键;C-h:帮助的快捷键)
+*** 4).常识:
+        + C-x: 系统保留的快捷键
+        + C-c: 是用户绑定的快捷键
+        + M-x eval-buffer: 执行当前缓冲区的所有Lisp命令
+*** 5).复制粘贴:
+        1) .把光标移动到区域的首字符
+        2) .键入C-@（即ctrl+shift+2）,以设置标记
+        3) .把光标移动到区域的最后一个字符
+        4) .C-x C-x检查选中标记的区域,以免选错.
+        5) .键入M-w，拷贝这个选定区域到粘贴板（剪切是C-w）
+        6) .用光标定位将要粘贴内容的地方，然后键入C-y ，拷贝成功。
+        :: 备注: M-h: 标记整个段落;C-x h:标记整个buff; C-x C-p标记整个页面
+*** 6).emacs内置的中文教程:打开emacs,输入快捷键c-u c-h t,然后选择Chinese-GB18030
+*** 7).通过org-mode和ox-hugo来创建博客的流程.
+    1) 在emacs中,通过快捷键C-c r来调用org-capture-templates.
+    2) 敲入h键,选择hugo post模板.
+    3) 书写博客的标题.
+    4) 在org-mode模式下书写博客内容,完成敲入C-c C-c
+    5) 通过快捷键C-x C-f,找到/Users/develop/blog内的all-blog.org,按快捷键C-c C-t将todo改为done;) 然后保存文件并自动转为md格式
+    6) 通过git,将文件上传至github.
+
+*** 8).通过内置包管理器去安装包:
+	1) 查看包的列表
+            #+BEGIN_SRC
+	          M-x list-package
+            #+END_SRC
+	2) 查找所需要的包(这里用company举例)
+            #+BEGIN_SRC
+	          C-s company
+            #+END_SRC
+	3) 按I,然后按x执行安装.
+	
+*** 9.在centos8中安装vterm package遇到的问题
+*** 10).安装libvterm遇到的一些问题:
+    1) .安装libvterm(在搬瓦工上遇到的问题,可能是因为没有配置阿里云的问题)
+	1) 下载安装包:
+	#+BEGIN_SRC
+	wget https://www.leonerd.org.uk/code/libvterm/libvterm-0.3.3.tar.gz
+	#+END_SRC
+	2) 解压安装包:
+	#+BEGIN_SRC
+	tar -xvf libvterm-0.3.3.tar.gz
+	#+END_SRC
+	3) 进入安装包目录,并且安装
+	#+BEGIN_SRC
+	cd libvterm-0.3.3 && make
+	#+END_SRC
+	4) 完成安装
+	#+BEGIN_SRC
+	sudo make install
+	#+END_SRC
+    2) .报错: libvterm not found
+	#+BEGIN_SRC
+	sudo yum install libvterm-devel
+	#+END_SRC
+    3) .安装vterm需要的依赖(cmake和libarchive)
+	#+BEGIN_SRC
+	sudo yum install -y cmake libarchive
+	#+END_SRC
+    4) .在emacs中安装编译.
