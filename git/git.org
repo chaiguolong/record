@@ -1,0 +1,355 @@
+* git知识点整理
+** 1.如何创建新的git仓库,创建新的Git仓库可以通过以下步骤进行:
+*** 0).设置用户信息:
+**** 0.1).配置用户名和邮箱
+***** 0.1.1).安装完 Git 之后，要做的第一件事就是设置你的用户名和邮件地址。 
+    #+begin_src bash
+    git config --global user.name "chaiguolong"
+    git config --global user.email 584238433@qq.com
+    #+end_src
+***** 0.1.2).查看config配置
+    #+begin_src 
+    git config --list 
+    #+end_src
+**** 0.2).生成SSH key
+***** 0.2.1)进入.ssh文件夹:
+	#+begin_src bash
+	cd ~/.ssh/
+	#+end_src
+***** 0.2.2)生成秘钥:
+	#+begin_src bash
+	ssh-keygen -t rsa -C "chaiguolong1@gmail.com"
+	#+end_src
+***** 0.2.3)获取SSH Key:根据命令行提示,获取以ssh-rsa的字符串(包括ssh-rsa)按键"回车键" 生成了SSH Key(密钥)
+**** 0.3).SSH key生成的路径一般为~/.ssh/下,打开id_rsa.pub,进行全选复制内容.
+**** 0.4).登录github账号添加SSH Key(将第三部的内容粘贴上去):
+***** 0.4.1).设置路径:settings-->SSH and GPG keys-->new SSH key
+**** 0.5).检测是否添加成功(本地终端输入下列内容,然后输入yes就好了)
+    #+begin_src bash
+    ssh -T git@github.com
+    #+end_src
+
+*** 1).在你想创建仓库的目录(本地)中打开终端。
+**** 1.1).初始化本地仓库：
+    #+begin_src bash
+      git init
+    #+end_src
+**** 1.2).添加文件到仓库中：
+    #+begin_src bash
+      git add .
+    #+end_src
+**** 1.3).提交你的更改到本地仓库：
+    #+begin_src bash
+      git commit -m "first commit"
+    #+end_src
+
+*** 2).如果你还没有远程仓库,需要在远程(例如GitHub或GitLab)上创建一个仓库.
+**** 2.1).将本地仓库关联到远程仓库的URL:
+在github上新建仓库,并获取仓库地址:https://github.com/chaiguolong/git_test.git
+在github上获取token,代替密码(是用经典的token,不是细粒度token),具体见下面获取token教程.
+**** 2.2).本地仓库操作:
+将默认分支替换为main(因为在2020年将默认分支由master切换为main)
+#+begin_src bash
+  git branch -M main
+#+end_src
+
+**** 2.3).将本地仓库的更改推送到远程仓库:
+#+begin_src bash
+  git remote add origin https://github.com/chaiguolong/git_test.git
+  git push -u origin main
+#+end_src
+
+** 2. 本地仓库的基本操作:
+*** 2.1.新增操作:
+**** 2.1.1).新建新文件:
+  #+begin_src bash
+    touch filename
+  #+end_src
+**** 2.1.2).添加新文件到暂存区:
+  #+begin_src bash
+    git add filename
+  #+end_src
+**** 2.1.3).提交到本地仓库:
+  #+begin_src bash
+    git commit -m "Add filename"
+  #+end_src
+
+*** 2.2.修改操作:
+**** 2.2.1).修改文件:
+  #+begin_src bash
+    vim filename
+  #+end_src
+**** 2.2.2).添加修改后的文件到暂存区:
+  #+begin_src bash
+    git add filename
+  #+end_src
+**** 2.2.3).提交修改后的文件到本地仓库:
+  #+begin_src bash
+    git commit -m "modify filename"
+  #+end_src
+
+*** 2.3.删除操作:
+**** 2.3.1).删除工作目录中的文件:
+  #+begin_src bash
+    rm filename
+  #+end_src
+**** 2.3.2).将文件从git删除:
+***** 1:将文件从工作区和暂存区删除
+    #+begin_src bash
+      git rm filename
+    #+end_src
+***** 2:强行从暂存区和工作区中删除(删除之前修改过并且已经放到暂存区域)
+    #+begin_src bash
+      git rm -f filename
+    #+end_src
+
+***** 3:只删除暂存区文件
+    #+begin_src bash
+      git rm --cached filename
+    #+end_src
+    
+*** 2.4.提交删除操作:
+  #+begin_src bash
+    git commit -m "delete filename"
+  #+end_src
+
+** 3).将本地仓库上传到远程仓库:
+#+begin_src bash
+  git push https://github.com/chaiguolong/git_test.git
+#+end_src
+
+** 4).取回更新:
+#+begin_src bash
+  git pull
+#+end_src
+
+** 5).分支与合并
+*** 5.1).创建一个新的分支，我们使用branch命令
+#+begin_src bash
+  git branch test
+#+end_src
+
+*** 5.2).使用checkout命令来更改分支
+#+begin_src bash
+  git checkout test
+#+end_src
+		
+*** 5.3).创建并切换分支
+#+begin_src bash
+  git checkout -b test
+#+end_src
+
+*** 5.4>.第一个分支，或主分支，被称为"master",下列命令切换到主分支
+#+begin_src bash
+  git checkout master
+#+end_src
+
+*** 5.5>.合并分支(对其他分支的更改不会反映在主分支上,如果想将更改提交到主分支，则需切换回master分支，然后使用合并)
+
+**** 5.5.1>.切换回主分支:
+#+begin_src bash
+  git checkout master
+#+end_src
+**** 5.5.2>.将test分支与主分支合并
+#+begin_src bash
+  git merge test
+#+end_src
+
+*** 5.6>.如果您想删除分支，我们使用-d标识。
+#+begin_src bash
+  git branch -d test
+#+end_src
+
+*** 5.7).将本地分支(test)上传至远端服务器
+#+begin_src bash
+  git push origin test
+#+end_src
+
+*** 5.8).删除远程服务器的分支(test):
+#+begin_src bash
+  git push origin :test
+#+end_src
+
+*** 5.9).将本地分支(test)上传至远端服务器,分支改名为(test01):
+#+begin_src bash
+  git push origin test:test01
+#+end_src
+
+** 6).看日志和一行显示日志,以及取前面几条日志
+#+begin_src bash
+  git log
+  git log --oneline
+  git log --oneline -3 #powerlevel10k
+#+end_src
+		
+** 7).通过id(id:e7bfbc2,通过查看日志获得)查看提交信息
+#+begin_src bash
+  git show e7bfbc2
+#+end_src
+
+** 8).回退到之前的状态(^:代表着上一次,回退2次就写两个^^)
+*** 1.相对的方法回到之前的版本:
+#+bensrc bash
+  girset master^
+#+ensc
+
+#+bensrc bash
+  #(到5次之前的状态)
+  girset master~5
+#+ensc
+*** 2.通过id(id:e240044,通过查询日志获得,看你想回到哪个版本),绝对的方法回到之前的版本:
+#+begin_src bash
+  git reset e240044
+#+end_src
+
+git reset的几个模式
+	(--mixed): 这个模式会把暂存区的文件丢弃,但不会动到工作目录的文件.
+	(--soft):  这个模式下的reset,工作目录跟暂存区的文件都不会被丢弃.
+	(--hard):  在这个模式下,不管是工作目录以及暂存区的文件都会丢弃.
+						
+** 9).git revert撤销某次操作
+此次操作之前和之后的commit和history都会保留,并且把这次撤销作为一次最新的提交
+
+** 10).以下列出了远程仓库、添加远程仓库、重命名远程仓库、删除远程仓库、修改远程仓库 URL 和查看远程仓库信息的用法：
+*** 1.列出远程仓库
+#+begin_src bash
+  git remote
+#+end_src
+
+#+begin_src bash
+  git remote -v
+#+end_src
+*** 2.添加远程仓库
+#+begin_src bash
+  git remote add origin https://github.com/user/repo.git
+#+end_src
+*** 3.重命名远程仓库
+#+begin_src bash
+  git remote rename origin new-origin
+#+end_src
+*** 4.删除远程仓库
+#+begin_src bash
+  git remote remove new-origin
+#+end_src
+*** 5.修改远程仓库
+#+begin_src bash
+  git remote set-url origin https://github.com/user/new-repo.git
+#+end_src
+*** 6.查看远程仓库信息
+#+begin_src bash
+  git remote show origin
+#+end_src
+	
+** 11).如果需要撤销之前的修改(也就是将暂存区的数据覆盖本地工作区),可以使用checkout命令来撤销.
+*** 1.例如,如果需要撤销文件file.txt的修改,可以使用一下命令:
+#+begin_src bash
+#这将撤销对该文件的修改并将其还原为最后一次提交状态.
+#注意:使用git checkout命令将会丢失对文件的修改,所以在使用前摇谨慎.
+git checkout --file.txt
+#+end_src
+
+** 12.git 删除远程仓库文件
+*** 1).预览将要删除的文件
+#+begin_src bash
+  # 加上 -n 这个参数，执行命令时，是不会删除任何文件，而是展示此命令要删除的文件列表预览。
+  git rm -r -n --cached 文件/文件夹名称 
+#+end_src
+*** 2).确定无误后删除文件
+#+begin_src bash
+  git rm -r --cached 文件/文件夹名称
+#+end_src
+*** 3).提交到本地并推送到远程服务器
+#+begin_src bash
+  git commit -m "提交说明"
+  git push
+#+end_src
+
+** 13.当提交了错的代码,进行回滚,并强行提交到远程仓库.
+*** 13.1).回滚到之前版本的三种方法.
+#+begin_src bash
+  git reset --hard HEAD^ #回退到上个版本.
+
+#+end_src
+
+#+begin_src bash
+  git reset --hard HEAD~n #回退到前n次提交之前，若n=3，则可以回退到3次提交之前.
+#+end_src
+
+#+begin_src bash
+  git reset --hard commit_sha #回滚到指定commit的sha码，推荐使用这种方式.
+#+end_src
+*** 13.2).强行提交到远程仓库.
+#+begin_src bash
+  git push origin HEAD --force
+#+end_src
+
+** 14.git add . 和git add * 区别
+*** 1.git add . 会把本地所有untrack的文件都加入暂存区,并且会根据.gitignore做过滤
+*** 2.git add * 会忽略.gitignore把任何文件都加入
+
+** 15.如果您想要用 Git 远程覆盖本地某个文件，可以使用以下命令：
+#+begin_src bash
+  git fetch --all
+  # 其中 origin/master 是远程分支的名称，path/to/file 是您要覆盖的本地文件的路径。
+  git checkout --force origin/master -- path/to/file
+#+end_src
+
+** 16.生成新的 SSH 密钥并将其添加到 ssh-agent
+*** 1).生成新的 SSH 密钥(使用的电子邮件替换为您的 GitHub 电子邮件地址),之后一直回车
+#+begin_src bash
+  ssh-keygen -t ed25519 -C "your_email@example.com"
+#+end_src
+
+*** 2).将 SSH 密钥添加到 ssh-agent
+**** 2.1).在后台启动 ssh-agent
+#+begin_src bash
+  eval "$(ssh-agent -s)"
+#+end_src
+
+**** 2.2).打开~/.ssh/config文件,然后修改该文件以包含以下行
+#+begin_src 
+    #(注意:linux这步省略)
+    Host github.com
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+#+end_src
+
+**** 2.3).将您的SSH 私钥添加到ssh-agent并将您的密码存储在钥匙串中
+- Linux
+  #+begin_src
+    ssh-add ~/.ssh/id_ed25519
+  #+end_src
+
+- Monterey (12.0)之前的macOS版本中
+  #+begin_src bash
+    ssh-add -K ~/.ssh/id_ed25519
+  #+end_src
+
+- Monterey (12.0)之后的macOS版本中
+  #+begin_src bash
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+  #+end_src
+
+** 17.SSH Git代理设置方法
+*** 1).打开终端,输入以下命令进入SSH配置目录
+#+begin_src bash
+  cd ~/.ssh
+#+end_src
+*** 2).创建或编辑config文件
+#+begin_src bash
+  touch config
+#+end_src
+*** 3.vim config
+*** 4).在config文件中添加如下内容(假设代理地址为127.0.0.1:1081)
+#+begin_src 
+
+Host github.com
+AddKeysToAgent yes
+UseKeychain yes
+IdentityFile ~/.ssh/id_ed25519
+#走HTTP 代理
+ProxyCommand nc -x 127.0.0.1:1081 %h %p
+
+#+end_src
+
