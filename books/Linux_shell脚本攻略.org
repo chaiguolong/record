@@ -1,0 +1,172 @@
+* Linux_shell脚本攻略
+** 第一章 小试牛刀
+*** 1.1简介
+**** 1).#!/bin/bash(shebang)
+**** 2).有两种运行脚本的方式
+1. 将脚本作为sh的命令行参数.
+   #+begin_src bash
+     sh script.sh
+   #+end_src
+   #+begin_src bash
+     sh /home/path/script.sh
+   #+end_src
+2. 将脚本作为具有执行权限的可执行文件.
+3. 如果将脚本作为sh的命令行参数来运行,那么脚本中的shebang行也就没有什么用处了.
+4. 为了是shell脚本能够自己独立运行,需要具备可执行权限.要使脚本独立运行,必须利用shebang行.
+   它通过使用位于#!之后的解释器来运行脚本.至于脚本的可执行权限,可以通过下方设置:
+   #+begin_src bash
+     chmod a+x script.sh
+   #+end_src
+5. Bash还维护了一个历史记录文件~/.bash_history.
+6. 在Bash中,每个命令伙食命令序列是通过使用分号或换行符来分隔的.比如:
+   $ cmd1;cmd2
+   它等同于:
+   $ cmd1
+   $ cmd2
+*** 1.2终端打印
+**** 1.2.1实战演练
+1. echo是用于终端打印的基本命令.在默认情况下,echo在每次调用后会添加一个换行符.
+   #+begin_src bash
+     echo "Welcome to Bash"
+   #+end_src
+
+   #+RESULTS:
+   : Welcome to Bash
+   只需要使用带双引号的文本,结合echo命令就可以将文本在终端中打印出来.
+   类似的,不带双引号的文本也可以得到相同的输出结果:
+   #+begin_src bash
+     echo Welcome to Bash
+   #+end_src
+
+   #+RESULTS:
+   : Welcome to Bash
+   使用单引号也可以完成相同的任务:
+   #+begin_src bash
+     echo 'Welcome to Bash'
+   #+end_src
+
+   #+RESULTS:
+   : Welcome to Bash
+   这些方法看起来相似,但各有一些特殊用途和副作用.
+   思考下面这行命令:
+   #+begin_src bash
+     echo "cannot include exclamation - ! within double quotes"
+   #+end_src
+
+   #+RESULTS:
+   : cannot include exclamation - ! within double quotes
+   这条命令将会返回:bash: !:event not found error.
+   因此,如果你希望打印!,那就不要放入双引号内,或者你可以在其之前加上一个特殊的转义字符(\)将其转义.(这里能成功应该被emacs修改了)
+   #+begin_src bash
+     echo Hello World!
+   #+end_src
+
+   #+RESULTS:
+   : Hello World!
+   或
+   #+begin_src bash
+     echo 'Hello World!'
+   #+end_src
+
+   #+RESULTS:
+   : Hello World!
+   或者
+   #+begin_src bash
+     echo "Hello World \!"
+   #+end_src
+
+2. 每种方法的副作用如下:
+   - 使用不带引号的echo时,你没法在所要显示的文本中使用,
+     因为在bash shell中被用作命令定界符.
+
+   - 以echo hello;hello为例,echo hello被视为一个命令,
+     第二个hello则被视为另一个命令.
+
+   - 使用带单引号的echo时,Bash不会对单引号中的变量(如$var)求值,
+     而只是照原样显示
+
+     这就意味着:$echo '$var'将会返回$var
+
+3. 另一个用于终端打印的命令是printf
+   #+begin_src bash
+     printf "Hello world"
+   #+end_src
+
+   #+RESULTS:
+   : Hello world
+   printf并不会像echo命令一样,自动添加换行符,我们必须在需要的时候手动添加.
+   比如在下面的脚本中:
+   #+begin_src bash
+    #!/bin/bash
+    #文件名:printf.sh
+
+    printf "%-5s %-10s %-4s\n" No Name Mark
+
+    printf "%-5s %-10s %-4.2f\n" 1 Sarath 80.3456
+
+    printf "%-5s %-10s %-4.2f\n" 2 James 90.9989
+
+    printf "%-5s %-10s %-4.2f\n" 3 Jeff 77.564
+   #+end_src
+
+   #+RESULTS:
+   | No | Name   |  Mark |
+   |  1 | Sarath | 80.35 |
+   |  2 | James  |  91.0 |
+   |  3 | Jeff   | 77.56 |
+
+   %s,%c,%d,%f都是格式替换符,其所对应的参数可以置于带引号的格式字符串之后.
+   
+**** 1.2.2补充内容
+1. 在echo中转义换行符
+   在默认情况下,echo会将衣蛾换行符最佳到输出文本的尾部.
+   可以使用标志-n来忽略结尾的换行符.
+2. echo同样接收双引号字符串内的转义序列作为参数.如果需要
+   使用转义序列,则采用echo -e "包含转义序列的字符串"这种形式.
+   例如:
+   #+begin_src bash
+     echo -e "1\t2\t3"
+   #+end_src
+
+   #+RESULTS:
+   | 1 | 2 | 3 |
+
+3. 打印彩色输出
+   每种颜色都有自己的颜色码.比如:
+   重置=0  黑色=30  红色=31  绿色=32  黄色=33
+   蓝色=34  洋红=35  青色=36  白色=37
+   #+begin_src bash
+     echo -e "\e[1;31m This is red text\e[0m"
+   #+end_src
+
+   #+RESULTS:
+   : \e[1;31m This is red text\e[0m
+
+   \e[1;31将颜色设为红色,\e[0m将颜色重新置回.你只需要将31替换成
+   想要的颜色码就可以了.
+
+   要设置彩色背景,经常使用的颜色码是: 
+   重置=0  黑色=40  红色=41  绿色=42  黄色=43
+   蓝色=44  洋红=45  青色=46  白色=47
+
+   要打印彩色文本需输入:
+   #+begin_src bash
+     echo -e "\e[1;42m Green Background \e[0m"
+   #+end_src
+
+   #+RESULTS:
+   : \e[1;42m Green Background \e[0m
+
+*** 1.3. 玩转变量和环境变量
+   1. 在Bash中,每一个变量的值都是字符串,无论你给变量赋值
+      时有没有使用引号,值都会以字符串的形式存储.
+   2. 有一些特殊的变量会被shell环境和操作系统环境用来存
+      储一些特别的值,这类变量就被称为环境变量.
+   3. 当一个应用程序执行的时候,它接收一组环境变量.可以使
+      用env命令在终端查看所有与此终端进程相关的环境变量.
+   4. 对于每个进程,在其运行时的环境变量可以使用下面的命令
+      来查看:
+      #+begin_src 
+	cat /proc/$PID/environ
+      #+end_src
+      其中,将PID设置成相关进程的ID.
