@@ -1,0 +1,49 @@
+#+startup: overview
+* 脚本
+** 1.脚本集合
+1. sed修改配置文件，实现永久禁用selinux
+   #+begin_src 
+     sed -i "s/SELINUX=enforcing/SELINUX=disable/g" /etc/selinux/config
+   #+end_src
+
+2. CentOS 8 结束生命周期如何切换源
+   #+begin_src 
+    mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+    wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-vault-8.5.2111.repo
+    yum clean all && yum makecache
+   #+end_src
+
+3. 过滤掉配置文件中的含'#'和空行,其中-v(反向),
+   '#'(含有#),'^$'(空行)
+    #+begin_src bash
+    cat zabbix_server.conf | grep -v '#' | grep -v '^$'
+    #+end_src
+
+4. tr命令
+   Linux tr 命令用于转换或删除文件中的字符
+   #+begin_src bash
+     echo "hello world!" | tr a-z A-z
+   #+end_src
+
+** 2.配置EPEL源
+*** 1.备份(如有配置其他epel源)
+   #+begin_src 
+    mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
+    mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup
+   #+end_src
+*** 2.下载新repo到/etc/yum.repos.d/
+*** 3.安装并配置阿里源
+**** 3.1 epel(RHEL 8)
+***** 1.安装epel配置包
+    #+begin_src 
+    yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+    #+end_src
+***** 2.将repo 配置中的地址替换为阿里云镜像站地址
+    #+begin_src 
+    sed -i 's|^#baseurl=https://download.example/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel*
+    sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
+    #+end_src
+**** 3.2 epel(RHEL 7)
+***** 1.wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
+
+
