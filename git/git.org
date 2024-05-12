@@ -1,3 +1,5 @@
+#+startup: overview
+
 * git知识点整理
 ** 1.如何创建新的git仓库,创建新的Git仓库可以通过以下步骤进行:
 *** 0).设置用户信息:
@@ -353,3 +355,43 @@ ProxyCommand nc -x 127.0.0.1:1081 %h %p
 
 #+end_src
 
+
+** 18.提示Your branch is up-to-date with 'origin/main'
+*** 原因是版本分支的问题
+**** 1.新建一个分支
+#+begin_src bash
+  git branch newbranch
+#+end_src
+**** 2.检查分支是否创建成功
+#+begin_src bash
+  git branch
+#+end_src
+**** 3.切换到你的新分支
+#+begin_src bash
+  git checkout newbranch
+#+end_src
+**** 4.将改动提交到新分支上
+#+begin_src bash
+  git add .
+  git commit -m "提交"
+#+end_src
+**** 5.检查是否成功
+#+begin_src bash
+  git status
+#+end_src
+**** 6.切换到主分支
+#+begin_src bash
+  git checkout master
+#+end_src
+**** 7.将新分支提交的改动合并到主分支上
+#+begin_src bash
+  git merge newbranch
+#+end_src
+**** 8.然后就可以push代码了
+#+begin_src bash
+  git push -u origin main
+#+end_src
+**** 9.最后还可以删除这个分支
+#+begin_src bash
+  git branch -D newbranch
+#+end_src
