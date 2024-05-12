@@ -1,3 +1,4 @@
+#+startup: overview
 * Linux_shell脚本攻略
 ** 第一章 小试牛刀
 *** 1.1简介
