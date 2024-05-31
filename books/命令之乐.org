@@ -68,7 +68,6 @@
 	 cat -n file.py
        #+end_src
 
-
 *** 2.3录制与回放终端会话
 **** 2.3.1.预备知识
     通过script和scriptreplay命令来录制终端会话.
