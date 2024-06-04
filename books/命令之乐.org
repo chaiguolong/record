@@ -787,6 +787,55 @@ UNIX程序员会使用下面的习惯用法:
 #+end_src
 
 *** 2.10分割文件和数据
+    分割文件是为了提高可读性和生成日志.
+**** 2.10.1 工作原理
+    生成一个大小为100kb的测试文件(data.file):
+    #+begin_src bash
+      # 创建一个大小为100kb而文件内容全部是0的文件.
+      dd if=/dev/zero bs=100k count=1 of=data.file
+      # 指定分割大小,将文件分割得更小的文件
+      split -b 10k data.file
+      # 如果想以数字为后缀,可以另外使用-d参数.此外
+      # -a length就可以指定后缀长度
+      split -b 10k data.file -d -a 4
+    #+end_src
+
+**** 2.10.2 补充内容
+    split的其他选项.
+    为分割后的文件指定文件名前缀.其格式如下:
+    split [COMMAND_ARGS] PREFIX
+    #+begin_src bash
+      split -b 10k data.file -d -a 4 split_file
+    #+end_src
+
+    如果想根据行数行数来分割文件的话,可以使用-l no_of_lines
+    #+begin_src bash
+      split -l 10 data.file
+    #+end_src
+
+    csplit是split工具的一个变体.split只能够根据数据大小或行数分割文件,
+而csplit可以根据文本自身的特点进行分割.是否存在某个单词或文本内容都可
+作为分割文件的条件
+    我们需要将这个日志文件分割成server1.log,server2.log和server3.log,
+这些文件的内容分别取自原文件中不同的server部分.那么,可以使用下面的方
+法来实现:
+#+begin_src bash
+    csplit server.log /SERVER/ -n 2 -s {*} -f server -b "%02d.log" ; \
+  rm server00.log
+#+end_src
+    - /SERVER/ 用来匹配某一行,分割过程即从此处开始
+    - /[REGEX]/ 表示文本样式.
+    - {*} 表示根据匹配的重复执行分割,直到文件末尾为止.可以用{整数}
+      的形式来指定分割执行的次数.
+    - -s 使命令进入静默模式,不打印其他信息
+    - -n 指定分割后的文件名后缀的数字个数
+    - -f 指定分割后的文件名前缀
+    - -b 指定后缀格式.
+
+    因为分割后的第一个文件没有任何内容(匹配的单词就位于文件的第一行中)
+,所以我们删除了server00.log
+
+#+RESULTS:
 
 *** 2.11根据扩展名且分文件名
 
