@@ -807,10 +807,146 @@ UNIX程序员会使用下面的习惯用法:
 ,所以我们删除了server00.log
 
 
-*** 2.11根据扩展名且分文件名
+*** 2.11根据扩展名切分文件名
+    有一些脚本是依据文件名进行各种处理的.我们可能会需要在保留扩展名的同时修改
+文件名,转换文件格式(保留文件名的同时修改扩展名)或提取部分文件名.
+**** 2.11.1 实战演练
+    借助%操作符可以轻松将名称部分从"名称.扩展名"这种格式的文件名中提取出来.
+    你可以按照下面的方法从sample.jpg中提取名称.
+    #+begin_src bash
+    file_jpg="sample.jpg"
+    name=${file_jpg%.*}
+    echo File name is: $name
+    #+end_src
+
+    下一个任务是将文件名的扩展名部分提取出来,这可以借助#操作符实现.
+    提取文件名中的.jpg并存储到变量file_jpg中:
+    #+begin_src bash
+      file_jpg="sample.jpg"
+      extension=${file_jpg#*.}
+      echo Extension is: jpg
+    #+end_src
+
+**** 2.11.2 工作原理
+    ${VAR%.*}的含义是:从VARIABLE中删除位于%右侧的通配符(在前例中是.*)所匹配的
+字符串.通配符从右向左进行匹配.
+    %属于非贪婪操作.它从右到左找出匹配通配符的最短结果.还有另一个操作符%%,这个
+操作符与%相似,但行为模式却是贪婪的,这意味着它会匹配符合条件的最长的字符串.
+    例如,我们现在有这样一个文件:
+    #+begin_src bash
+      VAR=hack.fun.book.txt
+      # 使用%操作符:
+      echo ${VAR%.*}
+      # 使用%%操作符
+      echo ${VAR%%.*}
+    #+end_src
+
+    ${VAR#*.}的含义是:从$VARIABLE中删除位于#右侧的通配符(即在前例中使用*.)所匹
+配的字符串.通配符从左做向右进行匹配.和%%类似,#也有一个相对应的贪婪操作符##.
+    ##从左向右进行贪婪匹配,并从指定变量中删除匹配结果.
+    来看一个例子:
+    #+begin_src bash
+      VAR=hack.fun.book.txt
+      # 使用#操作符
+      echo ${VAR#*.}
+      # 使用##操作符
+      echo ${VAR##*.}
+    #+end_src
+
+    因为文件名中可能包含多个'.'字符,所以相较于#,##更适合于从文件名中提取扩展名
+.##执行的是贪婪匹配,因而总是能够准确地匹配出扩展名.
+
+    提取域名不同的部分.
+    #+begin_src bash
+      URL="www.google.com"
+      echo ${URL%.*}
+      echo ${URL%%.*}
+      echo ${URL#*.}
+      echo ${URL##*.}
+    #+end_src
+
 
 *** 2.12批量重命名和移动
+    重命名多个文件是我们经常会碰到的一项工作.
+    另外经常要做的工作是,将文件名中包含某个特定部分(例如相同的前缀)或者具有
+特定类型的所有文件移动到指定文件夹中.
+**** 2.12.1 预备知识
+    rename命令利用Perl正则表达式修改文件名.综合运用find,rename和mv,我们其实
+可以完成很多操作.
+**** 2.12.2 实战演练
+    用特定的格式重命名当前目录下的图像文件,最简单的方法是使用下面的脚本:
+    件rename.sh
+**** 2.12.3 工作原理
+    将*.JPG更名为*.jpg
+    #+begin_src bash
+      rename *.JPG *.jpg
+    #+end_src
+
+    将文件名中的空格替换成字符"_"
+    #+begin_src bash
+      rename 's//_/g' *
+    #+end_src
+
+    转换文件名的大小写:
+    #+begin_src bash
+      rename 'y/A-Z/a-z/' *
+      rename 'y/a-z/A-Z/' *
+    #+end_src
+
+    将所有的.mp3文件移入给定的目录,可以使用:
+    #+begin_src bash
+      find path -type f -name "*.mp3" -exec mv {} target_dir \;
+    #+end_src
+
+    将所有文件名中的空格替换为字符"_"
+    #+begin_src bash
+      find path -type f -exec rename 's//_/g' {} \;
+    #+end_src
+    
 
 *** 2.13拼写检查与词典操作
+    Linux大多数的发行版都含有一份词典文件.另外,有一个被称为aspell
+的命令行工具,其作用是进行拼写检查.
+**** 2.13.1 实战演练
+    另外,我们也可以用拼写检查命令aspell来核查某个单词是否在词典中:
+    见aspellcheck.sh
+**** 2.13.2 工作原理
+    look命令
 
 *** 2.14交互输入自动化
+    就编写自动化工具或测试工具而言,实现命令的交互输入自动化及其重要.
+    #+begin_src bash
+	$ command
+
+	Enter a number: 1
+
+	Enter name : hello
+
+	You have entered 1,hello
+      
+    #+end_src
+**** 2.14.1 预备知识
+    能够自动接受上例中那种交互输入的自动化工具,对于本地命令或远程应用
+来说非常有用.
+**** 2.14.2 实战演练
+**** 2.14.3 工作原理
+    按照下面的方法向命令自动发送输入:
+    #+begin_src bash
+      echo -e "1\nhello\n" |  ./interactive.sh
+    #+end_src
+    我们使用echo -e来生成输入序列.如果输入的内容比较多,那么可以用单独
+的输入文件结和重定向操作符来提供输入.
+#+begin_src bash
+  echo -e "1\nhello\n" > input.data
+  cat input.data
+  # 这个方法是从文件中导入交互式输入数据
+  ./interactive.sh < input.data
+#+end_src
+**** 2.14.4 补充内容
+    expect命令可以根据适合的输入要求提供适合的输入.
+    参考automate_expect.sh
+    在这个脚本中:
+    - spawn参数指定需要自动化哪一个命令;
+    - expect参数提供需要等待的消息;
+    - send是要发送的消息;
+    - expect eof指明命令交互结束
