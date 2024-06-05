@@ -37,10 +37,6 @@
     echo "Text through stdin" | cat - file.txt
   #+end_src
 
-  #+RESULTS:
-  | Text | through | stdin |        |        |          |          |
-  | This | is      | a     | line   | inside | file.txt |          |
-  | This | is      | the   | second | line   | inside   | file.txt |
 
 **** 2.2.4 补充内容
     cat命令的另外还有一些选项可用于查看文件.
@@ -187,9 +183,6 @@
 	 find . -type d -print
        #+end_src
 
-       #+RESULTS:
-       | .      |
-       | ./test |
 
        只列出普通文件
        #+begin_src bash
@@ -201,8 +194,6 @@
 	 find . -type l -print
        #+end_src
 
-       #+RESULTS:
-       : ./passwd
 
        type参数来匹配所需要的文件类型
        #+caption: 文件类型所对应的类型参数
@@ -680,18 +671,11 @@ sha1deep来实现.
 	sort -u unsorted.txt
 	#+end_src
 
-	#+RESULTS:
-	| bash |
-	| foss |
-	| hack |
 
 	#+begin_src bash
 	uniq -u sorted.txt
 	#+end_src
 
-	#+RESULTS:
-	| bash |
-	| foss |
 
 	#+begin_src bash
 	sort unsorted.txt | uniq -u
@@ -702,10 +686,6 @@ sha1deep来实现.
 	sort unsorted.txt | uniq -c
 	#+end_src
 
-	#+RESULTS:
-	| 1 | bash |
-	| 1 | foss |
-	| 2 | hack |
 
 	找出文件中重复的行
 	#+begin_src bash
@@ -720,9 +700,6 @@ sha1deep来实现.
        sort data02.txt | uniq -s 2 -w 2
        #+end_src
 
-       #+RESULTS:
-       | d:04:linux |
-       | u:01:bash  |
 
        我们将命令输出作为xargs命令的输入的时候,最好为输出的各行添加一个0
        值字节终止符.在将uniq命令的输入作为xargs的数据源时,同样应当如此.
@@ -734,10 +711,6 @@ sha1deep来实现.
        uniq -z file.txt
        #+end_src
 
-       #+RESULTS:
-       | This | is | a   | line   | inside | file.txt |          |
-       | This | is | the | second | line   | inside   | file.txt |
-       |     |    |     |        |        |          |          |
 
        下面的命令将删除所有指定的文件,而这些文件的名字是从file.txt中读
        取的:
@@ -760,8 +733,6 @@ sha1deep来实现.
 	 echo $OUTPUT
        #+end_src
 
-       #+RESULTS:
-       : 4 a 1 b 1 e 2 h
 
 *** 2.9临时文件命名与随机数
     编写shell脚本时,我们经常需要存储临时数据.最适合存储临时数据的位置
@@ -835,7 +806,6 @@ UNIX程序员会使用下面的习惯用法:
     因为分割后的第一个文件没有任何内容(匹配的单词就位于文件的第一行中)
 ,所以我们删除了server00.log
 
-#+RESULTS:
 
 *** 2.11根据扩展名且分文件名
 
