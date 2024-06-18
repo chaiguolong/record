@@ -233,33 +233,374 @@
       格式二进制文件上,而不能用于脚本文件.
 
 *** 3.7 创建不可修改文件
+    一旦文件被设置为不可修改,任何用户包括超级用户都不能删除该文件,
+除非其不可修改的属性被移除.通过查看/etc/mtab文件,很容易找出所有挂
+载分区的文件系统类型.让我们来看看如何将文件设置为不可修改.
 **** 3.7.1 预备知识
+    可以用chattr将文件设置为不可修改.不可修改属性是保护文件不被修
+改的安全手段之一.最有代表性的例子就是/etc/shadow文件.
 **** 3.7.2 实战演练
+    可以按照下面的方式将一个文件设置为不可修改:
+    #+begin_src bash
+      # +i(immutable)永恒的.
+      chattr +i file
+    #+end_src
+    如果需要使文件重新可写,可以移除不可修改属性:
+    #+begin_src bash
+      chattr -i file
+    #+end_src
+    
 *** 3.8 批量生成空白文件
+    有时候我们可能需要生成测试样本.
 **** 3.8.1 预备知识
+    touch命令可以用来生成空白文件;如果文件存在,则可以用它
+修改文件的时间戳.
 **** 3.8.2 实战演练
+    用下面的命令可以创建一个名为filename的空白文件:
+    #+begin_src bash
+      touch filename
+    #+end_src
+
+    批量生成名字不同的空白文件
+    #+begin_src bash
+      for name in{1..100}.txt
+      do
+      touch $name
+      done
+    #+end_src
+
+    如果文件已经存在,那么touch命令将会与该文件相关的所有时间
+戳更改为当前时间.如果我们只想更改某些时间戳,则可以使用下面的
+选项.
+    - touch a 只更改文件访问时间
+    - touch m 只更改文件访问时间
+    除了将时间戳更改为当前时间,我们还能够为时间戳指定特定的时
+间和日期:
+#+begin_src bash
+    # -d 使用的日期串不一定总是以相同的格式呈现.
+    # -d可以接受任何的标准日期格式
+    touch -d "Fri Jun 25 20:50:14 IST 1999" filename
+#+end_src
 *** 3.9 查找符号链接及其指向目标
+    在类UNIX系统中,符号链接很常见.
 **** 3.9.1 预备知识
+    符号链接只不过是指向其他文件的指针.它在功能上类似于mac OS中的
+别名或Windows中的快捷方式.删除符号链接不会影响到原始文件.
 **** 3.9.2 实战演练
+    我们可以按照下面的方法创建符号链接:
+    #+begin_src bash
+      # ln -s target symbolic_link_name
+      # 例如:
+      ln -l -s /var/www/ ~/web
+    #+end_src
+
+    对于每一个符号链接而言,权限标记部分以字母"l"作为起始,表示这是一
+个符号链接.
+    因此,为了打印出当前目录下的符号链接,可以使用下面的命令:
+    #+begin_src bash
+      ls -l | grep "^l" | awk '{print $8}'
+    #+end_src
+    另一种方法是用find打印符号链接,如下所示:
+    #+begin_src bash
+      find . -type l -print
+    #+end_src
+
+    用下列命令可以打印出符号链接的指向目标
+    #+begin_src bash
+      ls -l web | awk '{print $10}'
+    #+end_src
 *** 3.10 列举文件类型统计信息
+    如果编写一个脚本,使它能够遍历一个目录中所有的文件,并生成一份关于
+文件类型细节以及每种文件类型数量的报告,这肯定很有意思.
 **** 3.10.1 预备知识
+    find命令可以通过查看文件内容来找出特定类型的文件.在UNIX/Linux系统
+中,文件类型并不是由文件扩展名决定的(而在微软windows平台中正是这么做的)
 **** 3.10.2 实战演练
+    用下面的命令打印文件类型信息:
+    #+begin_src bash
+      # file filename
+      file /etc/passwd
+    #+end_src
+
+    打印不包括文件名在内的文件类型信息:
+    #+begin_src bash
+      # file -b filename
+    #+end_src
 **** 3.10.3 工作原理
 *** 3.11 换回文件与挂载
+    环回文件系统是指那些在文件中而非物理设备中创建的文件系统.
+我们可以将这些文件挂载到挂载点上,就想设备一样.
 **** 3.11.1 预备知识
+    环回文件系统存在于文件之中.我们通过将环回文件连接到一个设
+备文件来进行挂载(mount).环回文件系统的一个例子就是初始化内存
+文件,它位于/boot/initrd.img.
 **** 3.11.2 实战演练
+    下面的文件可以创建一个1GB大小的文件.
+    #+begin_src bash
+      dd if=/dev/zero of=loopbackfile.img bs=1G count=1
+    #+end_src
+
+    用mkfs命令格式化这个1gb的文件
+    #+begin_src bash
+      # mkfs.ext4 loopbackfile.img
+    #+end_src
+
+    使用下面的命令检查文件系统:
+    #+begin_src bash
+      sudo file loopbackfile.img
+    #+end_src
+
+    现在就可以挂载环回文件了
+    #+begin_src bash
+      # mount -o loop loopback.img /mnt/loopback
+    #+end_src
 **** 3.11.3 补充内容
+    1. 将ISO文件作为环回文件挂载
+       ISO文件是任意种类光学存储介质的归档.我们可以采用环回
+       挂载的方法,像挂载物理光盘一样挂载ISO文件.
+       挂载点就是一个目录,用来作为通过文件系统访问设备内容的
+       路径.
+       #+begin_src bash
+	 mkdir /mnt/iso
+	 mount -o loop linux.iso /mnt/iso
+       #+end_src
+       现在就可以用/mnt/iso中的文件进行操作了.ISO是一个只读文
+       件系统.
+    2. 通过sync立即应用更改
+       当对挂载设备作出更改之后,这些改变并不会被立即写入物理设
+       备.只有当缓冲区被写满之后才会进行设备回写.但是我们可以
+       用sync命令强制将它即刻写入更改:
+       #+begin_src bash
+	 sync
+       #+end_src
 *** 3.12 生成ISO文件及混合iso
 **** 3.12.1 预备知识
 **** 3.12.2 实战演练
 **** 3.12.3 补充内容
 *** 3.13 查找文件差异并进行修补
+    我们可以用patch命令将修补文件中包含的更改信息应用到原始文件中.
+我们也可以再次进行修补来撤销改变.
+
 **** 3.13.1 实战演练
+    diff命令可以生成差异文件.为了生成差异信息,先创建下列文件
+(具体文件在当前目录中).
+    非一体化的输出(在不使用-u选项的情况下)如下:
+    #+begin_src bash
+      diff version1.txt version2.txt
+    #+end_src
+
+    一体化的形式输出如下:
+    #+begin_src bash
+      diff -u version1.txt version2.txt
+    #+end_src
+
+    选项-u用于生成一体化输出.因为一体化输出的可读性更好,更易于看出两
+个文件之间的差异,所以人们往往更喜欢这种输出形式.
+    在一体化diff输出中,以+起始的是新加入的行,以-起始的是删除的行.
+    修补文件可以通过将diff的输出重定向到一个文件来生成:
+    #+begin_src bash
+      diff -u version1.txt version2.txt > version.patch
+    #+end_src
+
+    现在就可以用patch命令将修改应用于任意一个文件.当应用于version1.txt
+    时,我们就可以得到version2.txt;而当应用于version2.txt时,就可以得到
+    version1.txt.
+    用下列命令进行修补:
+    #+begin_src bash
+      patch -p1 version1.txt < version.patch
+    #+end_src
+
+    下面的命令可以撤销做出的修改:
+    #+begin_src bash
+      patch -p1 version1.txt < version.patch
+    #+end_src
+
 **** 3.13.2 补充内容
+     
 *** 3.14 head与tail--打印文件的前10行和后10行
+    我们有可能需要打印出文件的前n行或后n行,也有可能需要打印出除了前n
+    行或后n行之外所有的行.还有一种用例是打印文件的第n行至第m行.head和
+    tail命令可以帮助我们实现这一切.
+**** 实战演练
+    head命令总是读取输入文件的头部.
+    #+begin_src bash
+      # 打印前10行
+      head file
+    #+end_src
+
+    #+begin_src bash
+      # 从stdin读取数据
+      cat text | head
+    #+end_src
+
+    #+begin_src bash
+      # 指定打印前几行
+      head -n 4 file
+    #+end_src
+
+    #+begin_src bash
+      # 打印除了最后n行之外所有的行
+      head -n -N file
+      # 注意-N表示一个负数
+    #+end_src
+
+    #+begin_src bash
+      # 用下列的代码打印除了最后5行之外的所有行:
+      seq 11 | head -n -5
+    #+end_src
+
+    #+begin_src bash
+      # 打印出的第1行至第5行
+      seq 100 | head -n 5
+    #+end_src
+
+    #+begin_src bash
+      # 打印文件的最后10行
+      tail file
+    #+end_src
+
+    #+begin_src bash
+      # 从stdin读取数据
+      cat text | tail
+    #+end_src
+
+    #+begin_src bash
+      # 打印最后5行
+      tail -n 5 file
+    #+end_src
+
+    打印除了前n行之外所有的行
+    tail -n +(N+1)
+    #+begin_src bash
+      # 打印除前5行之外的所有行
+      seq 100 | tail -n +6
+    #+end_src
+
+    tail有一个特殊的选项-f或--follow,它们会使tail密切关注文件中新添加
+    的内容,并随着数据的增加时时保持更新:
+    #+begin_src bash
+      tail -f growing_file
+      # 或者
+      dmesg | tail -f
+    #+end_src
+
+    我们不时会运行dmeg,查看内核的环形缓冲区消息.
+
+    tail具有一个很有意思的特性:当某个给定进程结束之后,tail也会随之终
+    结.
+
 *** 3.15 只列出目录的其他方法
 **** 3.15.1 预备知识
 **** 3.15.2 实战演练
+    有4种方法可以列出当前路径下的目录,分别列出如下:
+    - 结合-d的用法才能够只打印出目录
+
+	#+begin_src bash
+	  ls -d  */
+	#+end_src
+
+    - 当使用-F时,所有的输出项都会添加上一个代表文件类型的字符.
+      对于目录项,添加的是/字符.
+
+	#+begin_src bash
+	ls -F | grep "/$"
+	#+end_src
+
+    - ls -l输出的每一行的第一个字符表示文件类型.目录的文件类型字符是
+      "d".
+
+      #+begin_src bash
+	ls -l | grep "^d"
+      #+end_src
+
+    - find命令可以指定type的参数为目录并将maxdepth设置成1,这是因为我们
+      不需要向下搜素.
+      #+begin_src bash
+	find . -type d -maxdepth 1 -print
+      #+end_src
+
 *** 3.16 在命令行中用pushd和popd快速定位
+**** 3.16.1 预备知识
+    pushd和popd可以用于在多个目录之间进行切换而无需复制并粘贴目录路径.
+    pushd和popd是以栈的方式来运作.
+**** 3.16.2 实战演练
+    为了压入并切换路径,使用:
+    #+begin_src bash
+      pushd /var/www
+    #+end_src
+
+    然后再压入下一个目录:
+    #+begin_src bash
+      pushd /usr/src
+    #+end_src
+
+    用下面的命令查看栈内容:
+    #+begin_src bash
+      dirs
+    #+end_src
+
+    当你想切换到列表中任意一个路径时,将每条路径从0到n进行编号,然后使用
+    你希望奇幻岛的路径编号,例如:
+    #+begin_src bash
+      pushd +3
+    #+end_src
+
+    pushd总是将路径添加到栈,如果要从栈中删除路径,可以使用popd.
+
+**** 3.16.3 补充内容
+   当涉及3个以上的目录时,可以使用pushd和popd.但是当你只涉及两个位置
+   的时候,还有另一个更简便的方法:cd -
 *** 3.17 统计文件的行数,单词数和字符数
+**** 3.17.1 预备知识
+    wc是一个用于统计的工具.它是word Count(单词统计)的缩写.
+**** 3.17.2 实战演练
+    统计行数:
+    #+begin_src bash
+      wc -l file
+    #+end_src
+
+    将stdin作为输入,使用下列命令:
+    #+begin_src bash
+      cat file | wc -l
+    #+end_src
+
+    统计单词数:
+    #+begin_src bash
+      wc -w file
+      cat file | wc -w
+    #+end_src
+
+    统计字符数:
+    #+begin_src bash
+      wc -c file
+      cat file | wc -c
+    #+end_src
+
+    #+begin_src bash
+      # -n用于避免echo添加额外的换行符
+      echo -n 1234 | wc -c
+    #+end_src
+
+    #+begin_src bash
+      # 当不使用任何选项执行wc时
+      wc file
+      # 它会打印出文件的行数,单词和字符数,彼此之间用制表符分隔
+    #+end_src
+    
+**** 3.17.3 补充知识
+    打印最长行的长度
+    wc可以借助-L选项打印最长行的长度:
+    #+begin_src bash
+      wc file -L
+    #+end_src
+    
 *** 3.18 打印目录树
+**** 3.18.1 预备知识
+    tree命令是以图形化的树状结构打印文件和目录的主角.
+**** 3.18.2 实战演练
+**** 3.18.3 补充内容
+    以HTML形式输出目录树
+    #+begin_src bash
+      tree PATH -H http://localhost -o out.html
+    #+end_src
+     

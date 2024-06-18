@@ -60,6 +60,7 @@
     5) 插入模板:<s TAB: 可以插入代码块(更好的方法是C-c C-,):
            #+BEGIN_SRC
            #+END_SRC
+	6) 查看当前文件类型下所有的temple,命令是M-x yas-describe-tables
 
 
 ** 其他资料整理:
