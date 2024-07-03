@@ -1,0 +1,9 @@
+** 如何更改IP
+1. 显示连接:nmcli connection
+2. 设置IP地址:nmcli connection modify enp1s0 ipv4.addresses 10.0.0.30/24
+3. 设置网关:nmcli connection modify enp1s0 ipv4.gateway 10.0.0.1
+4. 设置DNS:nmcli connection modify enp1s0 ipv4.dns 10.0.0.10
+5. 设置是否自动获取IP(DHCP):nmcli connection modify enp1s0 ipv4.method manual
+6. 重新启动界面以重新加载设置:nmcli connection up enp1s0
+7. 确认设置:nmcli device show enp1s0
+8. IP显示:ip address show
