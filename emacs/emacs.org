@@ -113,22 +113,22 @@
 *** 9.在centos8中安装vterm package遇到的问题
 *** 10).安装libvterm遇到的一些问题:
     1) .安装libvterm(在搬瓦工上遇到的问题,可能是因为没有配置阿里云的问题)
-	1) 下载安装包:
-	#+BEGIN_SRC
-	wget https://www.leonerd.org.uk/code/libvterm/libvterm-0.3.3.tar.gz
-	#+END_SRC
-	2) 解压安装包:
-	#+BEGIN_SRC
-	tar -xvf libvterm-0.3.3.tar.gz
-	#+END_SRC
-	3) 进入安装包目录,并且安装
-	#+BEGIN_SRC
-	cd libvterm-0.3.3 && make
-	#+END_SRC
-	4) 完成安装
-	#+BEGIN_SRC
-	sudo make install
-	#+END_SRC
+       1) 下载安装包:
+       #+BEGIN_SRC
+       wget https://www.leonerd.org.uk/code/libvterm/libvterm-0.3.3.tar.gz
+       #+END_SRC
+       1) 解压安装包:
+       #+BEGIN_SRC
+       tar -xvf libvterm-0.3.3.tar.gz
+       #+END_SRC
+       1) 进入安装包目录,并且安装
+       #+BEGIN_SRC
+       cd libvterm-0.3.3 && make
+       #+END_SRC
+       1) 完成安装
+       #+BEGIN_SRC
+       sudo make install
+       #+END_SRC
     2) .报错: libvterm not found
 	#+BEGIN_SRC
 	sudo yum install libvterm-devel
@@ -138,3 +138,7 @@
 	sudo yum install -y cmake libarchive
 	#+END_SRC
     4) .在emacs中安装编译.
+*** 11).在org-mode的表格中如何输入|:
+    输入\vert代替|,如何没有转换,输入快捷键C-x C-c \
+*** 12).在org-mode的表格中如何输入[[[[:]]]]:
+    上面标题就遇到了同样的问题,可以输入4对[]
