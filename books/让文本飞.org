@@ -240,8 +240,14 @@
        如果需要从文件中读取所需排除的文件列表,使用
        --exclude-from FILE.
 
+    5. 使用0值字节后缀的grep与xargs
+       grep 输出以0值字节作为终结符的文件名(\0).这可以用grep的
+       -Z选项来指定.
+       #+begin_src bash
+	 grep "test" file* -lZ | xargs -0 rm
+       #+end_src
 
-
+    6. grep的静默输出
 
 *** 4.4 用cut按列切分文件
 *** 4.5 统计特定文件中的词频
