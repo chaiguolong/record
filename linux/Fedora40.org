@@ -1,7 +1,0 @@
-** 1.使用nmcli命令配置静态IP地址
-#+begin_src bash
-  # 显示系统上当前配置的所有连接列表
-  nmcli connection show
-  nmcli
-#+end_src
-
