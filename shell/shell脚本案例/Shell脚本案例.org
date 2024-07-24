@@ -1,16 +1,16 @@
 ** Shell脚本案例
 *** 100个Linux Shell脚本案例
 1. 编写hello world脚本
-   [[file:~/Document/record/shell/shell脚本案例/hello.sh]]
+   [[file:~/Documents/record/shell/shell脚本案例/hello.sh]]
    
 2. 通过位置变量创建Linux系统账户及密码
-   [[file:~/Document/record/shell/shell脚本案例/addUser.sh]]
+   [[file:~/Documents/record/shell/shell脚本案例/addUser.sh]]
    
 3. 备份日志
-   [[file:~/Document/record/shell/shell脚本案例/logbak.sh]]
+   [[file:~/Documents/record/shell/shell脚本案例/logbak.sh]]
 
 4. 监控内存和磁盘容量,小于给定值时报警
-   [[file:~/Document/records/shell/shell脚本案例/disk_Mem.sh]]
+   [[file:~/Documents/records/shell/shell脚本案例/disk_Mem.sh]]
 
 5. 猜数字游戏
-   [[file:~/Document/record/shell/shell脚本案例/guess_num.sh]]
+   [[file:~/Documents/record/shell/shell脚本案例/guess_num.sh]]
