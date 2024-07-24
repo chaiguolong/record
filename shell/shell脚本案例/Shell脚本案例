@@ -1,0 +1,14 @@
+** Shell脚本案例
+*** 100个Linux_Shell脚本经典案例
+1. 编写hello world脚本
+   #+begin_src bash
+     #!/bin/bash
+     #编写hello world脚本
+
+     echo "hello world!"
+   #+end_src
+
+   #+RESULTS:
+   : hello world!
+
+2. 通过位置变量创建Linux系统账号及密码
