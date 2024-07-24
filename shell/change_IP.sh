@@ -37,6 +37,9 @@ set_dns(){
 	read -p "Please input DNS1: " DNS1
 	nmcli connection modify $conn ipv4.dns $DNS1
 }
+show_device(){
+    nmcli device show $conn
+}
 reload_config(){
 	nmcli connection up $conn
 }
@@ -52,8 +55,9 @@ cat <<-EOF
 1)set_ip
 2)set_gateway
 3)set_dns
-4)reload_config
-5)show_ip
+4)show_device
+5)reload_config
+6)show_ip
 q)退出
 
 EOF
@@ -70,9 +74,12 @@ case "$num" in
     set_dns
     ;;
 4)
-    reload_config
+    show_device
     ;;
 5)
+    reload_config
+    ;;
+6)
     show_ip
     ;;
 q)
