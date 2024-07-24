@@ -19,7 +19,7 @@
 	#+end_src
 ***** 0.2.2)生成秘钥:
 	#+begin_src bash
-	ssh-keygen -t rsa -C "chaiguolong1@gmail.com"
+	ssh-keygen -t rsa -C "584238433@qq.com"
 	#+end_src
 ***** 0.2.3)获取SSH Key:根据命令行提示,获取以ssh-rsa的字符串(包括ssh-rsa)按键"回车键" 生成了SSH Key(密钥)
 **** 0.3).SSH key生成的路径一般为~/.ssh/下,打开id_rsa.pub,进行全选复制内容.
