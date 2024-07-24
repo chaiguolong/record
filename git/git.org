@@ -396,3 +396,5 @@ ProxyCommand nc -x 127.0.0.1:1081 %h %p
 #+end_src
 ** 19.如何使用git pull将远程分支合并到本地分支
 *** 1.https://blog.csdn.net/FFFSSSFFF6/article/details/134948542
+** 20.git中文显示乱码
+  git config --global core.quotepath false

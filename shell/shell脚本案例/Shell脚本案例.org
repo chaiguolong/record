@@ -2,7 +2,7 @@
 *** 100个Linux_Shell脚本经典案例
 1. 编写hello world脚本
    [[file:/home/dream/record/shell/shell脚本案例/hello.sh]]
-   [[file:~/record/shell/shell脚本案例/hello.sh]]
+   [[file:/dream/record/shell/shell脚本案例/hello.sh]]
 
 2. 通过位置变量创建Linux系统账号及密码
    [[file:/home/dream/record/shell/shell脚本案例/addUser.sh]]
