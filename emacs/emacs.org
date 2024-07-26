@@ -44,12 +44,13 @@
     - C-c t 将光标下的英文翻译为中文
 *** 4.org-mode快捷键:
     1) 日程管理
-        - C-c C-t: 将当前栏目切换为TODO/DONE
-        - C-c C-s: 将agenda设置开始日期
-        - C-c C-d: 将agenda设置结束日期
+       - C-c C-t: 将当前栏目切换为TODO/DONE
+       - C-c C-s: 将agenda设置开始日期
+       - C-c C-d: 将agenda设置结束日期
     2) 基本操作
-        - Tab: 放到当前标题,折叠(切换)当前树及子树
+       - Tab: 放到当前标题,折叠(切换)当前树及子树
     3) 其他:
+       
     4) org文件开头设置
 	#+begin_src 
 	#+STARTUP: overview
@@ -58,10 +59,13 @@
 	#+STARTUP: showeverything
 	#+end_src
     5) 插入模板:<s TAB: 可以插入代码块(更好的方法是C-c C-,):
+
            #+BEGIN_SRC
            #+END_SRC
-	6) 查看当前文件类型下所有的temple,命令是M-x yas-describe-tables
+       
+    6) 查看当前文件类型下所有的temple,命令是M-x yas-describe-tables
 
+    7) C-c ['] : 在org-mode下,允许在本地进行代码段的编辑操作
 
 ** 其他资料整理:
 *** 1).在半马人的emacs配置中添加插件evil.
