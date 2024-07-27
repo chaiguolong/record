@@ -67,6 +67,10 @@
 
     7) C-c ['] : 在org-mode下,允许在本地进行代码段的编辑操作
 
+    8) C-u C-c C-l:插入文件链接
+
+    9) C-c C-o:打开链接
+
 ** 其他资料整理:
 *** 1).在半马人的emacs配置中添加插件evil.
 	1) 在init.el文件添加文本(require 'init-evil)
