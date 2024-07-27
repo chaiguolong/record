@@ -1,205 +1,40 @@
 ** Shell脚本案例
 *** 100个Linux Shell脚本案例
 1. 编写hello world脚本
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 编写hello world脚本
- 
-     echo "Hello World!"
-   #+end_src
+   [[file:hello.sh][hello_world.sh]]
 
 2. 通过位置变量创建 Linux 系统账户及密码
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 通过位置变量创建 Linux 系统账户及密码
- 
-     #$1 是执行脚本的第一个参数,$2 是执行脚本的第二个参数
-     useradd    "$1" 
-     echo "$2"  |  passwd  ‐‐stdin  "$1"
-   #+end_src
+   [[file:addUser.sh][addUser.sh]]
 
 3. 备份日志
-   #+begin_src bash
-
-     #!/bin/bash
-     # 每周 5 使用 tar 命令备份/var/log 下的所有日志文件
-     # vim  /root/logbak.sh
-     # 编写备份脚本,备份后的文件名包含日期标签,防止后面的备份将前面的备份数据覆盖
-     # 注意 date 命令需要使用反引号括起来,反引号在键盘<tab>键上面
-     tar  -czf  log-`date +%Y%m%d`.tar.gz  /var/log 
- 
-     # crontab ‐e  #编写计划任务,执行备份脚本
-     00  03  *  *  5  /root/logbak.sh
-   #+end_src
+   [[file:logbak.sh][logbak.sh]]
 
 4. 一键部署 LNMP(RPM 包版本)
-   #+begin_src bash
-     #!/bin/bash
-     # 一键部署 LNMP(RPM 包版本)
-     # 使用 yum 安装部署 LNMP,需要提前配置好 yum 源,否则该脚本会失败
-     # 本脚本使用于 centos7.2 或 RHEL7.2
-     yum ‐y install httpd
-     yum ‐y install mariadb mariadb‐devel mariadb‐server
-     yum ‐y install php  php‐mysql
- 
-     systemctl start httpd mariadb
-     systemctl enable httpd mariadb
-   #+end_src
+   [[file:install_LNMP.sh][install_LNMP.sh]]
 
 5. 监控内存和磁盘容量，小于给定值时报警
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 实时监控本机内存和硬盘剩余空间,剩余内存小于500M、根分区剩余空间小于1000M时,发送报警邮件给root管理员
- 
-     # 提取根分区剩余空间
-     disk_size=$(df / | awk '/\//{print $4}')
- 
-     # 提取内存剩余空间
-     mem_size=$(free | awk '/Mem/{print $4}')
-     while :
-     do
-     # 注意内存和磁盘提取的空间大小都是以 Kb 为单位
-     if  [  $disk_size -le 512000 -a $mem_size -le 1024000  ]
-     then
-	 mail  ‐s  "Warning"  root  <<EOF
-       Insufficient resources,资源不足
-     EOF
-     fi
-     done
-   #+end_src
+   [[file:disk_Mem.sh][disk_Mem.sh]]
 
 6. 猜数字游戏
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 脚本生成一个 100 以内的随机数,提示用户猜数字,根据用户的输入,提示用户猜对了,
-     # 猜小了或猜大了,直至用户猜对脚本结束。
- 
-     # RANDOM 为系统自带的系统变量,值为 0‐32767的随机数
-     # 使用取余算法将随机数变为 1‐100 的随机数
-     num=$[RANDOM%100+1]
-     echo "$num"
- 
-     # 使用 read 提示用户猜数字
-     # 使用 if 判断用户猜数字的大小关系:‐eq(等于),‐ne(不等于),‐gt(大于),‐ge(大于等于),
-     # ‐lt(小于),‐le(小于等于)
-     while  :
-     do
-       read -p "计算机生成了一个 1‐100 的随机数,你猜: " cai
-	 if [ $cai -eq $num ]
-	 then
-	      echo "恭喜,猜对了"
-	      exit
-	   elif [ $cai -gt $num ]
-	   then
-		  echo "Oops,猜大了"
-	     else
-		  echo "Oops,猜小了"
-	fi
-     done
-   #+end_src
+   [[file:guess_num.sh][guess_num.sh]]
 
 7. 检测本机当前用户是否为超级管理员,如果是管理员,
    则使用 yum 安装 vsftpd,如果不是,则提示您非管理员
    (使用字串对比版本)
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 检测本机当前用户是否为超级管理员,如果是管理员,则使用 yum 安装 vsftpd,如果不
-     # 是,则提示您非管理员(使用字串对比版本) 
-     if [ $USER == "root" ]
-     then
-       yum ‐y install vsftpd
-     else
-	 echo "您不是管理员,没有权限安装软件"
-     fi
-   #+end_src
+   [[file:is_root_string.sh][is_root_string.sh]]
 
 8. 检测本机当前用户是否为超级管理员,如果是管理员,
    则使用 yum 安装 vsftpd,如果不是,则提示您非管理员
    (使用 UID 数字对比版本)
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 检测本机当前用户是否为超级管理员,如果是管理员,则使用 yum 安装 vsftpd,如果不
-     # 是,则提示您非管理员(使用 UID 数字对比版本)
-     if [ $UID -eq 0 ];then
-	 yum ‐y install vsftpd
-     else
-	 echo "您不是管理员,没有权限安装软件"
-     fi
-   #+end_src
+   [[file:is_root_uid.sh][is_root_uid.sh]]
 
 9. 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户
    及配置密码。如果用户不输入账户名,则提示必须输入账户名并退出脚本;
    如果用户不输入密码,则统一使用默认的 123456 作为默认密码。
-   #+begin_src bash
-     #!/bin/bash
- 
-     # 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户及配置密码。如果用户
-     # 不输入账户名,则提示必须输入账户名并退出脚本;如果用户不输入密码,则统一使用默
-     # 认的 123456 作为默认密码。
- 
-     read -p "请输入用户名: " user
-     #使用‐z 可以判断一个变量是否为空,如果为空,提示用户必须输入账户名,并退出脚本,退出码为 2
-     #没有输入用户名脚本退出后,使用$?查看的返回码为 2
-     if [ -z $user ];then
-	  echo "您不需输入账户名"
-	exit 2
-     fi
-     #使用 stty ‐echo 关闭 shell 的回显功能
-     #使用 stty  echo 打开 shell 的回显功能
-     stty -echo
-     read -p "请输入密码: " pass
-     stty echo
-     pass=${pass:‐123456}
-     useradd "$user"
-     echo "$pass" | passwd ‐‐stdin "$user"
-   #+end_src
+   [[file:addUser2.sh][addUser2.sh]]
 
 10. 输入三个数并进行升序排序
-    #+begin_src bash
-      #!/bin/bash
-
-      # 依次提示用户输入 3 个整数,脚本根据数字大小依次排序输出 3 个数字
-      read -p "请输入一个整数:" num1
-      read -p "请输入一个整数:" num2
-      read -p "请输入一个整数:" num3
-      # 不管谁大谁小,最后都打印 echo "$num1,$num2,$num3"
-      # num1 中永远存最小的值,num2 中永远存中间值,num3 永远存最大值
-      # 如果输入的不是这样的顺序,则改变数的存储顺序,
-      # 如:可以将 num1 和 num2 的值对调
-      tmp=0
-      # 如果 num1 大于 num2,就把 num1 和和 num2 的值对调,
-      # 确保 num1 变量中存的是最小值
-      if [ $num1 -gt $num2 ];then   
-	tmp=$num1
-	num1=$num2
-	num2=$tmp
-      fi
-      # 如果 num1 大于 num3,就把 num1 和 num3 对调,
-      # 确保 num1 变量中存的是最小值
-      if [ $num1 -gt $num3 ];then   
-	  tmp=$num1
-	  num1=$num3
-	  num3=$tmp
-      fi
-      # 如果 num2 大于 num3,就把 num2 和 num3 对标,
-      # 确保 num2 变量中存的是小一点的值
-      if [ $num2 -gt $num3 ];then
-	  tmp=$num2
-	  num2=$num3
-	  num3=$tmp
-      fi
-      echo "排序后数据(从小到大)为:$num1,$num2,$num3"
-    #+end_src
+    [[file:sort_up.sh][sort_up.sh]]
 
 11. 石头、剪刀、布游戏
-    #+begin_src bash
-      #!/usr/bin/env bash
-
-    #+end_src
-
+    [[file:game1.sh][game1.sh]]
