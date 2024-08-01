@@ -38,3 +38,17 @@
 
 11. 石头、剪刀、布游戏
     [[file:game1.sh][game1.sh]]
+
+12. 编写脚本测试192.168.0.0/24整个网段中哪些主机处于开机
+    [[file:is_running.sh][is_running.sh]]
+
+13. 编写脚本测试192.168.0.0/24整个网段中哪些主机处于开机,
+    哪些主机处于关机.
+    [[file:is_running02.sh][is_running02.sh]]
+
+14. 编写脚本测试192.168.4.0/24整个网段中哪些主机处于开机
+    状态,哪些主机处于关机状态(多进程版)
+    [[file:is_running03.sh][is_running03.sh]]
+
+15. 编写脚本,显示进度条
+    [[file:show_progress.sh][show_progress.sh]]
