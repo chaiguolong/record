@@ -1,19 +1,27 @@
 ** Shell脚本案例
 *** 100个Linux Shell脚本案例
 1. 编写hello world脚本
-   [[file:hello.sh][hello_world.sh]]
+   [[file:hello_world.sh][hello_world.sh]]
 
 2. 通过位置变量创建 Linux 系统账户及密码
    [[file:addUser.sh][addUser.sh]]
+   [[file:addUser01.sh][addUser01.sh]] 
+   [[file:addUser02.sh][addUser02.sh]] 
 
 3. 备份日志
+   # 每周五备份/var/log下的所有日志文件
+   # 编写备份脚本,备份后的文件名包含日期标签,
+   # 防止后面粉备份将前面的备份数据覆盖
    [[file:logbak.sh][logbak.sh]]
+   [[file:logbak01.sh][logbak01.sh]]
+   [[file:logbak02.sh][logbak02.sh]]
 
 4. 一键部署 LNMP(RPM 包版本)
    [[file:install_LNMP.sh][install_LNMP.sh]]
 
 5. 监控内存和磁盘容量，小于给定值时报警
    [[file:disk_Mem.sh][disk_Mem.sh]]
+   [[file:disk_Mem01.sh][disk_Mem01.sh]]
 
 6. 猜数字游戏
    [[file:guess_num.sh][guess_num.sh]]
@@ -53,4 +61,3 @@
 15. 编写脚本,显示进度条
     [[file:show_progress.sh][show_progress.sh]]
 
-    

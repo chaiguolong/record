@@ -45,5 +45,7 @@
     #+end_src
 **** 3.2 epel(RHEL 7)
 ***** 1.wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
-
+** 3.其他
+*** 1. while:中的冒号作为占位符
+1.冒号可以用作一个空语句占位符，在某些情况下，需要一条语句但又不需要执行任何操作时可以使用冒号
 
