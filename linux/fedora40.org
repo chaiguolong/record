@@ -1,9 +1,60 @@
-** 如何更改IP
-1. 显示连接:nmcli connection
-2. 设置IP地址:nmcli connection modify enp1s0 ipv4.addresses 10.0.0.30/24
-3. 设置网关:nmcli connection modify enp1s0 ipv4.gateway 10.0.0.1
-4. 设置DNS:nmcli connection modify enp1s0 ipv4.dns 10.0.0.10
-5. 设置是否自动获取IP(DHCP):nmcli connection modify enp1s0 ipv4.method manual
-6. 重新启动界面以重新加载设置:nmcli connection up enp1s0
-7. 确认设置:nmcli device show enp1s0
-8. IP显示:ip address show
+** fedora40知识点汇总
+*** 1.如何更改IP
+  1.显示连接:nmcli connection
+  2.设置IP地址:nmcli connection modify enp1s0 ipv4.addresses 10.0.0.30/24
+  3.设置网关:nmcli connection modify enp1s0 ipv4.gateway 10.0.0.1
+  4.设置DNS:nmcli connection modify enp1s0 ipv4.dns 10.0.0.10
+  5.设置是否自动获取IP(DHCP):nmcli connection modify enp1s0 ipv4.method manual
+  6.重新启动界面以重新加载设置:nmcli connection up enp1s0
+  7.确认设置:nmcli device show enp1s0
+  8.IP显示:ip address show
+*** 2.mail邮件设置
+  1. 安装mailx
+     yum -y install mailx
+
+  2. 开启/查看/并添加开机启动postfix服务
+     systemctl start postfix.service
+     systemctl status postfix.service
+     systemctl enable postfix.service
+
+  3. 配置mail
+     进入QQ邮箱,设置-->账号-->POP3/IMAP-->开启服务-->生成授权码.
+
+  4. 修改配置文件:vim /etc/mail.rc
+    set from=xxxxxx@qq.com # 这里必须和set smtp-auth-user的邮箱一样
+    set smtp=smtps://smtp.qq.com:465
+    set smtp-auth-user=xxxxxx@qq.com
+    set smtp-auth-password=你的 QQ 邮箱授权码
+    set smtp-auth=login
+    #set smtp-use-starttls 这里是不需要配置的，很多地方没说明，配置了反而会验证失败，所以我注释掉；
+    set ssl-verify=ignore
+    set nss-config-dir=/root/.certs
+
+  5. 配置QQ邮箱的SSL证书
+     1. 新建证书存放目录: mkdir -p /root/.certs/
+
+     2. 执行下面命令
+	echo -n | openssl s_client -connect smtp.qq.com:465 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > ~/.certs/qq.crt
+	certutil -A -n "GeoTrust SSL CA" -t "C,," -d ~/.certs -i ~/.certs/qq.crt
+	certutil -A -n "GeoTrust Global CA" -t "C,," -d ~/.certs -i ~/.certs/qq.crt
+	certutil -L -d /root/.certs
+
+     3. 为了防止出现前文所说的发送邮件警告提示,还需要进入邮箱SSL证书存放目录/root/.certs里执行如下命令：
+
+	cd /root/.certs
+	certutil -A -n "GeoTrust SSL CA - G3" -t "Pu,Pu,Pu" -d ./ -i qq.crt
+
+	返回如下提示即可：
+
+	Notice: Trust flag u is set automatically if the private key is
+	present.
+
+     4. 通过命令行发送测试邮件
+	echo "hello world" | mail -s "您好" 1185808008@qq.com
+
+
+	
+
+     
+
+

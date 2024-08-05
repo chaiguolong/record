@@ -9,7 +9,7 @@ echo $Mem_size
 
 while :; do
     if [ $disk_size -le 1000000 -a $Mem_size -le 500000 ]
-    then mail -s "Warinning" <<EOF
+    then mail -s "Warinning" root <<EOF
     "资源紧张,内存和硬盘存储空间不够"
 EOF
 fi
