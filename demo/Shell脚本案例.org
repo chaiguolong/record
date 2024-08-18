@@ -20,29 +20,40 @@
    [[file:install_LNMP.sh][install_LNMP.sh]]
 
 5. 监控内存和磁盘容量，小于给定值时报警
-   [[file:disk_Mem.sh][disk_Mem.sh]]
-   [[file:disk_Mem01.sh][disk_Mem01.sh]]
+    [[file:disk_Mem.sh][disk_Mem.sh]]
+    [[file:disk_Mem01.sh][disk_Mem01.sh]]
+    [[file:disk_Mem02.sh][disk_Mem02.sh]]
 
 6. 猜数字游戏
-   [[file:guess_num.sh][guess_num.sh]]
+    [[file:guess_num.sh][guess_num.sh]]
+    [[file:guess_num01.sh][guess_num01.sh]]
+    [[file:guess_num02.sh][guess_num02.sh]]
 
 7. 检测本机当前用户是否为超级管理员,如果是管理员,
    则使用 yum 安装 vsftpd,如果不是,则提示您非管理员
    (使用字串对比版本)
-   [[file:is_root_string.sh][is_root_string.sh]]
+    [[file:is_root_string.sh][is_root_string.sh]]
+    [[file:is_root_string01.sh][is_root_string01.sh]]
+    [[file:is_root_string02.sh][is_root_string02.sh]] 
 
 8. 检测本机当前用户是否为超级管理员,如果是管理员,
    则使用 yum 安装 vsftpd,如果不是,则提示您非管理员
    (使用 UID 数字对比版本)
-   [[file:is_root_uid.sh][is_root_uid.sh]]
+    [[file:is_root_uid.sh][is_root_uid.sh]]
+    [[file:is_root_uid01.sh][is_root_uid01.sh]]
+    [[file:is_root_uid02.sh][is_root_uid02.sh]]
 
 9. 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户
    及配置密码。如果用户不输入账户名,则提示必须输入账户名并退出脚本;
    如果用户不输入密码,则统一使用默认的 123456 作为默认密码。
-   [[file:addUser2.sh][addUser2.sh]]
+    [[file:addUser2.sh][addUser2.sh]]
+    [[file:addUser2_002.sh][addUser2_002.sh]]
+    [[file:addUser2_003.sh][addUser2_003.sh]]
 
 10. 输入三个数并进行升序排序
     [[file:sort_up.sh][sort_up.sh]]
+    [[file:sort_up_01.sh][sort_up_01.sh]] 
+    [[file:sort_up_02.sh][sort_up_02.sh]]
 
 11. 石头、剪刀、布游戏
     [[file:game1.sh][game1.sh]]

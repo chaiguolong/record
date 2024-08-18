@@ -13,10 +13,13 @@ if [ -z $user ];then
 exit 2
 fi
 #使用 stty ‐echo 关闭 shell 的回显功能
+# stty(set tty<teletype(电打字机)>)
 #使用 stty  echo 打开 shell 的回显功能
 stty -echo
 read -p "请输入密码: " pass
 stty echo
-pass=${pass:‐123456}
+pass=${pass:-"123456"}
 useradd "$user"
-echo "$pass" | passwd ‐‐stdin "$user"
+echo "$pass" | passwd --stdin "$user"
+# 换行
+echo ""
