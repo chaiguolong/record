@@ -1,0 +1,5 @@
+*** Linux基础命令
+    1. 查看内核信息
+       #+begin_src bash
+	 uname -r
+       #+end_src

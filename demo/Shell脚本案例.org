@@ -57,18 +57,28 @@
 
 11. 石头、剪刀、布游戏
     [[file:game1.sh][game1.sh]]
+    [[file:game1_002.sh][game1_002.sh]]
+    [[file:game1_003.sh][game1_003.sh]]
 
 12. 编写脚本测试192.168.0.0/24整个网段中哪些主机处于开机
     [[file:is_running.sh][is_running.sh]]
+    [[file:is_running_01.sh][is_running_01.sh]]
+    [[file:is_running_02.sh][is_running_02.sh]]
 
 13. 编写脚本测试192.168.0.0/24整个网段中哪些主机处于开机,
     哪些主机处于关机.
     [[file:is_running02.sh][is_running02.sh]]
+    [[file:is_running02_01.sh][is_running02_01.sh]]
+    [[file:is_running02_02.sh][is_running02_02.sh]]
 
-14. 编写脚本测试192.168.4.0/24整个网段中哪些主机处于开机
+14. 编写脚本测试192.168.0.0/24整个网段中哪些主机处于开机
     状态,哪些主机处于关机状态(多进程版)
     [[file:is_running03.sh][is_running03.sh]]
+    [[file:is_running03_01.sh][is_running03_01.sh]]
+    [[file:is_running03_02.sh][is_running03_02.sh]] 
 
 15. 编写脚本,显示进度条
     [[file:show_progress.sh][show_progress.sh]]
+    [[file:show_progress_01.sh][show_progress_01.sh]]
+    [[file:show_progress_02.sh][show_progress_02.sh]]
 
