@@ -42,6 +42,8 @@
 *** 3.插件快捷键
     - C-x u 运行undo-tree
     - C-c t 将光标下的英文翻译为中文
+    - C-j 下一章节(看电子书nov.el)
+    - C-k 上一章节(看电子书nov.el)
 *** 4.org-mode快捷键:
     1) 日程管理
        - C-c C-t: 将当前栏目切换为TODO/DONE
