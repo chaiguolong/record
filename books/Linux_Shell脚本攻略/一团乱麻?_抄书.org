@@ -1,0 +1,278 @@
+#+startup: overview
+#+title: Linux_Shell脚本攻略
+#+author: dream
+
+* 第五章 一团乱麻?没这回事
+** 5.1 入门
+we正在成为反映技术发展的晴雨表,数据处理.尽管shell脚本没发像PHP一样
+在eb上大包大揽,但总还是有一些活儿适合它.本章会研究一些用于解析网站内
+容下载数据,发送数据表单以及网站作为任务自动化之类的实例.我们可以仅用
+几脚本就将很多原本需要通过浏览器交互进行的活动管理自动化.通过命令行
+工利用HTTP协议所提供的功能,我们可以用脚本解决大部分Web自动化的问题.
+来情享受接下来的内容吧.
+
+** 5.2 网站下载
+从定的url中下载文件或网页很简单,一些命令行下载工具就可以完成这项任务.
+
+*** 5.2.1 预备知识
+wget是一个用于文件下载的命令行工具,选项多且用法活.
+
+*** 5.2.2 实战演练
+用wget可以下载网页或远程文件:
+  wget URL
+
+例如:
+#+begin_src bash
+  wget http://slynux.org
+#+end_src
+
+可以指定从多个URL处进行下载:
+wgeet URL1 URL2 URL3..
+
+可以依据URL用wget下载文件:
+wget ftp://example_domain.com/somefile.img
+
+通常下载的文件名和URL中的文件名保持一致,下载信息或进度被写入stdout.
+
+你可以通过选项-o来指定输出文件名.如果存在同名文件,那么会先将该同名文件
+清空(truncate)再将下载文件写入.
+
+1.选项'-o file'中的-o并不是表示不采用URL中的文件名,而是由file指定.
+它的作用类似于shell重定向,也就是说,命令wget -o file http://foo实际
+相当于wget -o http://foo>file.
+
+你也可以用选项-o指定一个日志文件,从而不必将日志信息打印到stdout.
+
+#+begin_src bash
+    wget ftp://example_domain.com/somefile.img -O \
+    dloaded_file.img -o log
+#+end_src
+
+由于不稳定的internet连接,下载有可能被迫中断.我们可以将重试次
+数作为命令参数,这样一旦下载中断,wget在放弃下载之前还会继续进行
+多次尝试.
+
+用-t指定重试次数:
+wget -t 5 URL
+
+*** 5.2.3 补充内容
+wget还有一些其他选项,用以应对不同的情况.来看看其中的一部分吧.
+1. 下载限速
+   当我们的下载带宽有限,却又有多个应用程序共享该internet连接时,
+   进行大文件下载往往将榨干所有的带宽,严重阻滞其他进程.wget命令
+   有一个内建的选项可以限定下载任务能够占有的最大宽带,而从使得其他
+   引用程序流畅运行.
+   我们可以用--limit-rate按照下面的方式对wget限速:
+     wget --limit-rate 20k http://example.com/file.iso
+     在命令中用k(千字节)和m(兆)字节指定速度限制.
+
+     还可以指定最大下载配额(quota).配额一旦用尽,下载随之停止.
+  在下载多个文件的时候,对总下载量进行限制时很必要的,这能够避免在无意
+  中占用过多的磁盘空间.
+
+  使用--quota或-Q:
+    wget -Q 100m http://example.com/file1 \
+    http://example.com/file2
+
+2. 断点续传
+   如果使用wget进行的下载在完成之前被中断,可以利用选项-c从断点开始
+   继续下载:
+     wget -c URL
+
+3. 用cURL下载
+   cURL是另一个高级命令行工具,功能比wget更胜一筹.
+   可以按照下面的方式用curl下载:
+     curl http://slynux.org > index.html
+
+     和wget不同,curl并不将下载数据写入文件,而是写入标准输出(stdout).
+     因此我们必须用重定向操作符将数据从stdout重定向到文件.
+
+4. 复制或镜像整个网站
+   wget有一个选项可以使其像爬虫一样以递归的方式收集网页上所有
+   的url链接,并逐个下载,这样一来,我们就能够下载一个网站的所有页面.
+   要实现这个任务,可以按照啊下面的方式使用选项--mirror:
+     wget --mirror exampledomain.com
+     或者
+     wget -r -N -l DEPTH URL
+     -l指定页面层级DEPTH,这意味着wget只会向下遍历指定的页面级数.
+     这个选项要与-r(recusive,递归选项)一同使用.另外,-N允许对文
+     件使用时间戳,URL表示下载的网站起始地址.
+
+5. 访问需要认证的http或ftp页面
+   一些网页需要HTTP或ftp认证,可以使用--user和--password提供认证
+   信息:
+     wget --user username --password pass URL
+
+     也可以不在命令行中指定密码,而由网页提示并手动输入密码,这就需要
+     将--password改为--ask-password.
+
+** 5.3 以格式化纯文本形式下载网页
+网页其实就是包含html标记和其他诸如javascript,css等元素的html页面.
+html标记是网页的基础.我们也许需要解析网页来查找特定的内容,这是Bash就
+能派上用场了.当我们下载网页的时候,实际接收到的就是一个HTML文件.这种
+格式化的数据需要用浏览器查看.但大多数情况下,解析一个格式化文本文件要比
+解析HTML数据来的容易.因此如果我们能够得到一个格式类似于浏览器页面那样
+的文本文件,就能省下不少为剥离html标签而花费的功夫.Lynx是一个有意思的
+基于命令行的web浏览器.我们实际上可以将Lynx的纯文本格式化输出作为网页来
+获取,来看看这一切该如何实现.
+
+实战演练
+用lynx命令的-dump选项将网页以ascii字符的形式下载到文本文件中:
+  lynx -dump URL > webpage_as_text.txt
+这个命令会将所有的超链接(<a href="link">)作为文本输出的页脚列在
+References标题之下.这就省的我们再用正则表达式单独解析连接.
+
+例如:
+  lynx -dump http://google.com > plain_text_page.txt
+
+  你可以用cat命令查看纯文本版的网页:
+  #+begin_src bash
+    cat plain_text_page.txt
+  #+end_src
+
+** 5.4 cURL入门
+作为一款强力工具,cURL支持包括http,HTTP,FTp在内的众多协议.
+它还支持POST,cookie,认证,从指定偏移处下载部分文件,参照页
+(referer),用户代理字符串,扩展头部(extra header),限速,文件大小
+限制,进度条灯特性.如果你想将网页处理流程及数据检索自动化,那么
+cURL会助你一臂之力.这则攻略将为你展示curl一系列最为重要的特性.
+
+*** 5.4.1 预备知识
+在默认情况下,主流Linux发行版中并没有包含curl,你得使用包管理器进行
+安装.不过多数发行版都默认附带了wget.
+curl通常将下载文件输出到stdout,将进度信息输出到stderr.想要避免
+显示进度信息,请使用--slient选项.
+
+*** 5.4.2 实战演练
+curl命令可以用来执行下载,发送各种http请求,指定http头部等操作.
+让我们看看用curl如何实现这些任务.
+  curl URL --silent
+
+上面的命令将下载文件输出到终端(所下载的数据都被写入stdout).
+--silent选项使得curl命令不显示进度信息.如果需要这些信息,将
+--silent移除即可.
+
+  curl URL --silent -O
+
+选项-o用来将下载数据写入文件,而非写入标准输出.该文件采用的是从URL中
+解析出的文件名.
+  curl http://slynux.org/index.html --silent -O
+
+  这将创建文件index.html.
+  这条命令不再将网页写入stdout,而是写入和url中相同文件名的文件中.
+  因此要确保这是一个指向远程文件的url.curl http://slynux.org \
+  -o --silent 将会显示错误信息,因为无法从url中解析出文件名.
+
+    curl URL --silent -o new_filename
+    选项-o用来将下载的数据写入指定名称的文件中.
+
+如果需要在下载过程中显示形如#的进度条,用--progress代替--silent.
+#+begin_src bash
+  curl http://slynux.org -o index.html --progress
+#+end_src
+
+*** 5.4.3 补充内容
+
+在5.3节中,我们学习如何下载文件以及如何将HTML页面打印到终端.
+cURL还包括一些高级选项,让我们进一步研究一下.
+1. 断点续传
+   和wget不同,cURL包含更高级的下载恢复特性,能够从特定的文件偏移处
+   继续下载.它可以通过制定一个偏移量来下载部分文件.
+     curl URL/file -C offset
+
+   偏移量是以字节为单位的整数.
+
+   如果我们只是想断点续传,那么CURL不需要我们知道准确的字节偏移.
+   要是你希望cURL推断出正确的续传位置,请使用选项-c -,就像这样:
+   curl -C -URL
+
+   curl会自动计算出应该从哪里开始续传.
+
+2. 用cURL设置参照页字符串
+   参照页(referer)是位于HTTP头部中的一个字符串,用来标识用户是从
+   哪个页面到达当前页面的.如果用户点击了网页A中的某个链接,那么用户
+   就会转到网页B,网页B头部的参照页字符串会包含网页A的URL.
+
+   一些动态网页会在返回html页面前检测参照页(referer)字符串.例如,
+   如果用户是通过google搜索来到了当前网页,网页上会附带显示一个
+   Goolge的logo;如果用户是通过手动输入url来到当前网页,则显示一个
+   不同的网页.
+
+   网页可以根据条件进行判断,如果参照页是www.google.com,那么就返回
+   一个Google页面,否则返回其他页面.
+
+   你可以用curl命令的 --referer选项指定参照页字符串:
+
+     curl --referer Referer_URL target_URL
+
+   例如:
+   #+begin_src bash
+     curl --referer http://google.com http://slynux.org
+   #+end_src
+
+3. 用cURL设置cookie
+   我们可以用curl来存储http操作过程中使用到的cookie.
+   要制定cookie,使用--cookie "COOKIES"选项.
+   COOKIES需要以name=value的形式来给出.如果要指定多个cookie,用
+   分号分隔,例如:
+   #+begin_src bash
+     curl http://example.com --cookie "user=slynux;\
+     pass=hack"
+   #+end_src
+   如果要将cookie另存为一个文件,使用--cookie-jar选项.例如:
+   #+begin_src bash
+     curl URL --cookie-jar cookie_file
+   #+end_src
+
+4. 用curl设置用户代理字符串
+   如果不指定用户代理,一些需要检验用户代理的网页就无法显示.你可能
+   已经注意到有些网站正在IE下正常工作,如果使用其他浏览器,这些网站
+   就会提示说它只能用IE访问.这是因为这些网站检查了用户代理.你可以用
+   curl把用户代理设置成IE,而后你就会发现网页又能正常显示了.
+   用cURL的--user-agent或-A选项可以设置用户代理:
+   #+begin_src bash
+     curl URL --user-agent "Mozilla/5.0"
+   #+end_src
+   其他HTTP头部信息也可以通过cURL来发送.用-H"头部信息"传递多个头部
+   信息.例如:
+     curl -H "Host: www.slynux.org" -H "Accept-language: en" \
+     URL
+
+5. 限定curl可占用的带宽
+   如果带宽有限,又有多个用户共享,为了平稳流畅地分享带宽,我们可以用
+   --limit-rate限制curl的下载速度:
+   curl URL --limit-rate 20k
+   在命令中用k(千字节)和m(兆字节)指定下载速度限制.
+
+6. 指定最大下载量
+   可以用--max-filesize选项指定可下载的最大文件大小:
+   curl URL --max-filesize bytes
+   如果文件大小超出限制,命令返回一个非0的退出码.如果命令正常运行,
+   返回0.
+
+7. 用cURL进行认证
+   可以用curl的选项-u完成http或ftp认证.
+   -u username:password可用来指定用户名和密码.它也可以不指定密码,
+   而在后续的运行过程中经提示输入密码.
+   如果你喜欢经提示后输入密码,只需要使用-u username即可.例如:
+   curl -u user:pass http://test_auth.com
+
+   要使用密码提示的话,则用:
+   curl -u user http://test_auth.com
+
+8. 只打印响应头部信息(不包括数据部分)
+   只打印响应头部(response header)有助于进行各种检查或统计.例如,
+   要求无须下载整个页面内容就能够检验某个页面是否能够打开,那么我们只
+   用读取http响应头部就能够知道这个页面是否可用.
+
+   检查http头部的一个用例就是在下载之前先查看文件大小.我们可以在下
+   载之前,通过检查HTTp头部中的Content-Length参数来得知文件的长度.
+
+   同样还可以从头部检索出其他一些有用的参数.Last-Modified参数能告诉
+   我们远程文件最后的改动时间.
+
+   通过-I或-head就可以只打印HTTP头部信息,而无需下载远程文件.
+   例如:
+   #+begin_src bash
+     curl -I http://slynux.org
+   #+end_src

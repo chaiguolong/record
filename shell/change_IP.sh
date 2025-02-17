@@ -36,6 +36,8 @@ set_dns(){
 	echo 设置DNS:
 	read -p "Please input DNS1: " DNS1
 	nmcli connection modify $conn ipv4.dns $DNS1
+	read -p "Please input DNS2: " DNS1
+	nmcli connection modify $conn ipv4.dns $DNS2
 }
 show_device(){
     nmcli device show $conn

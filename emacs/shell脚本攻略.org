@@ -1,0 +1,10 @@
+#+startup: overview
+#+title: Linux_Shell脚本攻略
+#+author: dream
+
+* 第四章:让文本飞
+** 4.7 awk入门
+1. 当使用不带参数的print时，它会打印出当前行。
+   关于print，需要记住两件重要的事情:当print的参数是以逗号进行分隔时，参数打印时则以空格作为定界符；
+   在awk的print语句中，双引号是被当做拼接操作符（concatenation operator）使用的。
+2. 
