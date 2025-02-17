@@ -28,6 +28,8 @@
     - C-h C-f 寻找定义的函数所在位置
     - C-h C-v 寻找定义的变量所在位置
     - C-h C-k 寻找绑定的快捷键所在位置
+    - space w m 最大化窗口
+    - space w u 恢复原有窗口布局
 *** 2.Dired(需要用m键mark相应的文件):
     - +: to create directory
     - C-x C-f: to create file
@@ -39,7 +41,7 @@
     - D: delete after confirm
     - u: 取消标记
     - g: 在Dired模式中强制刷新.
-*** 3.插件快捷键
+ *** 3.插件快捷键
     - C-x u 运行undo-tree
     - C-c t 将光标下的英文翻译为中文
     - C-j 下一章节(看电子书nov.el)
@@ -64,14 +66,16 @@
 
            #+BEGIN_SRC
            #+END_SRC
+
+    6) 运行该代码块快捷键为C-c C-c
        
-    6) 查看当前文件类型下所有的temple,命令是M-x yas-describe-tables
+    7) 查看当前文件类型下所有的temple,命令是M-x yas-describe-tables
 
-    7) C-c ['] : 在org-mode下,允许在本地进行代码段的编辑操作
+    8) C-c ['] : 在org-mode下,允许在本地进行代码段的编辑操作
 
-    8) C-u C-c C-l:插入文件链接
+    9) C-u C-c C-l:插入文件链接
 
-    9) C-c C-o:打开链接
+    10) C-c C-o:打开链接
 
 ** 其他资料整理:
 *** 1).在半马人的emacs配置中添加插件evil.
@@ -152,3 +156,6 @@
     输入\vert代替|,如何没有转换,输入快捷键C-x C-c \
 *** 12).在org-mode的表格中如何输入[[[[:]]]]:
     上面标题就遇到了同样的问题,可以输入4对[]
+*** 13).emacs设置代理(在GUI中需要设置,shell中不需要)
+(setq url-gateway-method 'socks)
+(setq socks-server '("Default server" "127.0.0.1" 1081 5))

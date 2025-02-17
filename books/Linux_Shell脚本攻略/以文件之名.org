@@ -1,600 +1,604 @@
-** 以文件之名
-*** 3.1 简介
-    UNIX操作系统中的一切都视为文件.
-*** 3.2 生成任意大小的文件
-    由于各种可能的原因,你也许需要生成一个包含随机数据的文件.
-**** 3.2.1 实战演练
-    创建特定大小的大文件最简单的方法就是利用dd命令.
-    #+begin_src bash
-      dd if=/dev/zero of=junk.data bs=1M count=1
-    #+end_src
-    if代表输入文件(input file),of代表输出文件(output file),bs
-代表以字节为单位的块大小(block size),count代表需要被复制的块数.
-    /dev/zero是一个字符设备,它会不断返回0值字节(\0).
-*** 3.3 文本文件的交集与差集
-    交集和差集操作在集合论相关的数学课上经常被用到.不过,对文本
-进行类似的操作在某些情况下也很有用.
-**** 3.3.1 预备知识
-    comm命令可用于两个文件之间的比较.
-    假设现在有两个文件A和B,内容分别是:A(1,2,3),B(3,4,5).
-那么,对这两个文件进行操作的结果如下.
-交集: 3
-求差: 1,2,4,5
-差集(A): 1,2
-- 交集: 打印出两个文件所共有的行
-- 求差: 打印出指定文件所包含的且不相同的那些行
-- 差集: 打印出包含在文件A中,但不包含在其他指定文件中的那些行
-**** 3.3.2 实战演练
-    需要注意的是comm必须使用排过序的文件作为输入.请看下面的例子:
-    #+begin_src bash
-      # 将A.txt排序并输出给A.txt
-      sort A.txt -o A.txt
-      # 将B.txt排序并输出给B.txt
-      sort B.txt -o B.txt
-      #将A.txt与B.txt做比较
-      com A.txt B.txt
-    #+end_src
-    有一些选项可以按照我们的需求进行格式化输出,例如:
-    - -1 从输出中删除第一列
-    - -2 从输出中删除第二列
-    - -3 从输出中删除第三列
-    为了打印两个文件的交集,我们需要删除第一列和第二列,只打印出
-第三列:
-    #+begin_src bash
-      comm A.txt B.txt -1 -2
-    #+end_src
+#+startup: overview
+#+title: Linux_Shell脚本攻略
+#+author: dream
 
-    打印出两个文件中不相同的行:
-    #+begin_src bash
-      comm A.txt B.txt -3
-    #+end_src
-
-    #+begin_src bash
-      # 删除\t字符
-      comm A.txt B.txt -3 | sed 's/^\t//'
-    #+end_src
-
-    差集操作允许你比较两个文件,并打印出只在A.txt或B.txt中出现
-的行.当A.txt和B.txt作为comm命令的参数时,输出中的第一列是A.txt
-相对于B.txt的差集,第二列是B.txt相对于A.txt的差集.
-    #+begin_src bash
-      # A.txt的差集
-      comm A.txt B.txt -2 -3
-    #+end_src
-
-    #+begin_src bash
-      comm A.txt B.txt -1 -3
-    #+end_src
-
-*** 3.4 查找并删除重复文件
-    这则攻略中,我们讨论的是查找重复文件并基于查找结果执行相关的
-操作.
-**** 3.4.1 预备知识
-    重复文件指的是那些虽然名字不同但内容却一模一样的文件.我们可
-以通过比较文件内容来识别它们.校验和是依据文件内容来计算的,内容
-相同的文件自然会生成相同的校验和,因此,我们可以通过比较校验和来
-删除重复文件.
-**** 3.4.2 实战演练
-    按照下面的方法创建一些测试文件:
-    #+begin_src bash
-      echo "hello" > test1;
-      cp test1 test_copy1;
-      cp test1 test_copy2;
-      echo "next" > other;
-    #+end_src
-
-**** 3.4.3 工作原理
-**** 3.4.4 参考
-*** 3.5 创建长路径目录
-    有时候,我们需要创建一个空目录树.如果给定路径中包含目录,那么
-还必须检查这些目录是否已经存在.这会使得代码变得臃肿而低效.
-**** 3.5.1 预备知识
-    mkdir命令用于创建目录.
-    #+begin_src bash
-      mkdir dirpath
-    #+end_src
-    如果目录已经存在,就会返回"File exists"错误信息:
-
-    如果给你一个目录路径(/home/slynux/test/hello/child),其中
-/home/slynux已经存在,那么我们需要创建路径中余下的目录
-(/home/slynux/test,/home/slynux/test/hello和/home/slynux/test
-/hello/child).
-    下面的代码可找出路径中的每个目录是否存在:
-    #+begin_src bash
-      if [ -e /home/slynux ]; then
-      # 创建下一级目录
-    #+end_src
-    -e是一个用在条件判断[ ]中的参数,可用以判断某个文件是否存在.
-    在类unix系统中,目录同样是一种文件.如果[ -e FILE_PATH ] 返回
-    真.
-**** 3.5.2 实战演练
-   下面的命令序列可用以创建多级目录树:
+* 第三章:以文件之名
+** 3.1 简介
+UNIX操作系统中的一切都视为文件.
+** 3.2 生成任意大小的文件
+   由于各种可能的原因,你也许需要生成一个包含随机数据的文件.
+*** 3.2.1 实战演练
+   创建特定大小的大文件最简单的方法就是利用dd命令.
    #+begin_src bash
-     mkdir /home 2> /dev/null
-     mkdir /home/slynux 2> /dev/null
-     mkdir /home/slynux/test 2> /dev/null
-     mkdir /home/slynux/test hello 2> /dev/null
-     mkdir /home/slynux/test/hello/child 2> /dev/null
+     dd if=/dev/zero of=junk.data bs=1M count=1
    #+end_src
-   如果遇到"Dictionary exists"这种错误,该命令会被忽略,错误信息
-   通过2>被重定向到/dev/null.进行这一操作的标准单行命令如下:
+   if代表输入文件(input file),of代表输出文件(output file),bs
+表以字节为单位的块大小(block size),count代表需要被复制的块数.
+   /dev/zero是一个字符设备,它会不断返回0值字节(\0).
+** 3.3 文本文件的交集与差集
+   交集和差集操作在集合论相关的数学课上经常被用到.不过,对文本
+行类似的操作在某些情况下也很有用.
+*** 3.3.1 预备知识
+   comm命令可用于两个文件之间的比较.
+   假设现在有两个文件A和B,内容分别是:A(1,2,3),B(3,4,5).
+么,对这两个文件进行操作的结果如下.
+集: 3
+差: 1,2,4,5
+集(A): 1,2
+-交集: 打印出两个文件所共有的行
+-求差: 打印出指定文件所包含的且不相同的那些行
+-差集: 打印出包含在文件A中,但不包含在其他指定文件中的那些行
+*** 3.3.2 实战演练
+   需要注意的是comm必须使用排过序的文件作为输入.请看下面的例子:
    #+begin_src bash
-     # 它会忽略所有已存在的目录,同时创建缺失的部分.
-     mkdir -p /home/slynux/test/hello/child
+     # 将A.txt排序并输出给A.txt
+     sort A.txt -o A.txt
+     # 将B.txt排序并输出给B.txt
+     sort B.txt -o B.txt
+     #将A.txt与B.txt做比较
+     com A.txt B.txt
    #+end_src
-*** 3.6 文件权限,所有权和粘滯位
-    文件权限和所有权是unix/Linux文件系统最显著的特性之一.
-**** 3.6.1 预备知识
-    文件权限的第一个字母对应关系如下所示.
-    - "-"--------普通文件
-    - "d"--------目录
-    - "c"--------字符设备
-    - "b"--------块设备
-    - "l"--------符号链接
-    - "s"--------套接字
-    - "p"--------管道
+   有一些选项可以按照我们的需求进行格式化输出,例如:
+   - -1 从输出中删除第一列
+   - -2 从输出中删除第二列
+   - -3 从输出中删除第三列
+   为了打印两个文件的交集,我们需要删除第一列和第二列,只打印出
+三列:
+   #+begin_src bash
+     comm A.txt B.txt -1 -2
+   #+end_src
 
-    目录有一个特殊的权限,叫做粘滞位.当一个目录设置了粘滞位,
-    只有创建该目录的用户才能删除目录中的文件,即使用户组和其
-    他用户也有写权限.粘滞位出现在其他用户权限中的执行权限(x)
-    位置.它使用t或T来表示.如果没有设置执行权限,但设置了粘滞位,
-    那么使用t;如果同时设置了执行权限和粘滞位,就使用T.例如
-    -------rwt, -------rwT
-**** 3.6.2 实战演练
-    为了设置文件权限,可以使用chmod命令.
-    #+begin_src bash
-      chmod u=rwx g=rw o=r filename
-    #+end_src
-    - u = 指定用户权限
-    - g = 指定用户组权限
-    - o = 指定其他实体权限
+   打印出两个文件中不相同的行:
+   #+begin_src bash
+     comm A.txt B.txt -3
+   #+end_src
 
-    如果需要给文件添加权限,可以对用户,用户组和其他用户用+进行
-    添加,用-删除权限.
-    一个文件已经具有权限rwx rw- r--,现在需要增加可执行权限:
-    #+begin_src bash
-      chmod a+x filename
-    #+end_src
-    给所有权限类别(即用户,用户组和其他用户)增加可执行权限:
-    #+begin_src bash
-      # 其中a表示全部(all)
-      chmod a+x filename
-      # 如果需要删除权限,则使用-,例如:
-      chmod a-x filename
-    #+end_src
+   #+begin_src bash
+     # 删除\t字符
+     comm A.txt B.txt -3 | sed 's/^\t//'
+   #+end_src
 
-    也可以用八进制数来设置权限.权限由3位八进制数来表示.每一位
-    按顺序对应用户,用户组和其他用户.
-    - r--  = 4
-    - -w-  = 2
-    - --x  = 1
+   差集操作允许你比较两个文件,并打印出只在A.txt或B.txt中出现
+行.当A.txt和B.txt作为comm命令的参数时,输出中的第一列是A.txt
+对于B.txt的差集,第二列是B.txt相对于A.txt的差集.
+   #+begin_src bash
+     # A.txt的差集
+     comm A.txt B.txt -2 -3
+   #+end_src
 
-    我们可以将权限序列的八进制值相加来获得所需的权限组合,例如:
-    - rw- = 4 + 2 = 6
-    - r-x = 4 + 1 = 5
+   #+begin_src bash
+     comm A.txt B.txt -1 -3
+   #+end_src
 
-    权限序列 rwx rw- r--的数字表示形式如下:
-    - rwx = 4 + 2 + 1 = 7
-    - rw- = 4 + 2 = 6
-    - r-- = 4
+** 3.4 查找并删除重复文件
+   这则攻略中,我们讨论的是查找重复文件并基于查找结果执行相关的
+作.
+*** 3.4.1 预备知识
+   重复文件指的是那些虽然名字不同但内容却一模一样的文件.我们可
+通过比较文件内容来识别它们.校验和是依据文件内容来计算的,内容
+同的文件自然会生成相同的校验和,因此,我们可以通过比较校验和来
+除重复文件.
+*** 3.4.2 实战演练
+   按照下面的方法创建一些测试文件:
+   #+begin_src bash
+     echo "hello" > test1;
+     cp test1 test_copy1;
+     cp test1 test_copy2;
+     echo "next" > other;
+   #+end_src
 
-    因此,rwx rw- r-- 等于764,那么使用8进制值设置权限的命令为:
-    #+begin_src bash
-      chmod 764 filename
-    #+end_src
-**** 3.6.3 补充内容
-   1. 更改所有权
-      #+begin_src bash
-	# 要更改文件所有权,可以使用chown命令:
-	# chown user.group filename
-	# 在这里,slynux即使用户名,也是用户组名.
-	chown slynux.slynux test.sh
-      #+end_src
-   
-   2. 设置粘滞位
-      粘滞位是一种应用于目录的权限类型.通过设置粘滞位,使得只有
-      目录的所有者才能够删除目录中的文件.
+*** 3.4.3 工作原理
+*** 3.4.4 参考
+** 3.5 创建长路径目录
+   有时候,我们需要创建一个空目录树.如果给定路径中包含目录,那么
+必须检查这些目录是否已经存在.这会使得代码变得臃肿而低效.
+*** 3.5.1 预备知识
+   mkdir命令用于创建目录.
+   #+begin_src bash
+     mkdir dirpath
+   #+end_src
+   如果目录已经存在,就会返回"File exists"错误信息:
 
-   3. 以递归的方式设置权限
-      有时候,要以递归的方式修改当前目录下的所有文件和子目录的
-      权限,可以使用下面的方法:
-      #+begin_src bash
-	# 选线-R指定以递归的方式修改权限.
-	chmod 777 . -R
-	# 我们用"."指定当前工作目录,这等同于:
-	chmod 777 $(pwd) -R
-      #+end_src
+   如果给你一个目录路径(/home/slynux/test/hello/child),其中
+/ome/slynux已经存在,那么我们需要创建路径中余下的目录
+(home/slynux/test,/home/slynux/test/hello和/home/slynux/test
+/ello/child).
+   下面的代码可找出路径中的每个目录是否存在:
+   #+begin_src bash
+     if [ -e /home/slynux ]; then
+     # 创建下一级目录
+   #+end_src
+   -e是一个用在条件判断[ ]中的参数,可用以判断某个文件是否存在.
+   在类unix系统中,目录同样是一种文件.如果[ -e FILE_PATH ] 返回
+   真.
+*** 3.5.2 实战演练
+  下面的命令序列可用以创建多级目录树:
+  #+begin_src bash
+    mkdir /home 2> /dev/null
+    mkdir /home/slynux 2> /dev/null
+    mkdir /home/slynux/test 2> /dev/null
+    mkdir /home/slynux/test hello 2> /dev/null
+    mkdir /home/slynux/test/hello/child 2> /dev/null
+  #+end_src
+  如果遇到"Dictionary exists"这种错误,该命令会被忽略,错误信息
+  通过2>被重定向到/dev/null.进行这一操作的标准单行命令如下:
+  #+begin_src bash
+    # 它会忽略所有已存在的目录,同时创建缺失的部分.
+    mkdir -p /home/slynux/test/hello/child
+  #+end_src
+** 3.6 文件权限,所有权和粘滯位
+   文件权限和所有权是unix/Linux文件系统最显著的特性之一.
+*** 3.6.1 预备知识
+   文件权限的第一个字母对应关系如下所示.
+   - "-"--------普通文件
+   - "d"--------目录
+   - "c"--------字符设备
+   - "b"--------块设备
+   - "l"--------符号链接
+   - "s"--------套接字
+   - "p"--------管道
 
-   4. 以递归方式设置所有权
-      用chown命令结合 -R就可以以递归的方式设置所有权:
-      #+begin_src bash
-	chown user.group . -R
-      #+end_src
+   目录有一个特殊的权限,叫做粘滞位.当一个目录设置了粘滞位,
+   只有创建该目录的用户才能删除目录中的文件,即使用户组和其
+   他用户也有写权限.粘滞位出现在其他用户权限中的执行权限(x)
+   位置.它使用t或T来表示.如果没有设置执行权限,但设置了粘滞位,
+   那么使用t;如果同时设置了执行权限和粘滞位,就使用T.例如
+   -------rwt, -------rwT
+*** 3.6.2 实战演练
+   为了设置文件权限,可以使用chmod命令.
+   #+begin_src bash
+     chmod u=rwx g=rw o=r filename
+   #+end_src
+   - u = 指定用户权限
+   - g = 指定用户组权限
+   - o = 指定其他实体权限
 
-   5. 以不同的用户运行可执行文件
-      一些可执行文件需要以不同的用户身份(启动该文件的当前用户
-      之外的用户),用文件路径来执行(如 ./executable_name).有一
-      个叫做setuid的特殊文件权限,它允许其他用户以文件所有者的
-      身份来执行文件.
+   如果需要给文件添加权限,可以对用户,用户组和其他用户用+进行
+   添加,用-删除权限.
+   一个文件已经具有权限rwx rw- r--,现在需要增加可执行权限:
+   #+begin_src bash
+     chmod a+x filename
+   #+end_src
+   给所有权限类别(即用户,用户组和其他用户)增加可执行权限:
+   #+begin_src bash
+     # 其中a表示全部(all)
+     chmod a+x filename
+     # 如果需要删除权限,则使用-,例如:
+     chmod a-x filename
+   #+end_src
 
-      首先将该文件的所有权替换为该用户,这操作每次都会执行,使
-      该用户能以文件所有者的身份登录.然后运行下面的命令:
-      #+begin_src bash
-	chmod +s executable_file
-      #+end_src
-      
-      #+begin_src bash
-	# chown root.root executable_file
-	# chmod +s executable_file
-	./eecutable_file
-      #+end_src
-      现在,这个文件实际上每次都是以超级用户的身份来执行.
-      setuid的使用不是无限制的.为了安全,它只能应用在Linux ELF
-      格式二进制文件上,而不能用于脚本文件.
+   也可以用八进制数来设置权限.权限由3位八进制数来表示.每一位
+   按顺序对应用户,用户组和其他用户.
+   - r--  = 4
+   - -w-  = 2
+   - --x  = 1
 
-*** 3.7 创建不可修改文件
-    一旦文件被设置为不可修改,任何用户包括超级用户都不能删除该文件,
-除非其不可修改的属性被移除.通过查看/etc/mtab文件,很容易找出所有挂
-载分区的文件系统类型.让我们来看看如何将文件设置为不可修改.
-**** 3.7.1 预备知识
-    可以用chattr将文件设置为不可修改.不可修改属性是保护文件不被修
-改的安全手段之一.最有代表性的例子就是/etc/shadow文件.
-**** 3.7.2 实战演练
-    可以按照下面的方式将一个文件设置为不可修改:
-    #+begin_src bash
-      # +i(immutable)永恒的.
-      chattr +i file
-    #+end_src
-    如果需要使文件重新可写,可以移除不可修改属性:
-    #+begin_src bash
-      chattr -i file
-    #+end_src
-    
-*** 3.8 批量生成空白文件
-    有时候我们可能需要生成测试样本.
-**** 3.8.1 预备知识
-    touch命令可以用来生成空白文件;如果文件存在,则可以用它
-修改文件的时间戳.
-**** 3.8.2 实战演练
-    用下面的命令可以创建一个名为filename的空白文件:
-    #+begin_src bash
-      touch filename
-    #+end_src
+   我们可以将权限序列的八进制值相加来获得所需的权限组合,例如:
+   - rw- = 4 + 2 = 6
+   - r-x = 4 + 1 = 5
 
-    批量生成名字不同的空白文件
-    #+begin_src bash
-      for name in{1..100}.txt
-      do
-      touch $name
-      done
-    #+end_src
+   权限序列 rwx rw- r--的数字表示形式如下:
+   - rwx = 4 + 2 + 1 = 7
+   - rw- = 4 + 2 = 6
+   - r-- = 4
 
-    如果文件已经存在,那么touch命令将会与该文件相关的所有时间
-戳更改为当前时间.如果我们只想更改某些时间戳,则可以使用下面的
-选项.
-    - touch a 只更改文件访问时间
-    - touch m 只更改文件访问时间
-    除了将时间戳更改为当前时间,我们还能够为时间戳指定特定的时
-间和日期:
-#+begin_src bash
-    # -d 使用的日期串不一定总是以相同的格式呈现.
-    # -d可以接受任何的标准日期格式
-    touch -d "Fri Jun 25 20:50:14 IST 1999" filename
-#+end_src
-*** 3.9 查找符号链接及其指向目标
-    在类UNIX系统中,符号链接很常见.
-**** 3.9.1 预备知识
-    符号链接只不过是指向其他文件的指针.它在功能上类似于mac OS中的
-别名或Windows中的快捷方式.删除符号链接不会影响到原始文件.
-**** 3.9.2 实战演练
-    我们可以按照下面的方法创建符号链接:
-    #+begin_src bash
-      # ln -s target symbolic_link_name
-      # 例如:
-      ln -l -s /var/www/ ~/web
-    #+end_src
+   因此,rwx rw- r-- 等于764,那么使用8进制值设置权限的命令为:
+   #+begin_src bash
+     chmod 764 filename
+   #+end_src
+*** 3.6.3 补充内容
+  1. 更改所有权
+     #+begin_src bash
+# 要更改文件所有权,可以使用chown命令:
+# chown user.group filename
+# 在这里,slynux即使用户名,也是用户组名.
+chown slynux.slynux test.sh
+     #+end_src
+  
+  2. 设置粘滞位
+     粘滞位是一种应用于目录的权限类型.通过设置粘滞位,使得只有
+     目录的所有者才能够删除目录中的文件.
 
-    对于每一个符号链接而言,权限标记部分以字母"l"作为起始,表示这是一
-个符号链接.
-    因此,为了打印出当前目录下的符号链接,可以使用下面的命令:
-    #+begin_src bash
-      ls -l | grep "^l" | awk '{print $8}'
-    #+end_src
-    另一种方法是用find打印符号链接,如下所示:
-    #+begin_src bash
-      find . -type l -print
-    #+end_src
+  3. 以递归的方式设置权限
+     有时候,要以递归的方式修改当前目录下的所有文件和子目录的
+     权限,可以使用下面的方法:
+     #+begin_src bash
+# 选线-R指定以递归的方式修改权限.
+chmod 777 . -R
+# 我们用"."指定当前工作目录,这等同于:
+chmod 777 $(pwd) -R
+     #+end_src
 
-    用下列命令可以打印出符号链接的指向目标
-    #+begin_src bash
-      ls -l web | awk '{print $10}'
-    #+end_src
-*** 3.10 列举文件类型统计信息
-    如果编写一个脚本,使它能够遍历一个目录中所有的文件,并生成一份关于
-文件类型细节以及每种文件类型数量的报告,这肯定很有意思.
-**** 3.10.1 预备知识
-    find命令可以通过查看文件内容来找出特定类型的文件.在UNIX/Linux系统
-中,文件类型并不是由文件扩展名决定的(而在微软windows平台中正是这么做的)
-**** 3.10.2 实战演练
-    用下面的命令打印文件类型信息:
-    #+begin_src bash
-      # file filename
-      file /etc/passwd
-    #+end_src
+  4. 以递归方式设置所有权
+     用chown命令结合 -R就可以以递归的方式设置所有权:
+     #+begin_src bash
+chown user.group . -R
+     #+end_src
 
-    打印不包括文件名在内的文件类型信息:
-    #+begin_src bash
-      # file -b filename
-    #+end_src
-**** 3.10.3 工作原理
-*** 3.11 换回文件与挂载
-    环回文件系统是指那些在文件中而非物理设备中创建的文件系统.
-我们可以将这些文件挂载到挂载点上,就想设备一样.
-**** 3.11.1 预备知识
-    环回文件系统存在于文件之中.我们通过将环回文件连接到一个设
-备文件来进行挂载(mount).环回文件系统的一个例子就是初始化内存
-文件,它位于/boot/initrd.img.
-**** 3.11.2 实战演练
-    下面的文件可以创建一个1GB大小的文件.
-    #+begin_src bash
-      dd if=/dev/zero of=loopbackfile.img bs=1G count=1
-    #+end_src
+  5. 以不同的用户运行可执行文件
+     一些可执行文件需要以不同的用户身份(启动该文件的当前用户
+     之外的用户),用文件路径来执行(如 ./executable_name).有一
+     个叫做setuid的特殊文件权限,它允许其他用户以文件所有者的
+     身份来执行文件.
 
-    用mkfs命令格式化这个1gb的文件
-    #+begin_src bash
-      # mkfs.ext4 loopbackfile.img
-    #+end_src
-
-    使用下面的命令检查文件系统:
-    #+begin_src bash
-      sudo file loopbackfile.img
-    #+end_src
-
-    现在就可以挂载环回文件了
-    #+begin_src bash
-      # mount -o loop loopback.img /mnt/loopback
-    #+end_src
-**** 3.11.3 补充内容
-    1. 将ISO文件作为环回文件挂载
-       ISO文件是任意种类光学存储介质的归档.我们可以采用环回
-       挂载的方法,像挂载物理光盘一样挂载ISO文件.
-       挂载点就是一个目录,用来作为通过文件系统访问设备内容的
-       路径.
-       #+begin_src bash
-	 mkdir /mnt/iso
-	 mount -o loop linux.iso /mnt/iso
-       #+end_src
-       现在就可以用/mnt/iso中的文件进行操作了.ISO是一个只读文
-       件系统.
-    2. 通过sync立即应用更改
-       当对挂载设备作出更改之后,这些改变并不会被立即写入物理设
-       备.只有当缓冲区被写满之后才会进行设备回写.但是我们可以
-       用sync命令强制将它即刻写入更改:
-       #+begin_src bash
-	 sync
-       #+end_src
-*** 3.12 生成ISO文件及混合iso
-**** 3.12.1 预备知识
-**** 3.12.2 实战演练
-**** 3.12.3 补充内容
-*** 3.13 查找文件差异并进行修补
-    我们可以用patch命令将修补文件中包含的更改信息应用到原始文件中.
-我们也可以再次进行修补来撤销改变.
-
-**** 3.13.1 实战演练
-    diff命令可以生成差异文件.为了生成差异信息,先创建下列文件
-(具体文件在当前目录中).
-    非一体化的输出(在不使用-u选项的情况下)如下:
-    #+begin_src bash
-      diff version1.txt version2.txt
-    #+end_src
-
-    一体化的形式输出如下:
-    #+begin_src bash
-      diff -u version1.txt version2.txt
-    #+end_src
-
-    选项-u用于生成一体化输出.因为一体化输出的可读性更好,更易于看出两
-个文件之间的差异,所以人们往往更喜欢这种输出形式.
-    在一体化diff输出中,以+起始的是新加入的行,以-起始的是删除的行.
-    修补文件可以通过将diff的输出重定向到一个文件来生成:
-    #+begin_src bash
-      diff -u version1.txt version2.txt > version.patch
-    #+end_src
-
-    现在就可以用patch命令将修改应用于任意一个文件.当应用于version1.txt
-    时,我们就可以得到version2.txt;而当应用于version2.txt时,就可以得到
-    version1.txt.
-    用下列命令进行修补:
-    #+begin_src bash
-      patch -p1 version1.txt < version.patch
-    #+end_src
-
-    下面的命令可以撤销做出的修改:
-    #+begin_src bash
-      patch -p1 version1.txt < version.patch
-    #+end_src
-
-**** 3.13.2 补充内容
+     首先将该文件的所有权替换为该用户,这操作每次都会执行,使
+     该用户能以文件所有者的身份登录.然后运行下面的命令:
+     #+begin_src bash
+chmod +s executable_file
+     #+end_src
      
-*** 3.14 head与tail--打印文件的前10行和后10行
-    我们有可能需要打印出文件的前n行或后n行,也有可能需要打印出除了前n
-    行或后n行之外所有的行.还有一种用例是打印文件的第n行至第m行.head和
-    tail命令可以帮助我们实现这一切.
-**** 实战演练
-    head命令总是读取输入文件的头部.
-    #+begin_src bash
-      # 打印前10行
-      head file
-    #+end_src
+     #+begin_src bash
+# chown root.root executable_file
+# chmod +s executable_file
+./eecutable_file
+     #+end_src
+     现在,这个文件实际上每次都是以超级用户的身份来执行.
+     setuid的使用不是无限制的.为了安全,它只能应用在Linux ELF
+     格式二进制文件上,而不能用于脚本文件.
 
-    #+begin_src bash
-      # 从stdin读取数据
-      cat text | head
-    #+end_src
+** 3.7 创建不可修改文件
+   一旦文件被设置为不可修改,任何用户包括超级用户都不能删除该文件,
+非其不可修改的属性被移除.通过查看/etc/mtab文件,很容易找出所有挂
+分区的文件系统类型.让我们来看看如何将文件设置为不可修改.
+*** 3.7.1 预备知识
+   可以用chattr将文件设置为不可修改.不可修改属性是保护文件不被修
+的安全手段之一.最有代表性的例子就是/etc/shadow文件.
+*** 3.7.2 实战演练
+   可以按照下面的方式将一个文件设置为不可修改:
+   #+begin_src bash
+     # +i(immutable)永恒的.
+     chattr +i file
+   #+end_src
+   如果需要使文件重新可写,可以移除不可修改属性:
+   #+begin_src bash
+     chattr -i file
+   #+end_src
+   
+** 3.8 批量生成空白文件
+   有时候我们可能需要生成测试样本.
+*** 3.8.1 预备知识
+   touch命令可以用来生成空白文件;如果文件存在,则可以用它
+改文件的时间戳.
+*** 3.8.2 实战演练
+   用下面的命令可以创建一个名为filename的空白文件:
+   #+begin_src bash
+     touch filename
+   #+end_src
 
-    #+begin_src bash
-      # 指定打印前几行
-      head -n 4 file
-    #+end_src
+   批量生成名字不同的空白文件
+   #+begin_src bash
+     for name in{1..100}.txt
+     do
+     touch $name
+     done
+   #+end_src
 
-    #+begin_src bash
-      # 打印除了最后n行之外所有的行
-      head -n -N file
-      # 注意-N表示一个负数
-    #+end_src
+   如果文件已经存在,那么touch命令将会与该文件相关的所有时间
+更改为当前时间.如果我们只想更改某些时间戳,则可以使用下面的
+项.
+   - touch a 只更改文件访问时间
+   - touch m 只更改文件访问时间
+   除了将时间戳更改为当前时间,我们还能够为时间戳指定特定的时
+和日期:
+#begin_src bash
+   # -d 使用的日期串不一定总是以相同的格式呈现.
+   # -d可以接受任何的标准日期格式
+   touch -d "Fri Jun 25 20:50:14 IST 1999" filename
+#end_src
+** 3.9 查找符号链接及其指向目标
+   在类UNIX系统中,符号链接很常见.
+*** 3.9.1 预备知识
+   符号链接只不过是指向其他文件的指针.它在功能上类似于mac OS中的
+名或Windows中的快捷方式.删除符号链接不会影响到原始文件.
+*** 3.9.2 实战演练
+   我们可以按照下面的方法创建符号链接:
+   #+begin_src bash
+     # ln -s target symbolic_link_name
+     # 例如:
+     ln -l -s /var/www/ ~/web
+   #+end_src
 
-    #+begin_src bash
-      # 用下列的代码打印除了最后5行之外的所有行:
-      seq 11 | head -n -5
-    #+end_src
+   对于每一个符号链接而言,权限标记部分以字母"l"作为起始,表示这是一
+符号链接.
+   因此,为了打印出当前目录下的符号链接,可以使用下面的命令:
+   #+begin_src bash
+     ls -l | grep "^l" | awk '{print $8}'
+   #+end_src
+   另一种方法是用find打印符号链接,如下所示:
+   #+begin_src bash
+     find . -type l -print
+   #+end_src
 
-    #+begin_src bash
-      # 打印出的第1行至第5行
-      seq 100 | head -n 5
-    #+end_src
+   用下列命令可以打印出符号链接的指向目标
+   #+begin_src bash
+     ls -l web | awk '{print $10}'
+   #+end_src
+** 3.10 列举文件类型统计信息
+   如果编写一个脚本,使它能够遍历一个目录中所有的文件,并生成一份关于
+件类型细节以及每种文件类型数量的报告,这肯定很有意思.
+*** 3.10.1 预备知识
+   find命令可以通过查看文件内容来找出特定类型的文件.在UNIX/Linux系统
+,文件类型并不是由文件扩展名决定的(而在微软windows平台中正是这么做的)
+*** 3.10.2 实战演练
+   用下面的命令打印文件类型信息:
+   #+begin_src bash
+     # file filename
+     file /etc/passwd
+   #+end_src
 
-    #+begin_src bash
-      # 打印文件的最后10行
-      tail file
-    #+end_src
+   打印不包括文件名在内的文件类型信息:
+   #+begin_src bash
+     # file -b filename
+   #+end_src
+*** 3.10.3 工作原理
+** 3.11 换回文件与挂载
+   环回文件系统是指那些在文件中而非物理设备中创建的文件系统.
+们可以将这些文件挂载到挂载点上,就想设备一样.
+*** 3.11.1 预备知识
+   环回文件系统存在于文件之中.我们通过将环回文件连接到一个设
+文件来进行挂载(mount).环回文件系统的一个例子就是初始化内存
+件,它位于/boot/initrd.img.
+*** 3.11.2 实战演练
+   下面的文件可以创建一个1GB大小的文件.
+   #+begin_src bash
+     dd if=/dev/zero of=loopbackfile.img bs=1G count=1
+   #+end_src
 
-    #+begin_src bash
-      # 从stdin读取数据
-      cat text | tail
-    #+end_src
+   用mkfs命令格式化这个1gb的文件
+   #+begin_src bash
+     # mkfs.ext4 loopbackfile.img
+   #+end_src
 
-    #+begin_src bash
-      # 打印最后5行
-      tail -n 5 file
-    #+end_src
+   使用下面的命令检查文件系统:
+   #+begin_src bash
+     sudo file loopbackfile.img
+   #+end_src
 
-    打印除了前n行之外所有的行
-    tail -n +(N+1)
-    #+begin_src bash
-      # 打印除前5行之外的所有行
-      seq 100 | tail -n +6
-    #+end_src
-
-    tail有一个特殊的选项-f或--follow,它们会使tail密切关注文件中新添加
-    的内容,并随着数据的增加时时保持更新:
-    #+begin_src bash
-      tail -f growing_file
-      # 或者
-      dmesg | tail -f
-    #+end_src
-
-    我们不时会运行dmeg,查看内核的环形缓冲区消息.
-
-    tail具有一个很有意思的特性:当某个给定进程结束之后,tail也会随之终
-    结.
-
-*** 3.15 只列出目录的其他方法
-**** 3.15.1 预备知识
-**** 3.15.2 实战演练
-    有4种方法可以列出当前路径下的目录,分别列出如下:
-    - 结合-d的用法才能够只打印出目录
-
-	#+begin_src bash
-	  ls -d  */
-	#+end_src
-
-    - 当使用-F时,所有的输出项都会添加上一个代表文件类型的字符.
-      对于目录项,添加的是/字符.
-
-	#+begin_src bash
-	ls -F | grep "/$"
-	#+end_src
-
-    - ls -l输出的每一行的第一个字符表示文件类型.目录的文件类型字符是
-      "d".
-
+   现在就可以挂载环回文件了
+   #+begin_src bash
+     # mount -o loop loopback.img /mnt/loopback
+   #+end_src
+*** 3.11.3 补充内容
+   1. 将ISO文件作为环回文件挂载
+      ISO文件是任意种类光学存储介质的归档.我们可以采用环回
+      挂载的方法,像挂载物理光盘一样挂载ISO文件.
+      挂载点就是一个目录,用来作为通过文件系统访问设备内容的
+      路径.
       #+begin_src bash
-	ls -l | grep "^d"
+ mkdir /mnt/iso
+ mount -o loop linux.iso /mnt/iso
       #+end_src
-
-    - find命令可以指定type的参数为目录并将maxdepth设置成1,这是因为我们
-      不需要向下搜素.
+      现在就可以用/mnt/iso中的文件进行操作了.ISO是一个只读文
+      件系统.
+   2. 通过sync立即应用更改
+      当对挂载设备作出更改之后,这些改变并不会被立即写入物理设
+      备.只有当缓冲区被写满之后才会进行设备回写.但是我们可以
+      用sync命令强制将它即刻写入更改:
       #+begin_src bash
-	find . -type d -maxdepth 1 -print
+ sync
       #+end_src
+** 3.12 生成ISO文件及混合iso
+*** 3.12.1 预备知识
+*** 3.12.2 实战演练
+*** 3.12.3 补充内容
+** 3.13 查找文件差异并进行修补
+   我们可以用patch命令将修补文件中包含的更改信息应用到原始文件中.
+们也可以再次进行修补来撤销改变.
 
-*** 3.16 在命令行中用pushd和popd快速定位
-**** 3.16.1 预备知识
-    pushd和popd可以用于在多个目录之间进行切换而无需复制并粘贴目录路径.
-    pushd和popd是以栈的方式来运作.
-**** 3.16.2 实战演练
-    为了压入并切换路径,使用:
-    #+begin_src bash
-      pushd /var/www
-    #+end_src
+*** 3.13.1 实战演练
+   diff命令可以生成差异文件.为了生成差异信息,先创建下列文件
+(体文件在当前目录中).
+   非一体化的输出(在不使用-u选项的情况下)如下:
+   #+begin_src bash
+     diff version1.txt version2.txt
+   #+end_src
 
-    然后再压入下一个目录:
-    #+begin_src bash
-      pushd /usr/src
-    #+end_src
+   一体化的形式输出如下:
+   #+begin_src bash
+     diff -u version1.txt version2.txt
+   #+end_src
 
-    用下面的命令查看栈内容:
-    #+begin_src bash
-      dirs
-    #+end_src
+   选项-u用于生成一体化输出.因为一体化输出的可读性更好,更易于看出两
+文件之间的差异,所以人们往往更喜欢这种输出形式.
+   在一体化diff输出中,以+起始的是新加入的行,以-起始的是删除的行.
+   修补文件可以通过将diff的输出重定向到一个文件来生成:
+   #+begin_src bash
+     diff -u version1.txt version2.txt > version.patch
+   #+end_src
 
-    当你想切换到列表中任意一个路径时,将每条路径从0到n进行编号,然后使用
-    你希望奇幻岛的路径编号,例如:
-    #+begin_src bash
-      pushd +3
-    #+end_src
+   现在就可以用patch命令将修改应用于任意一个文件.当应用于version1.txt
+   时,我们就可以得到version2.txt;而当应用于version2.txt时,就可以得到
+   version1.txt.
+   用下列命令进行修补:
+   #+begin_src bash
+     patch -p1 version1.txt < version.patch
+   #+end_src
 
-    pushd总是将路径添加到栈,如果要从栈中删除路径,可以使用popd.
+   下面的命令可以撤销做出的修改:
+   #+begin_src bash
+     patch -p1 version1.txt < version.patch
+   #+end_src
 
-**** 3.16.3 补充内容
-   当涉及3个以上的目录时,可以使用pushd和popd.但是当你只涉及两个位置
-   的时候,还有另一个更简便的方法:cd -
-*** 3.17 统计文件的行数,单词数和字符数
-**** 3.17.1 预备知识
-    wc是一个用于统计的工具.它是word Count(单词统计)的缩写.
-**** 3.17.2 实战演练
-    统计行数:
-    #+begin_src bash
-      wc -l file
-    #+end_src
-
-    将stdin作为输入,使用下列命令:
-    #+begin_src bash
-      cat file | wc -l
-    #+end_src
-
-    统计单词数:
-    #+begin_src bash
-      wc -w file
-      cat file | wc -w
-    #+end_src
-
-    统计字符数:
-    #+begin_src bash
-      wc -c file
-      cat file | wc -c
-    #+end_src
-
-    #+begin_src bash
-      # -n用于避免echo添加额外的换行符
-      echo -n 1234 | wc -c
-    #+end_src
-
-    #+begin_src bash
-      # 当不使用任何选项执行wc时
-      wc file
-      # 它会打印出文件的行数,单词和字符数,彼此之间用制表符分隔
-    #+end_src
+*** 3.13.2 补充内容
     
-**** 3.17.3 补充知识
-    打印最长行的长度
-    wc可以借助-L选项打印最长行的长度:
-    #+begin_src bash
-      wc file -L
-    #+end_src
-    
-*** 3.18 打印目录树
+** 3.14 head与tail--打印文件的前10行和后10行
+   我们有可能需要打印出文件的前n行或后n行,也有可能需要打印出除了前n
+   行或后n行之外所有的行.还有一种用例是打印文件的第n行至第m行.head和
+   tail命令可以帮助我们实现这一切.
+*** 实战演练
+   head命令总是读取输入文件的头部.
+   #+begin_src bash
+     # 打印前10行
+     head file
+   #+end_src
+
+   #+begin_src bash
+     # 从stdin读取数据
+     cat text | head
+   #+end_src
+
+   #+begin_src bash
+     # 指定打印前几行
+     head -n 4 file
+   #+end_src
+
+   #+begin_src bash
+     # 打印除了最后n行之外所有的行
+     head -n -N file
+     # 注意-N表示一个负数
+   #+end_src
+
+   #+begin_src bash
+     # 用下列的代码打印除了最后5行之外的所有行:
+     seq 11 | head -n -5
+   #+end_src
+
+   #+begin_src bash
+     # 打印出的第1行至第5行
+     seq 100 | head -n 5
+   #+end_src
+
+   #+begin_src bash
+     # 打印文件的最后10行
+     tail file
+   #+end_src
+
+   #+begin_src bash
+     # 从stdin读取数据
+     cat text | tail
+   #+end_src
+
+   #+begin_src bash
+     # 打印最后5行
+     tail -n 5 file
+   #+end_src
+
+   打印除了前n行之外所有的行
+   tail -n +(N+1)
+   #+begin_src bash
+     # 打印除前5行之外的所有行
+     seq 100 | tail -n +6
+   #+end_src
+
+   tail有一个特殊的选项-f或--follow,它们会使tail密切关注文件中新添加
+   的内容,并随着数据的增加时时保持更新:
+   #+begin_src bash
+     tail -f growing_file
+     # 或者
+     dmesg | tail -f
+   #+end_src
+
+   我们不时会运行dmeg,查看内核的环形缓冲区消息.
+
+   tail具有一个很有意思的特性:当某个给定进程结束之后,tail也会随之终
+   结.
+
+** 3.15 只列出目录的其他方法
+*** 3.15.1 预备知识
+*** 3.15.2 实战演练
+   有4种方法可以列出当前路径下的目录,分别列出如下:
+   - 结合-d的用法才能够只打印出目录
+
+#+begin_src bash
+  ls -d  */
+#+end_src
+
+   - 当使用-F时,所有的输出项都会添加上一个代表文件类型的字符.
+     对于目录项,添加的是/字符.
+
+#+begin_src bash
+ls -F | grep "/$"
+#+end_src
+
+   - ls -l输出的每一行的第一个字符表示文件类型.目录的文件类型字符是
+     "d".
+
+     #+begin_src bash
+ls -l | grep "^d"
+     #+end_src
+
+   - find命令可以指定type的参数为目录并将maxdepth设置成1,这是因为我们
+     不需要向下搜素.
+     #+begin_src bash
+find . -type d -maxdepth 1 -print
+     #+end_src
+
+** 3.16 在命令行中用pushd和popd快速定位
+*** 3.16.1 预备知识
+   pushd和popd可以用于在多个目录之间进行切换而无需复制并粘贴目录路径.
+   pushd和popd是以栈的方式来运作.
+*** 3.16.2 实战演练
+   为了压入并切换路径,使用:
+   #+begin_src bash
+     pushd /var/www
+   #+end_src
+
+   然后再压入下一个目录:
+   #+begin_src bash
+     pushd /usr/src
+   #+end_src
+
+   用下面的命令查看栈内容:
+   #+begin_src bash
+     dirs
+   #+end_src
+
+   当你想切换到列表中任意一个路径时,将每条路径从0到n进行编号,然后使用
+   你希望奇幻岛的路径编号,例如:
+   #+begin_src bash
+     pushd +3
+   #+end_src
+
+   pushd总是将路径添加到栈,如果要从栈中删除路径,可以使用popd.
+
+*** 3.16.3 补充内容
+  当涉及3个以上的目录时,可以使用pushd和popd.但是当你只涉及两个位置
+  的时候,还有另一个更简便的方法:cd -
+** 3.17 统计文件的行数,单词数和字符数
+*** 3.17.1 预备知识
+   wc是一个用于统计的工具.它是word Count(单词统计)的缩写.
+*** 3.17.2 实战演练
+   统计行数:
+   #+begin_src bash
+     wc -l file
+   #+end_src
+
+   将stdin作为输入,使用下列命令:
+   #+begin_src bash
+     cat file | wc -l
+   #+end_src
+
+   统计单词数:
+   #+begin_src bash
+     wc -w file
+     cat file | wc -w
+   #+end_src
+
+   统计字符数:
+   #+begin_src bash
+     wc -c file
+     cat file | wc -c
+   #+end_src
+
+   #+begin_src bash
+     # -n用于避免echo添加额外的换行符
+     echo -n 1234 | wc -c
+   #+end_src
+
+   #+begin_src bash
+     # 当不使用任何选项执行wc时
+     wc file
+     # 它会打印出文件的行数,单词和字符数,彼此之间用制表符分隔
+   #+end_src
+   
+*** 3.17.3 补充知识
+   打印最长行的长度
+   wc可以借助-L选项打印最长行的长度:
+   #+begin_src bash
+     wc file -L
+   #+end_src
+   
+** 3.18 打印目录树
 **** 3.18.1 预备知识
     tree命令是以图形化的树状结构打印文件和目录的主角.
 **** 3.18.2 实战演练
