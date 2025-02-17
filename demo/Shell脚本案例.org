@@ -82,3 +82,5 @@
     [[file:show_progress_01.sh][show_progress_01.sh]]
     [[file:show_progress_02.sh][show_progress_02.sh]]
 
+16. 编写脚本,显示进度条(二)
+    [[file:show_progress02.sh][show_progress02.sh]]
