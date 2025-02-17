@@ -1,16 +1,23 @@
+#+title: 作业本
+
 * Linux命令行与shell脚本编程大全 
 ** 第三章:基本的bash shell命令
 *** 3.1 启动shell
     1. /etc/passwd每行有七个字段,字段之间用冒号分隔.每个字段的数据
        赋予用户账户某些特定特性.
 *** 3.2 shell提示符
-
+    1. shell提示符中显示了当前用户ID名和系统名.
 *** 3.3 shell手册
 1. man命令
+   1. q键退出手册.
+
 2. -help或--help
 
 *** 3.4 浏览文件系统
 1. 浏览文件系统
+   1. linux虚拟目录结构只包含一个称为根(root)目录的基础目录.
+   2. linux会在根驱动器上创建一些特别的目录,我们称之为挂载点.
+
 2. 遍历目录
     #+begin_src bash
     cd /home/dream
@@ -20,25 +27,65 @@
 	#+begin_src bash
 	/usr/bin
 	#+end_src
+
+	查看当前工作目录
+	#+begin_src bash
+	pwd
+	#+end_src
+
     2.2. 相对文件路径
 	#+begin_src bash
 	cd  ~/Documents/record
 	#+end_src
+	1. 单点符(.):表示当前目录
+	2. 双点符(..):表示当前目录的父目录
 
 *** 3.5 文件和目录列表
 1. 基本列表功能
     #+begin_src bash
-	ls
+      ls
     #+end_src
+
+    可用带-F参数的ls命令轻松区分文件和目录.
+    -F参数在目录名后加了正斜线(/),在可执行文件
+    的后面加了星号.
+    #+begin_src bash
+      ls -F
+    #+end_src
+
+    -a参数把隐藏文件和普通文件及目录都显示出来.
+    #+begin_src bash
+      ls -a
+    #+end_src
+
+    -R是递归选项.
+    #+begin_src bash
+      ls -R
+    #+end_src
+
 2. 显示长列表
+   -l参数会产生长列表格式的输出.
    #+begin_src bash
      ls -l
    #+end_src
 3. 过滤输出列表
+   1.通配符(正式名字叫做:元字符通配符)过滤器
+   - 问号(?)代表一个字符
+   - 星号(*)代表零个或多个字符.
+   - 中括号([])表示一个字符位置并给出多个可能的选择,例如[a-i]
+   - 感叹号(!)将不需要的内容排除在外.
 
 *** 3.6 处理文件
 1. 创建文件
+   touch命令创建了你指定的新文件.
+   #+begin_src bash
+     touch test_one
+   #+end_src
 2. 复制文件
+   cp命令的-R参数,递归复制整个目录的内容.
+   #+begin_src bash
+     cp source destination
+   #+end_src
 3. 制表键自动补全
 4. 链接文件
 5. 重命名文件
