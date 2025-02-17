@@ -23,7 +23,8 @@ echo $conn
 set_ip(){
 	echo 设置IP地址:
 	read -p "Please input IP: " IP
-	nmcli connection modify $conn ipv4.addresses $IP/24
+	read -p "Please input MARK: " mark
+	nmcli connection modify $conn ipv4.addresses $IP/$mark
 }
 
 set_gateway(){
