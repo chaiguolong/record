@@ -402,3 +402,8 @@ ProxyCommand nc -x 127.0.0.1:1081 %h %p
 - git pull：拉取远程仓库的更新并立即合并到当前分支。
 - git fetch：拉取远程仓库的更新，但不合并到当前分支。
 - git merge：将一个分支的更改合并到当前分支。
+
+** 22.解决github访问慢的问题
+  hosts最新代码链接：https://raw.hellogithub.com/hosts（ps：代码不定时更新），获取最新对应的host配置。
+  如果需要工具自动更新的话，链接：https://github.com/oldj/SwitchHosts
+
