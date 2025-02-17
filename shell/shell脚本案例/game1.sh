@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+usr/bin/env bash
 
 # 编写一个脚本,实现人机<石头,见到,布>游戏
 game=(石头 剪刀 布)
