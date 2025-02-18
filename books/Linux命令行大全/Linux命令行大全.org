@@ -81,3 +81,34 @@
 
 *** 2.5 总结
 ** 第三章 探索Linux系统
+*** 3.3 使用less命令查看文本文件
+    #+begin_src bash
+      #less filename
+      less /etc/passwd
+    #+end_src
+
+
+*** 3.1 使用ls命令之乐
+    我们甚至可以指定多个目录.
+    #+begin_src bash
+    ls ~ /usr
+    #+end_src
+
+    添加-l,我们将输出格式改成了长格式
+    #+begin_src bash
+      ls -l
+    #+end_src
+
+**** 3.1.1 选项与参数
+    大部分命令看起来类似下面这样:
+    command -options arguments
+**** 3.1.2 进一步了解长格式
+*** 3.2 使用file命令确定文件类型
+    #+begin_src bash
+	file filename
+    #+end_src
+
+*** 3.4 按图索骥
+*** 3.5 符号链接
+*** 3.6 硬链接
+*** 3.7 总结
