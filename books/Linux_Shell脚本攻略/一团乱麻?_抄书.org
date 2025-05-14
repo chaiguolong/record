@@ -276,3 +276,5 @@ cURL还包括一些高级选项,让我们进一步研究一下.
    #+begin_src bash
      curl -I http://slynux.org
    #+end_src
+
+** 5.10 通过web服务器单词含义

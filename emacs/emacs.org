@@ -30,6 +30,14 @@
     - C-h C-k 寻找绑定的快捷键所在位置
     - space w m 最大化窗口
     - space w u 恢复原有窗口布局
+    - M-x tab-bar-mode 启动显示tab-bar
+    - C-x t 2(tab-new) 新建一个tab
+    - C-x t o/evil:g t(tab-next) 移动到下一个tab
+    - evil: g T(tab-bar-switch-to-prev-tab) 移动到上一个tab
+    - C-x t r(tab-rename) 重命名tab
+    - C-x t 0(tab-close) 关闭当前tab
+    - C-x t 1(tab-close-other) 关闭其他tab
+    - C-x t m(tab-move) 移动当前tab
 *** 2.Dired(需要用m键mark相应的文件):
     - +: to create directory
     - C-x C-f: to create file
